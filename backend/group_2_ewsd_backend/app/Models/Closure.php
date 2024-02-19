@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Closure extends Model
 {
     use HasFactory;
-    protected $fillables = ['name', 'start_date', 'closure_date', 'final_closure_date', 'academic_id'];
+    protected $fillable = ['name', 'start_date', 'closure_date', 'final_closure_date', 'academic_id'];
     public function academicYear()
     {
         return $this->hasOne(AcademicYear::class, 'id', 'academic_year_id');

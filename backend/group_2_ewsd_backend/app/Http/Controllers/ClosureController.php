@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClosureController extends Controller
 {
@@ -55,8 +56,14 @@ class ClosureController extends Controller
         ]);
         return $this->sendResponse($closure, "Closure Updated Successfully", 200);
     }
+
+    public function getCurrentClosures(){
+        $closures = DB::select('CALL check_closure_date()');
+        return response()->json($closures);
+    }
+    //par ma par ayin may yan
     public function destroy($id)
     {
-        
+
     }
 }
