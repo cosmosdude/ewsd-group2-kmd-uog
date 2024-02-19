@@ -15,7 +15,7 @@ export default () => {
                     </span>
                 </nav>
                 <div className="flex mt-16">
-                    <div className="w-[350px] mx-auto inline-flex flex-col items-center gap-8">
+                    <div className="w-[325px] mx-auto inline-flex flex-col items-center gap-8">
                         <div className="flex flex-col items-center gap-2">
                             <h1 className="text-xl font-bold">Sign Up</h1>
                             <p className="text-sm">Sign up and read the selected articles.</p>
