@@ -15,7 +15,7 @@ export default ({icon, label, checked, onChange}) => {
             <input 
                 // checked={isChecked} 
                 value={isChecked}
-                className="w-[18px] h-[18px] rounded border-2 border-slate-200 checked:bg-slate-200 appearance-none" 
+                className={"w-[18px] h-[18px] transition-all rounded border-2 border-slate-200 appearance-none " + (isChecked ? "bg-slate-200" : "") }
                 type="checkbox"
                 onChange={() => { 
                     setIsChecked(!isChecked)
