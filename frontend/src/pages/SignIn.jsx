@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react"
 
 export default () => {
 
-    let isChecked = useRef(true);
+    let isChecked = useRef(false);
 
     return (
         <>
