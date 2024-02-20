@@ -28,3 +28,6 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
     });
 });
+
+//falculty
+Route::post('falcultycreate', [FalcultyController::class, 'create']);
