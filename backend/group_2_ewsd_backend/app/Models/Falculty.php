@@ -13,4 +13,13 @@ class Falculty extends Model
     {
         return $this->hasMany(User::class, 'falculty_id', 'id');
     }
+
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'description',
+        'room_no',
+        'building_no',
+    ];
 }
