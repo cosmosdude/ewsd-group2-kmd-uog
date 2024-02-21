@@ -4,22 +4,19 @@ import { Routes, Route } from 'react-router-dom'
 
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import Dashboard from './pages/Dashboard'
+import NotFound from "./pages/NotFound"
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<SignIn/>}/>
+        <Route path="/" element={<Dashboard/>}/>
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/signup" element={<SignUp/>}/>
-        <Route path="*" element={
-          (
-          <div className="flex flex-col h-screen items-center justify-center place-content-center">
-            <h1 className="inline-block text-7xl font-extrabold">404</h1>
-            <h1 className="inline-block text-3xl font-extrabold">Not Found</h1>
-          </div>
-          )
-        }/>
+
+        {/*Any route not specified above will be treated as 404*/}
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </>
   )

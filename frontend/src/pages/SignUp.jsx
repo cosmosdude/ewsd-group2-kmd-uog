@@ -12,13 +12,25 @@ import InputField from "../components/InputField"
 
 import "../style/tailwind.css"
 import Dropdown from "../components/Dropdown"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default () => {
     let navigate = useNavigate();
 
     let [faculty, setFaculty] = useState(null);
     let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
+
+    function gotoHome() {
+        navigate("/")
+    }
+
+    function gotoHomeIfAlreadyLoggedIn() {
+        if (window.localStorage.getItem("accessToken")) {
+            gotoHome()
+        }
+    }
+
+    useEffect(gotoHomeIfAlreadyLoggedIn);
 
     return (
         <>

@@ -5,23 +5,19 @@ import "../style/tailwind.css"
 // import Checkmark from "../assets/checkmark.svg"
 
 export default ({icon, label, checked, onChange}) => {
-
-    let [isChecked, setIsChecked] = useState(checked);
-
     let base = "absolute pointer-events-none w-[16px] h-[16px] "
-    let iconClass = base + (isChecked ? "block" : "hidden")
+    let iconClass = base + (checked ? "block" : "hidden")
     return (
         <div className="flex items-center gap-2">
-            <input 
-                // checked={isChecked} 
-                value={isChecked}
+            <input  
+                checked={checked}
                 className={"w-[16px] h-[16px] transition-all rounded-[2px] border-2 border-slate-900 appearance-none checked:border-[#005F92] checked:bg-[#005F92]"}
                 type="checkbox"
-                onChange={() => { 
-                    setIsChecked(!isChecked)
+                onChange={(e) => { 
+                    console.log("Target.checked", e.target.checked)
                     // if onChanger is valid
                     // pass new value
-                    onChange && onChange(!isChecked)
+                    onChange && onChange(e.target.checked)
                 }}
             />
             <img src={icon} className={iconClass} />
