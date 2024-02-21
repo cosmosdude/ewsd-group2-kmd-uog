@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('content');
             $table->dateTime('commented_time');
-            $table->integer('parent_id')->nullable();
+            // $table->integer('parent_id')->nullable();
             $table->integer('contribution_id');
             $table->integer('user_id');
             $table->timestamps();

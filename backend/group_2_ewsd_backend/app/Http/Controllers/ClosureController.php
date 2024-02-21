@@ -59,7 +59,7 @@ class ClosureController extends Controller
 
     public function getCurrentClosures(){
         $closures = DB::select('CALL check_closure_date()');
-        return response()->json($closures);
+        return $this->sendResponse($closures,"Current Closures Retrieved",200);
     }
     //par ma par ayin may yan
     public function destroy($id)
