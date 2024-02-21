@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone')->nullable();
-            $table->integer('faculty_id')->nullable();
+            // $table->integer('faculty_id')->nullable();
         });
     }
 
@@ -28,7 +28,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('phone');
-            $table->dropColumn('faculty_id');
+            // $table->dropColumn('faculty_id');
         });
     }
 };

@@ -25,7 +25,6 @@ class User extends Authenticatable
         'password',
         'phone',
         'role_id',
-        'faculty_id'
     ];
 
     /**
@@ -57,9 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Role::class, "id", "role_id");
     }
-    public function falculty()
+    public function facultyUsers()
     {
-        return $this->hasOne(Falculty::class, "id", "falculty_id");
+        return $this->hasMany(FacultyUser::class, 'faculty_id', 'id');
     }
     public function academicHistories()
     {

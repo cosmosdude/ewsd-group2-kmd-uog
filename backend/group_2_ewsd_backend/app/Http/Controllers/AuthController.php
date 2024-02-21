@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\FacultyUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -21,14 +23,20 @@ class AuthController extends Controller
             'role_id' => 'required',
             'faculty_id' => 'required',
         ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'role_id' => $request->role_id,
-            'faculty_id' => $request->faculty_id
-        ]);
+        $user = DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'role_id' => $request->role_id,
+            ]);
+            $faculty_user = FacultyUser::create([
+                'user_id' => $user->id,
+                'faculty_id' => $request->faculty_id,
+            ]);
+            return $user;
+        });
         $token = $user->createToken('auth_token')->accessToken;
         $success['name'] = $user->name;
         $success['email'] = $user->email;
@@ -64,13 +72,23 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required',
             'password' => 'required|min:8',
+            'faculties' => 'required|array'
         ]);
-        $guest = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => 5 //guest role id
-        ]);
+        $guest = DB::transaction(function () use ($request) {
+            $u = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => 5 //guest role id
+            ]);
+            foreach ($request->faculties as $faculty) {
+                FacultyUser::create([
+                    'user_id' => $u->id,
+                    'faculty_id' => $faculty
+                ]);
+            }
+            return $u;
+        });
         $token = $guest->createToken('auth_token')->accessToken;
         $success['name'] = $guest->name;
         $success['email'] = $guest->email;

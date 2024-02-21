@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Contribution extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+        'images',
+        'files',
+        'submitted_date',
+        'attempt_number',
+        'status',
+        'is_commented',
+        'closure_id',
+        'user_id'
+    ];
 
     public function user()
     {
