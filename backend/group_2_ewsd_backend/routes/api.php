@@ -35,3 +35,5 @@ Route::middleware('auth:api')->group(function () {
 
 //falculty
 Route::post('falcultycreate', [FalcultyController::class, 'create']);
+//Contribution
+Route::get('contributionlist', [ContributionController::class, 'index']);

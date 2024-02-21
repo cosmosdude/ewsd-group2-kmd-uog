@@ -25,8 +25,8 @@ class FalcultyController extends Controller
         $falculty->room_no = $request->room_no;
         $falculty->building_no = $request->building_no;
         $result = $falculty->save();
-        if($result){
-            return response()->json($result);
+        if ($request){
+            return $this->sendResponse($result, 'Falculty Createation is Successed', 200);
         }else{
             return ['result'=>'Failed Creation'];
         }

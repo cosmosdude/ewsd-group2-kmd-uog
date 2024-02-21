@@ -13,6 +13,12 @@ class ContributionController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        if ($user->role !== 4){
+            return response()->json(['error'=>'Unauthorized', 401]);
+        }
+        $contributions = Contribution::all(); // Retrieve all articles (you can customize this query as needed)
+        return response()->json(['contributions' => $contributions], 200);
     }
     public function show($id)
     {
