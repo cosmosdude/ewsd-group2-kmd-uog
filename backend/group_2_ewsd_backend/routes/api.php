@@ -32,3 +32,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/register',[AuthController::class,'register']);
     });
 });
+
+//falculty
+Route::post('falcultycreate', [FalcultyController::class, 'create']);
