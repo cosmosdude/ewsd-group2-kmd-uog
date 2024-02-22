@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use App\Models\Contribution;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class ContributionController extends Controller
@@ -83,7 +85,8 @@ class ContributionController extends Controller
     }
 
     //this function is used to approve or reject a contribution by marketing coordinator
-    public function changeStatus(Request $request,$id){
+    public function changeStatus(Request $request, $id)
+    {
         //need to ask date
         $request->validate([
             'status' => 'required',
@@ -91,24 +94,42 @@ class ContributionController extends Controller
         ]);
         //check the contribution exists or not
         $contribution = Contribution::findOrFail($id);
-        //check the closure exists or not
+        //get closure information
         $closure = Closure::find($request->closure_id);
         //check the final closure date is valid or not
         if (Carbon::parse($closure->final_closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
-        // $student_faculty_id = Contribution::with(['user.facultyUsers' =>function($q){
-        //     $q->pluch('faculty_id');
-        // }])->where('id',$id)->pluck('id');
-        // return response()->json($student_faculty_id);
-        // $checkCoordinat
-        // DO WE NEED TO CHECK COORDIANTOR FACULTY ID BEFORE UPDATING THE STATUS????????
-        // if ($student_faculty_id) {
-        //     dd("here");
-        // }
+        //get contribution uploaded student id, and student faculty id
+        $student_info = DB::table('contributions')
+            ->select(
+                'users.id as student_id',
+                'faculty_users.faculty_id',
+            )
+            ->join('users', 'contributions.user_id', '=', 'users.id')
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->where('contributions.id', $id)
+            ->first();
+        //check Auth user is coordinator
+        $auth_user_info = DB::table("users")
+        ->select(
+            'faculty_users.user_id','faculty_users.faculty_id'
+        )
+        ->join('faculty_users','users.id','=','faculty_users.user_id')
+        ->where('users.id',Auth::user()->id)
+        ->first();
+        //check student and coordinator has the same faculty
+        if($student_info->faculty_id ==$auth_user_info->faculty_id){
+           $contribution->update(['status'=>$request->status]);
+           return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
+        }
+        return $this->sendError("You don't have permission to update this contribution",403);
+
+
     }
 
-    public function downloadContribution(){
 
+    public function downloadContribution()
+    {
     }
 }

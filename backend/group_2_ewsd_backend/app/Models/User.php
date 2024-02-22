@@ -48,8 +48,6 @@ class User extends Authenticatable
 
     public function hasRole($role)
     {
-        // $test =$this->role()->where('name', $role)->exists();
-        // dd($test);
         return $this->role()->where('name', $role)->exists();
     }
     public function role()
