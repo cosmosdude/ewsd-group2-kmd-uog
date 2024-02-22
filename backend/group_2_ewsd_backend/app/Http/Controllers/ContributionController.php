@@ -50,14 +50,17 @@ class ContributionController extends Controller
 
         $uploadedImages = [];
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
+            $images = $request->file('images');
+            for ($i = 0; $i < count($images); $i++) {
+                $image = $images[$i];
                 if ($image->isValid()) {
-                    $imageName = time() . '.' . $image->getClientOriginalExtension();
+                    $imageName = time() . '_' . $i . '.' . $image->getClientOriginalExtension();
                     $image->move(public_path('images'), $imageName);
                     $uploadedImages[] = $imageName;
                 }
             }
         }
+
 
         $contributionData = [
             'name' => $request->name,
@@ -112,24 +115,18 @@ class ContributionController extends Controller
             ->first();
         //check Auth user is coordinator
         $auth_user_info = DB::table("users")
-        ->select(
-            'faculty_users.user_id','faculty_users.faculty_id'
-        )
-        ->join('faculty_users','users.id','=','faculty_users.user_id')
-        ->where('users.id',Auth::user()->id)
-        ->first();
+            ->select(
+                'faculty_users.user_id',
+                'faculty_users.faculty_id'
+            )
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->where('users.id', Auth::user()->id)
+            ->first();
         //check student and coordinator has the same faculty
-        if($student_info->faculty_id ==$auth_user_info->faculty_id){
-           $contribution->update(['status'=>$request->status]);
-           return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
+        if ($student_info->faculty_id == $auth_user_info->faculty_id) {
+            $contribution->update(['status' => $request->status]);
+            return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
         }
-        return $this->sendError("You don't have permission to update this contribution",403);
-
-
-    }
-
-
-    public function downloadContribution()
-    {
+        return $this->sendError("You don't have permission to update this contribution", 403);
     }
 }
