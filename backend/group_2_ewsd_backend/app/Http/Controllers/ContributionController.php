@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\Role;
 use App\Models\Closure;
 use App\Models\Contribution;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\FileUploadedNotification;
 
 class ContributionController extends Controller
 {
@@ -17,7 +20,7 @@ class ContributionController extends Controller
         if ($user->role !== 4){
             return response()->json(['error'=>'Unauthorized', 401]);
         }
-        $contributions = Contribution::all(); 
+        $contributions = Contribution::all();
         return response()->json(['contributions' => $contributions], 200);
     }
     public function show($id)
@@ -81,7 +84,20 @@ class ContributionController extends Controller
 
         $contribution = Contribution::create($contributionData);
 
+        //send email noti to coordiantor
+
+        $this->sendEmailWithFile($uploadedFiles,$uploadedImages);
+
+
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
+    }
+    //send email noti to coordiantor
+    private function sendEmailWithFiles($uploadedFiles, $uploadedImages){
+        $recipient = 'yopmail.com';
+        $subject = 'New Article Uploaded';
+        $content = 'New Article have been uploaded from Student' .'_'.$request->name;
+
+        Mail::to($recipient)->send(new Contribution($subject, $content, $uploadedFiles, $uploadedImages));
     }
 
     public function update(Request $request, $id)
