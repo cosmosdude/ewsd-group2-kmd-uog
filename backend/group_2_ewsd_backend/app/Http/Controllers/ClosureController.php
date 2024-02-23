@@ -17,6 +17,17 @@ class ClosureController extends Controller
         $closures = Closure::orderBy('id', 'asc')->paginate(25);
         return $this->sendResponse($closures, "Closures Retrieved Successfully", 200);
     }
+    //magazine period filter with academic year
+    public function filter(Request $request){
+        $academic_year = $request->query('academic_id');
+        $closure = Closure::query();
+        if($academic_year){
+            $closure->where('academic_id',$academic_year);
+        }
+        $filtered = $closure->get();
+        return response()->json(['filtered'=>$filtered], 200);
+    }
+
     public function show($id)
     {
         $closure = Closure::findOrFail($id);
