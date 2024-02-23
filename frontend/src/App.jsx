@@ -4,14 +4,16 @@ import { Routes, Route } from 'react-router-dom'
 
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
-import Dashboard from './pages/Dashboard'
+import DashboardPage from './pages/DashboardPage'
 import NotFound from "./pages/NotFound"
+import UsersPage from "./pages/UsersPage"
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Dashboard/>}/>
+        <Route index element={<DashboardPage/>}/>
+        <Route path="/users" element={<UsersPage/>}/>
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/signup" element={<SignUp/>}/>
 
