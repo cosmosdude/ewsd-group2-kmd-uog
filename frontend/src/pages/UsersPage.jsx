@@ -31,7 +31,6 @@ export default () => {
             </SideNav>
             {/* right
              side */}
-
             <detail className="grow">
                 <span className="flex p-4 px-8 gap-2 items-center">
                     <Link to="/">home</Link><span>/</span><button disabled className="text-blue-400">users</button>
