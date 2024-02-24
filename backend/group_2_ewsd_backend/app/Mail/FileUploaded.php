@@ -22,15 +22,16 @@ class FileUploaded extends Mailable
         //
         $this->subject = $subject;
         $this->content = $content;
-        $this->uploadedFiles=$uploadedFiles;
-        $this->uploadedImages=$uploadedImages;
+        $this->uploadedFiles = $uploadedFiles;
+        $this->uploadedImages = $uploadedImages;
     }
 
-    public function build(){
+    public function build()
+    {
         return $this->subject($this->subject)
-                    ->view('emails.article_uploaded')
-                    ->attach(public_path($this->uploadedFiles))
-                    ->attach(public_path($this->uploadedImages));
+            ->view('emails.article_uploaded')
+            ->attach(public_path($this->uploadedFiles))
+            ->attach(public_path($this->uploadedImages));
     }
 
     public function envelope()

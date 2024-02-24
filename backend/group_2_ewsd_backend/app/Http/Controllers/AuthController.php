@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    //admin
+    //student registration
     public function register(Request $request)
     {
         $request->validate([

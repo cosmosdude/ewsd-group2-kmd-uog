@@ -18,14 +18,15 @@ class ClosureController extends Controller
         return $this->sendResponse($closures, "Closures Retrieved Successfully", 200);
     }
     //magazine period filter with academic year
-    public function filter(Request $request){
+    public function filter(Request $request)
+    {
         $academic_year = $request->query('academic_id');
         $closure = Closure::query();
-        if($academic_year){
-            $closure->where('academic_id',$academic_year);
+        if ($academic_year) {
+            $closure->where('academic_id', $academic_year);
         }
         $filtered = $closure->get();
-        return response()->json(['filtered'=>$filtered], 200);
+        return response()->json(['filtered' => $filtered], 200);
     }
 
     public function show($id)
@@ -146,7 +147,7 @@ class ClosureController extends Controller
 
         foreach ($selected_contributions as $index => $contribution) {
             // Construct folder paths for each article
-            $articleFolderName = $contribution->id . '_' . $contribution->name ;
+            $articleFolderName = $contribution->id . '_' . $contribution->name;
             $articleFolderPath = $articlesFolderPath . DIRECTORY_SEPARATOR . $articleFolderName;
             if (!mkdir($articleFolderPath) && !is_dir($articleFolderPath)) {
                 return response()->json(['error' => 'Failed to create article folder'], 500);
