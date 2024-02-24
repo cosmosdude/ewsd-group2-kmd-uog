@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    //admin
+    //student registration
     public function register(Request $request)
     {
         $request->validate([
@@ -35,7 +35,9 @@ class AuthController extends Controller
                 'user_id' => $user->id,
                 'faculty_id' => $request->faculty_id,
             ]);
-            return $user;
+            $success['user'] = $user;
+            $success['faculty_user'] = $faculty_user;
+            return $success;
         });
         $token = $user->createToken('auth_token')->accessToken;
         $success['name'] = $user->name;

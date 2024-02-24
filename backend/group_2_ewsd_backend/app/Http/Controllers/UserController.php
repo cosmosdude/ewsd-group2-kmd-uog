@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        if (Auth::user()->id == $id || Auth::user()->role_id == 1) {
+        if (Auth::user()->id == $id || Auth::user()->hasRole('administrator')) {
             $user = User::findOrFail($id);
             return $this->sendResponse($user, "User Retrieved Successfully", 200);
         }
@@ -34,8 +34,7 @@ class UserController extends Controller
             'phone' => 'required',
 
         ]);
-        //role_id == 1 means the current user is administrator
-        if (Auth::user()->id == $id || Auth::user()->role_id == 1) {
+        if (Auth::user()->id == $id || Auth::user()->hasRole('administrator')) {
             $user = User::findOrFail($id);
             $user->update([
                 'name' => $request->name,
