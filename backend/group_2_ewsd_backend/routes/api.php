@@ -36,6 +36,7 @@ Route::middleware('auth:api')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/faculties', [FalcultyController::class, 'store']);
     });
 
     Route::middleware('role:m_manager')->group(function () {
@@ -43,5 +44,4 @@ Route::middleware('auth:api')->group(function () {
     });
 });
 
-//falculty
-Route::post('falcultycreate', [FalcultyController::class, 'create']);
+
