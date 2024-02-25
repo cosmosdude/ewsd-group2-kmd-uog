@@ -16,7 +16,7 @@ class FalcultyController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users',
+            'email' => 'required|unique:falculties',
             'phone' => 'required',
             'description' => 'required',
             'room_no' => 'required',

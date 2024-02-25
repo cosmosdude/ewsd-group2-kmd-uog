@@ -1,0 +1,18 @@
+NOTE: 
+The frontend server only returns html components.
+You need to start backend server to make API calls work.
+
+
+1. Go to frontend folder from terminal
+
+2. Run
+npm install
+
+3. Run the following command for tailwind
+npx tailwindcss -i ./src/style/tailwind-pre.css -o ./src/style/tailwind.css --watch
+
+4. Create another terminal
+5. Run
+npm run dev
+
+6. Go to the shown URL in browser to start testing frontend

@@ -1,0 +1,24 @@
+1. Run this first
+composer install
+
+2. Start MySQL server
+3. Create database of your liking
+4. Assume db name is "ewsd"
+5. Create .env file. Copy from .env.example.
+6. Set database name to "ewsd"
+
+7. Migrate database
+php artisan migrate
+
+8. Add roles
+admin
+m_manager
+m_coordinator
+student
+guest
+
+9. Generate App Key
+php artisan key:generate
+
+10. Generate Passsport
+php artisan passport:generate

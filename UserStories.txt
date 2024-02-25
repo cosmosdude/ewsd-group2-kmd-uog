@@ -1,0 +1,151 @@
+As a Guest, I want to login so that I can read selected articles of registered faculty
+
+As an Admin, I want to manage Faculties along with their Marketing Coordinator account
+
+As a student, I want to submit articles for magazine so that I can nominate my article for magazine publication
+
+(Ambiguous)As an Admin, I want to manage accounts so that I manage faculty association and role of the user
+
+As an Admin, I want to define closure date and final closure date in an academic year so that I can limit a period of article submission for magazine publication
+
+As a student, I want to see my contributions list so that I can be aware of the selection status of my articles and update if necessary
+
+As a Marketing Coordinator, I want to see a list of contributions of the faculty, so that I can review them for magazine article selection
+
+As a Marketing Coordinator, I want to get a notification when a student submit an article so that I can review them in timely manner
+
+As a Marketing Coordinator, I want to approve contributions for the publication so that it gets selected into the magazine
+
+As a Marketing Coordinator, I want to reject contributions from the publication so that it never makes into the magazine for good
+
+As a Guest, I want to login so that I can see selected articles of registered faculty in 
+
+As an Admin, I want to manage a Marketing Manager account so that the person responsible for magazine publication can download selected articles
+
+As a Marketing Manager, I want to download all the selected contributions for an academic year so that I can make a magazine based on those articles
+
+As a user, I want to see selected contributions/articles of each faculty for an academic year
+
+As a Marketing Coordinator, I want to comment on the contributions so that I can ask students to update the contribution
+
+As a Student, I want to receive a notification when Marketing Coordinator comments on my article
+
+As a Student, I want to comment on my contribution so that I can explain against Marketing Coordinator's comment
+
+As a Marketing Coordinator, I want to receive a notification when a Student write a comment on their submitted article
+
+As a Student, I want to update my contribution so that I can amend the comment of the Marketing Coordinator
+
+As an Admin, I want to manage closure date and final closure date
+
+As an Admin, I want to create academic year
+
+>>>>>>>>>>>>>>>>>>>> Account
+As a guest, I want to register account for selected faculties.
+[UI] => Multiple faculty select.
+As a Guest, I want to login
+As a Guest, I want to see timestamp of my last login.
+
+As a student, I want to login
+As a student, I want to see timestamp of my last login.
+
+As a MC, I want to login
+As a MC, I want to see timestamp of my last login.
+As a MC, I want to see guest list of my faculty.
+
+As a MM, I want to login
+As a MM, I want to see timestamp of my last login.
+
+As an admin, I want to login
+As an admin, I want to see timestamp of my last login.
+As an admin, I want to see user list.
+As an admin, I want to create faculty along with MC account.
+As an admin, I want to create student accounts for selected faculty.
+[UI] => Remove "Select Role", "Phone", "Address"
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Email
+As a MC, I want to receive email when a student upload article.
+As a MC, I want to receive email when a guest registers to my faculty.
+As a MC, I want to receive email when a student comments on a contribution.
+As a student, I want to receive email when MC comments on my contribution.
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> View Selected Contribution
+As a Guest, I want to see selected contributions of each closure for registered faculties.
+As a Guest, I want to see selected contributions of each closure filteredy by a registered faculty.
+As a Guest, I want to see detail of a selected contribution.
+
+As a student, I want to see selected contributions of each closure for all faculties.
+As a student, I want to see selected contributions of each closure filteredy by a faculty.
+As a student, I want to see detail of a selected contribution.
+
+As a MC, I want to see selected contributions of each closure for all faculties.
+As a MC, I want to see selected contributions of each closure filteredy by a faculty.
+As a MC, I want to see detail of a selected contribution.
+
+As a MM, I want to see selected contributions of each closure for all faculties.
+As a MM, I want to see selected contributions of each closure filteredy by a faculty.
+As a MM, I want to download selected contributions of each closure filtered by a faculty.
+As a MM, I want to see detail of a selected contribution.
+
+As an admin, I want to see selected contributions of each closure for all faculties.
+As an admin, I want to see selected contributions of each closure filteredy by a faculty.
+As an admin, I want to see detail of a selected contribution.
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Academic Year & Magazine
+As an admin, I want to create academic year.
+As an admin, I want to see list of academic years.
+
+As an admin, I want to see a list of closures.
+As an admin, I want to filter the closure list by academic year.
+As an admin, I want to create closure within selected academic year.
+As an admin, I want to create closure as name, start date, clsoure date and final closure date.
+As an admin, I want to update closure with name, start date, clsoure date and final closure date.
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Contribution Upload
+As a student, I want to see a list of current closures.
+As a student, I want to choose a current closure before contribution upload.
+As a student, I want to see my uploaded contributions for selected current closure.
+As a student, I want to agree to terms and conditions before uploading a contribution.
+As a student, I want to upload contribution to selected current closure before closure date.
+As a student, I want to include title, description, a Word file and multiple images in an article.
+As a student, I want to see detail of my uploaded contribution.
+
+As a MC, I want to see a list of current closures.
+As a MC, I want to choose a current closure before reviewing uploaded contributions.
+As a MC, I want to see uploaded contributions of my faculty for selected current closure.
+As a MC, I want to see detail of an uploaded contribution.
+As a MC, I want to approve and reject an uploaded contribution.
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Contribution Update
+As a student, I want to update my uploaded contribution before final closure date.
+As a student, I want to update contribution with title, description and a Word file.
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Contribution Comment
+As a student, I want to comment on my uploaded article before final closure date.
+As a MC, I want to comment on uploaded articles before final closure date.
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Exception Report
+As a MC, I want to see Exception Report
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Statistical Report
+As an Admin, I want to see Statistical Report
+<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>> Lowest Priority Others
+As an Admin, I want to deactivate/activate a user.
+[Conflict] => Should be guest only
+
+<<<<<<<<<<<<<<<<<<<<
+
+// Marketing Manager (Special Case: Auto Create)
+// Admin (Special Case: Auto Create)
+// Marketing Coordinator (Need to write) <- Create Faculty + Create MC
+// Student (Current register function is ok) <- Create by admin 
