@@ -1,16 +1,18 @@
-import { Link, useNavigate } from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
+
+import "../style/tailwind.css"
+import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
+import AuthContext from "../contexts/AuthContext"
 import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
-import { useContext, useState } from "react"
-import LoadingIndicator from "../components/LoadingIndicator"
-import AuthContext from "../contexts/AuthContext"
 
-const StudentRegistrationPage = () => {
-    
-    let accessToken = useContext(AuthContext);
+const NewFacultyPage = () => {
     let navigate = useNavigate()
+    let accessToken = useContext(AuthContext);
 
+    let [facultyName, setFacultyName] = useState("");
+    let [description, setDescription] = useState("");
     let [username, setUsername] = useState("");
     let [email, setEmail] = useState("");
     let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
@@ -22,20 +24,11 @@ const StudentRegistrationPage = () => {
 
     let [error, setError] = useState(null);
     let [isLoading, setIsLoading] = useState(false);
-
-    function getFormData() {
-        let form = new FormData();
-        form.set("name", username)
-        form.set("email", email)
-        form.set("password", password)
-        form.set("role_id", "4")
-        form.set("faculty_id", "1")
-        form.set('phone', phone)
-        return form;
-    }
-
+    
     async function createAccount() {
         setError(null)
+        if (!facultyName) { setError("Faculty name must not be empty") ; return }
+        
         if (!username) { setError("Username must not be empty") ; return }
         if (!email) { setError("Email must not be empty") ; return }
 
@@ -72,30 +65,26 @@ const StudentRegistrationPage = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 w-full h-full p-4 px-8 overflow-y-hidden">
+        <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-hidden">
             <div className="flex gap-2 items-center">
                 <Breadcrumb 
                     className="py-2"
                     links={[
                         {name: "home", link: "/home"},
-                        {name: "users", link: "/users"},
-                        {name: "new registration", current: true},
-                    ]}/>
+                        {name: "faculty", link: "/faculty"},
+                        {name: "new faculty", current: true}
+                    ]}
+                />
                 <span className="grow"/>
             </div>
             <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll">
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow" placeholder="username" value={username} onChange={setUsername}/>
-                    <InputField className="grow" placeholder="email" value={email} onChange={setEmail}/>
+                    <InputField className="grow" placeholder="faculty name" value={facultyName} onChange={setFacultyName}/>
+                    <InputField className="grow" placeholder="description" value={description} onChange={setDescription}/>
                 </div>
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <Dropdown 
-                        className="grow bg-white basis-0"
-                        title={faculty ? faculty : "Select faculty"} options={faculties} onChange={(option, index) => {
-                            setFaculty(option)
-                        }}
-                    />
-                    <Dropdown className="grow basis-0" title="Student" disabled/>
+                    <InputField className="grow" placeholder="username" value={username} onChange={setUsername}/>
+                    <InputField className="grow" placeholder="email" value={email} onChange={setEmail}/>
                 </div>
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
                     <InputField className="grow" placeholder="phone number" value={phone} onChange={setPhone}/>
@@ -120,10 +109,8 @@ const StudentRegistrationPage = () => {
                     </Link>
                     {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
                 </div>
-                    
             </div>
         </div>
     )
 }
-
-export default StudentRegistrationPage
+export default NewFacultyPage

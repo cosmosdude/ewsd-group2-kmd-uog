@@ -5,6 +5,12 @@ import { useEffect, useState } from "react"
 import Dialog from "../components/Dialog"
 import AuthContext from "../contexts/AuthContext"
 
+import HomeIcon from "../assets/sidenav/home.svg"
+import ContributionIcon from "../assets/sidenav/contributions.png"
+import DepartmentsIcon from "../assets/sidenav/departments.png"
+import UsersIcon from "../assets/sidenav/users.png"
+import LogoutIcon from "../assets/sidenav/logout.png"
+
 const BaseNavigation = () => {
     let navigate = useNavigate()
 
@@ -50,26 +56,31 @@ const BaseNavigation = () => {
                     <SideNav>
                         <SideNavItem 
                             selected={path.startsWith('/home')} 
+                            src={HomeIcon}
                             cta="Dashboard" 
                             onClick={() => {navigate('/home')}}
                         />
                         <SideNavItem 
                             selected={path.startsWith('/users')} 
+                            src={UsersIcon}
                             cta="Users" 
                             onClick={() => {navigate('/users')}}
                         />
                         <SideNavItem 
                             selected={path.startsWith('/faculty')} 
+                            src={DepartmentsIcon}
                             cta="Faculty" 
                             onClick={() => {navigate('/faculty')}}
                         />
                         <SideNavItem 
                             selected={path.startsWith('/contribution')}
+                            src={ContributionIcon}
                             cta="Contributions" 
                             onClick={() => {navigate('/contribution')}}
                         />
                         <SideNavItem 
                             cta="Logout"
+                            src={LogoutIcon}
                             onClick={() => { setShowLogoutDialog(true) }}
                         />
                     </SideNav>

@@ -10,17 +10,20 @@ import UsersPage from "./pages/UsersPage"
 import BaseNavigation from "./pages/BaseNavigation"
 import StudentRegistrationPage from "./pages/StudentRegistrationPage"
 import AuthContext from "./contexts/AuthContext"
+import FacultiesPage from "./pages/FacultiesPage"
+import NewFacultyPage from "./pages/NewFacultyPage"
 
 function App() {
   return (
     <>
-      <AuthContext.Provider value="">
+      
         <Routes>
           <Route path="/" element={<BaseNavigation/>}>
             <Route path="home" element={<DashboardPage/>}/>
             <Route path="users" element={<UsersPage/>}/>
             <Route path="users/new" element={<StudentRegistrationPage/>}/>
-            <Route path="faculty" element={<p>Faculties</p>}/>
+            <Route path="faculty" element={<FacultiesPage/>}/>
+            <Route path="faculty/new" element={<NewFacultyPage/>}/>
             <Route path="contribution" element={<p>Contributions</p>}/>
           </Route>
           
@@ -30,7 +33,6 @@ function App() {
           {/*Any route not specified above will be treated as 404*/}
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
-      </AuthContext.Provider>
     </>
   )
 }
