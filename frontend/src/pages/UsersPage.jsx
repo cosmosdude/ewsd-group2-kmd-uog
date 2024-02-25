@@ -127,14 +127,23 @@ const UsersPage = () => {
                                 <td className="p-3">{getUserRoleDisplayName(user.role_id)}</td>
                                 <td className="p-3">N/A</td>
                                 <td className="p-3">
-                                    <div className="inline-block w-[25px] h-[25px] bg-slate-200 rounded"/>
+                                    <div className="group relative inline-flex bg-gray-100">
+                                        <div className="inline-flex w-[25px] h-[25px] bg-slate-200 rounded">
+                                        </div>
+                                        <ul className="absolute flex flex-col gap-2 top-full right-0 z-10 p-2 px-4 shadow-xl invisible group-hover:visible bg-slate-100 rounded">
+                                           <li><button className="hover:opacity-50">Detail</button></li> 
+                                           <li><button className="hover:opacity-50">Update</button></li> 
+                                           <li><button className="hover:opacity-50">Deactivate</button></li> 
+                                        </ul>
+                                    </div>
+                                    
                                 </td>
                             </tr>
                         )
                     }) }
                     </tbody>
                 </table>
-                <div className="inline-block h-[100px]"></div>
+                <div className="inline-block h-[50px]"></div>
                 <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &lt;
