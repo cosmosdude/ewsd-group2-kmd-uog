@@ -7,17 +7,6 @@ import SideNavItem from "../components/SideNavItem"
 import Breadcrumb from "../components/Breadcrumb"
 import AuthContext from "../contexts/AuthContext"
 
-function getUserRoleDisplayName(roleId) {
-    switch (roleId) {
-        case 1: return "Admin"
-        case 2: return "Marketing Manager"
-        case 3: return "Marketing Coordinator"
-        case 4: return "Student"
-        case 5: return "Guest"
-        default: return "N/A"
-    }
-}
-
 const UsersPage = () => {
     let navigate = useNavigate()
 
@@ -34,7 +23,7 @@ const UsersPage = () => {
         setFilteredUsers(
             searchText 
             // if search text is not empty, filter it
-            ? users.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()))
+            ? users.filter(user => user.user_name.toLowerCase().includes(searchText.toLowerCase()))
             // otherwise, take all users
             : [...users]
         )
@@ -48,13 +37,9 @@ const UsersPage = () => {
             }
         })
         try {
-            console.log(response)
             let json = await response.json()
-            setUsers(json.data.data)
-            // users = json.data.data
-            // filterUsers()
+            setUsers(json.data)
         } catch { }
-        // setPage(Math.min(10, page + 1))
         return () => {}
     }
 
@@ -121,10 +106,10 @@ const UsersPage = () => {
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">{user.id}</td>
-                                <td className="p-3">{user.name}</td>
-                                <td className="p-3">{user.email}</td>
-                                <td className="p-3">N/A</td>
-                                <td className="p-3">{getUserRoleDisplayName(user.role_id)}</td>
+                                <td className="p-3">{user.user_name}</td>
+                                <td className="p-3">{user.user_email}</td>
+                                <td className="p-3">{user.faculty_name}</td>
+                                <td className="p-3">{user.role_name}</td>
                                 <td className="p-3">N/A</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
