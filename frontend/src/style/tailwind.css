@@ -922,6 +922,10 @@ video {
   flex-grow: 0;
 }
 
+.basis-0 {
+  flex-basis: 0px;
+}
+
 .table-auto {
   table-layout: auto;
 }
@@ -1812,7 +1816,19 @@ video {
     width: 300px;
   }
 
+  .md\:w-\[150px\] {
+    width: 150px;
+  }
+
   .md\:grow-0 {
     flex-grow: 0;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .md\:gap-8 {
+    gap: 2rem;
   }
 }

@@ -105,7 +105,7 @@ const UsersPage = () => {
                         return (
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
-                                <td className="p-3">{user.id}</td>
+                                <td className="p-3">{user.user_id}</td>
                                 <td className="p-3">{user.user_name}</td>
                                 <td className="p-3">{user.user_email}</td>
                                 <td className="p-3">{user.faculty_name}</td>

@@ -116,7 +116,7 @@ const SignUpPage = () => {
                             value={email}
                             onChange={setEmail}
                         />
-                        <Dropdown title={faculty ? faculty : "Select faculty"} options={faculties} onChange={(option, index) => {
+                        <Dropdown className="w-full" title={faculty ? faculty : "Select faculty"} options={faculties} onChange={(option, index) => {
                             setFaculty(option)
                         }}/>
                         <InputField 
