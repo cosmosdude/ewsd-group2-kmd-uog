@@ -9,11 +9,6 @@ class Falculty extends Model
 {
     use HasFactory;
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'falculty_id', 'id');
-    }
-
     protected $fillable = [
         'name',
         'email',
@@ -22,4 +17,8 @@ class Falculty extends Model
         'room_no',
         'building_no',
     ];
+
+    public function facultyUsers(){
+        return $this->hasMany(FacultyUser::class, 'faculty_id', 'id');
+    }
 }

@@ -8,7 +8,11 @@ use Illuminate\Http\Request;
 class FalcultyController extends Controller
 {
     //
-    function create(Request $request){
+    function index(){
+        $falculty = Falculty::all();
+        return $this->sendResponse($falculty, 200);
+    }
+    function store(Request $request){
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users',
@@ -27,8 +31,6 @@ class FalcultyController extends Controller
         $result = $falculty->save();
         if ($request){
             return $this->sendResponse($result, 'Falculty Createation is Successed', 200);
-        }else{
-            return ['result'=>'Failed Creation'];
         }
     }
 }

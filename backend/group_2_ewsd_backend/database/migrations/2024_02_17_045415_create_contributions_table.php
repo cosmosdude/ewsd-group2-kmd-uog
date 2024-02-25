@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('files');
             $table->dateTime('submitted_date');
             $table->integer('attempt_number')->nullable();
-            $table->string('status');
+            $table->enum('status',['upload','approve','reject'])->default('upload');
             $table->boolean('is_commented')->default(0);
             $table->integer('closure_id');
             $table->integer('user_id');
