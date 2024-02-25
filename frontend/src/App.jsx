@@ -1,24 +1,31 @@
 import "./style/tailwind.css"
 
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Outlet } from 'react-router-dom'
 
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
+import SignInPage from './pages/SignInPage'
+import SignUpPage from './pages/SignUpPage'
 import DashboardPage from './pages/DashboardPage'
-import NotFound from "./pages/NotFound"
+import NotFoundPage from "./pages/NotFoundPage"
 import UsersPage from "./pages/UsersPage"
+import BaseNavigation from "./pages/BaseNavigation"
 
 function App() {
   return (
     <>
       <Routes>
-        <Route index element={<DashboardPage/>}/>
-        <Route path="/users" element={<UsersPage/>}/>
-        <Route path="/signin" element={<SignIn/>}/>
-        <Route path="/signup" element={<SignUp/>}/>
+        <Route path="/" element={<BaseNavigation/>}>
+          <Route path="home" element={<DashboardPage/>}/>
+          <Route path="users" element={<UsersPage/>}/>
+          <Route path="users/new" element={<p>New Registration</p>}/>
+          <Route path="faculty" element={<p>Faculties</p>}/>
+          <Route path="contribution" element={<p>Contributions</p>}/>
+        </Route>
+        
+        <Route path="/signin" element={<SignInPage/>}/>
+        <Route path="/signup" element={<SignUpPage/>}/>
 
         {/*Any route not specified above will be treated as 404*/}
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
     </>
   )
