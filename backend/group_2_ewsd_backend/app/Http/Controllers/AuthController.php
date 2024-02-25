@@ -12,6 +12,24 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function me()
+    {
+        $user_id = Auth::user()->id;
+        $auth_user_info = DB::table('users')
+            ->select(
+                'users.name as user_name',
+                'users.email as user_email',
+                'falculties.name as faculty_name',
+                'roles.name as role_name',
+            )
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+            ->where('users.id', $user_id)
+            // ->orderBy('users.name', 'asc')
+            ->first();
+        return $this->sendResponse($auth_user_info, "User Retrieved Successfully", 200);
+    }
     //student registration
     public function studentRegister(Request $request)
     {
