@@ -572,6 +572,10 @@ video {
   position: relative;
 }
 
+.sticky {
+  position: sticky;
+}
+
 .top-full {
   top: 100%;
 }
@@ -726,6 +730,14 @@ video {
   height: 100vh;
 }
 
+.h-\[500px\] {
+  height: 500px;
+}
+
+.h-\[25px\] {
+  height: 25px;
+}
+
 .max-h-\[200px\] {
   max-height: 200px;
 }
@@ -788,6 +800,10 @@ video {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-\[25px\] {
+  width: 25px;
 }
 
 .min-w-10 {
@@ -1008,12 +1024,20 @@ video {
   align-self: flex-end;
 }
 
+.overflow-scroll {
+  overflow: scroll;
+}
+
 .overflow-x-auto {
   overflow-x: auto;
 }
 
 .overflow-x-hidden {
   overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
 }
 
 .overflow-x-scroll {
@@ -1303,6 +1327,10 @@ video {
   padding: 2rem;
 }
 
+.p-0 {
+  padding: 0px;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -1361,6 +1389,11 @@ video {
 .py-\[4px\] {
   padding-top: 4px;
   padding-bottom: 4px;
+}
+
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .pb-3 {
@@ -1681,5 +1714,9 @@ video {
 @media (min-width: 768px) {
   .md\:block {
     display: block;
+  }
+
+  .md\:w-full {
+    width: 100%;
   }
 }

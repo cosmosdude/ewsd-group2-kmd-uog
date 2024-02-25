@@ -1,16 +1,53 @@
 import {Link, useNavigate} from "react-router-dom"
 
 import "../style/tailwind.css"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
 import Breadcrumb from "../components/Breadcrumb"
+import AuthContext from "../contexts/AuthContext"
+
+function getUserRoleDisplayName(roleId) {
+    switch (roleId) {
+        case 1: return "Admin"
+        case 2: return "Marketing Manager"
+        case 3: return "Marketing Coordinator"
+        case 4: return "Student"
+        case 5: return "Guest"
+        default: return "N/A"
+    }
+}
 
 const UsersPage = () => {
     let navigate = useNavigate()
 
+    let accessToken = useContext(AuthContext);
+    let [page, setPage] = useState(0);
+
+    let [users, setUsers] = useState([])
+
+    async function fetchUsers() {
+        let response = await fetch('http://127.0.0.1:8000/api/users', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Accept': 'application/json'
+            }
+        })
+        try {
+            console.log(response)
+            let json = await response.json()
+            setUsers(json.data.data)
+        } catch { }
+        // setPage(Math.min(10, page + 1))
+        return () => {}
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [page])
+
     return (
-        <div className="grow p-4 px-8">
+        <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-hidden">
             <div className="flex gap-2 items-center">
                 <Breadcrumb 
                     className="py-2"
@@ -28,6 +65,40 @@ const UsersPage = () => {
                 >
                     New Registration
                 </button>
+            </div>
+            <div className="block w-full h-full overflow-scroll">
+                <table className="table-auto mx-0 md:w-full">
+                    <thead>
+                    <tr className="sticky bg-slate-100">
+                        <th className="p-5">No</th>
+                        <th className="p-5">ID</th>
+                        <th className="p-5">Name</th>
+                        <th className="p-5">Faculty</th>
+                        <th className="p-5">Role</th>
+                        <th className="p-5">Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {users.map((user, index) => {
+                        return (
+                            <tr key={index} className="text-center hover:bg-slate:50">
+                                <td className="p-3">{index + 1}</td>
+                                <td className="p-3">{user.id}</td>
+                                <td className="p-3">{user.name}</td>
+                                <td className="p-3">N/A</td>
+                                <td className="p-3">{getUserRoleDisplayName(user.role_id)}</td>
+                                <td className="p-3">N/A</td>
+                                <td className="p-3">
+                                    <div className="inline-block w-[25px] h-[25px] bg-slate-200 rounded">
+
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    }) }
+                    </tbody>
+                </table>
             </div>
         </div>
     )
