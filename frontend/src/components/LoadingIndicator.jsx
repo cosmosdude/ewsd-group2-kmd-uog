@@ -1,6 +1,6 @@
 import "../style/tailwind.css"
 
-export default ({color, className, ...props}) => {
+const LoadingIndicator = ({color, className, ...props}) => {
     let strokeColor = color ? color : "black"
     return (
         <div className={`${className} animate-spin w-[24px] h-[24px] flex items-center justify-center`}>
@@ -10,3 +10,5 @@ export default ({color, className, ...props}) => {
         </div>
     )
 }
+
+export default LoadingIndicator

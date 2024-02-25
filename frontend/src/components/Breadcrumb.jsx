@@ -2,7 +2,7 @@ import { Fragment } from "react"
 import { Link } from "react-router-dom"
 
 
-export default ({links, className}) => {
+const Breadcrumb = ({links, className}) => {
     return (
         <ul className={`flex gap-2 items-center ${className}`}>
             {links.map((item, index) => {
@@ -22,3 +22,4 @@ export default ({links, className}) => {
         </ul>
     )
 }
+export default Breadcrumb

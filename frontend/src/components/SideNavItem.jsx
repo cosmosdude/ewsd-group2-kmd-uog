@@ -1,6 +1,6 @@
 import "../style/tailwind.css"
 
-export default ({src, cta, onClick, selected}) => {
+const SideNavItem = ({src, cta, onClick, selected}) => {
     return (
         <li className={`flex items-center ${selected ? 'bg-gray-300' : 'hover:bg-gray-200 transition-all' }`}>
             <button 
@@ -16,3 +16,5 @@ export default ({src, cta, onClick, selected}) => {
         </li>
     )
 }
+
+export default SideNavItem

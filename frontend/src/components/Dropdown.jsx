@@ -4,7 +4,7 @@ import DownArrowSVG from "../assets/downarrow.svg"
 import TickSVG from "../assets/tick.svg"
 import { useState } from "react"
 
-export default ({title, index, onChange, options}) => {
+const Dropdown = ({title, index, onChange, options}) => {
 
     let [selected, setSelected] = useState(index);
 
@@ -38,3 +38,5 @@ export default ({title, index, onChange, options}) => {
         </div>
     )
 }
+
+export default Dropdown

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import Breadcrumb from "../components/Breadcrumb"
 
-export default () => {
+const StudentRegistrationPage = () => {
 
     return (
         <div className="grow p-4 px-8">
@@ -18,3 +18,5 @@ export default () => {
         </div>
     )
 }
+
+export default StudentRegistrationPage

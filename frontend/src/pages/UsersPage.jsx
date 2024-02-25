@@ -6,7 +6,7 @@ import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
 import Breadcrumb from "../components/Breadcrumb"
 
-export default () => {
+const UsersPage = () => {
     let navigate = useNavigate()
 
     return (
@@ -32,5 +32,4 @@ export default () => {
         </div>
     )
 }
-
-
+export default UsersPage

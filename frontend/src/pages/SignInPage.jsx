@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react"
 import SignInNavBar from "../components/SignInNavBar"
 import LoadingIndicator from "../components/LoadingIndicator"
 
-export default () => {
+const SignInPage = () => {
     let navigate = useNavigate()
 
     function gotoHome() {
@@ -152,3 +152,5 @@ export default () => {
         </>
     )
 }
+
+export default SignInPage

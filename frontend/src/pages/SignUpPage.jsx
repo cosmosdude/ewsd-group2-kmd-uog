@@ -14,7 +14,7 @@ import "../style/tailwind.css"
 import Dropdown from "../components/Dropdown"
 import { useEffect, useState } from "react"
 
-export default () => {
+const SignUpPage = () => {
     let navigate = useNavigate();
 
     let [faculty, setFaculty] = useState(null);
@@ -56,3 +56,4 @@ export default () => {
         </>
     )
 }
+export default SignUpPage

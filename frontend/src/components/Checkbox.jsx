@@ -4,7 +4,7 @@ import "../style/tailwind.css"
 
 // import Checkmark from "../assets/checkmark.svg"
 
-export default ({icon, label, checked, onChange}) => {
+const Checkbox = ({icon, label, checked, onChange}) => {
     let base = "absolute pointer-events-none w-[16px] h-[16px] "
     let iconClass = base + (checked ? "block" : "hidden")
     return (
@@ -25,3 +25,5 @@ export default ({icon, label, checked, onChange}) => {
         </div>
     )
 }
+
+export default Checkbox

@@ -5,10 +5,12 @@ import { useEffect, useRef, useState } from "react"
 import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
 
-export default () => {
+const DashboardPage = () => {
     return (
         <div></div>
     )
 }
+
+export default DashboardPage
 
 

@@ -4,7 +4,7 @@ import SideNavItem from "../components/SideNavItem"
 import { useEffect, useState } from "react"
 import Dialog from "../components/Dialog"
 
-export default () => {
+const BaseNavigation = () => {
     let navigate = useNavigate()
 
     function gotoSignIn() { navigate("/signin") }
@@ -79,3 +79,5 @@ export default () => {
         </>
     )
 }
+
+export default BaseNavigation
