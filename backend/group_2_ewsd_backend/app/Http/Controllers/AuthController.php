@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     //student registration
-    public function register(Request $request)
+    public function studentRegister(Request $request)
     {
         $request->validate([
             'name' => 'required|max:100',
             'email' => 'required|unique:users|max:255',
             'password' => 'required|min:8',
             'phone' => 'required',
-            'role_id' => 'required',
+            // 'role_id' => 'required',
             'faculty_id' => 'required',
         ]);
         $user = DB::transaction(function () use ($request) {

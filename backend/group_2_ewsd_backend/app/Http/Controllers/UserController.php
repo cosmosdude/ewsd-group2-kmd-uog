@@ -6,12 +6,23 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('name', 'ASC')->paginate(25);
+        $users = DB::table('users')
+        ->select('users.name as user_name',
+        'users.email as user_email',
+        'falculties.name as faculty_name',
+        'roles.name as role_name',
+        )
+        ->join('roles','users.role_id','=','roles.id')
+        ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+        ->join('falculties','faculty_users.faculty_id', '=', 'falculties.id')
+        // ->orderBy('users.name', 'asc')
+        ->get();
         return $this->sendResponse($users, "User Retrieved Successfully", 200);
     }
 
