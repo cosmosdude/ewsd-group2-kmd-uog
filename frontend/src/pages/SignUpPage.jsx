@@ -4,7 +4,6 @@ import {Link, useNavigate} from "react-router-dom"
 import PersonSVG from "../assets/account.svg"
 import MailSVG from "../assets/mail2.svg"
 import LockSVG from "../assets/password.svg"
-import DownArrowSVG from "../assets/downarrow.svg"
 
 // Components
 import SignInNavBar from "../components/SignInNavBar"
@@ -13,15 +12,24 @@ import InputField from "../components/InputField"
 import "../style/tailwind.css"
 import Dropdown from "../components/Dropdown"
 import { useEffect, useState } from "react"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 const SignUpPage = () => {
     let navigate = useNavigate();
-
-    let [faculty, setFaculty] = useState(null);
     let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
 
-    function gotoHome() {
-        navigate("/")
+    let [username, setUsername] = useState("");
+    let [email, setEmail] = useState("");
+    let [faculty, setFaculty] = useState(null);
+    let [password, setPassword] = useState("");
+    let [retype, setRetype] = useState("")
+
+    let [error, setError] = useState(null);
+    let [isLoading, setIsLoading] = useState(false);
+    
+
+    function gotoSignIn() {
+        navigate("/signin")
     }
 
     function gotoHomeIfAlreadyLoggedIn() {
@@ -30,8 +38,61 @@ const SignUpPage = () => {
         }
     }
 
-    useEffect(gotoHomeIfAlreadyLoggedIn);
+    function getFormData() {
+        let form = new FormData();
+        form.set("name", username)
+        form.set("email", email)
+        form.set("password", password)
+        form.set("faculties[0]", "1")
+        return form
+    }
 
+    async function signup(e) {
+        setError(null);
+        e.preventDefault()
+
+        if (!username) { setError("Username must not be empty") ; return }
+        if (!email) { setError("Email must not be empty") ; return }
+        if (!faculty) { setError("Faculty must not be empty") ; return }
+        if (!password) { setError("Password must not be empty") ; return }
+        if (!retype || retype !== password) { setError("Passwords must be the same") ; return }
+
+        setIsLoading(() => true)
+        console.log("Logging in")
+        
+        try {
+            let form = getFormData()
+            console.log(form)
+            let response = await fetch(
+                "http://127.0.0.1:8000/api/guest-register",
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': "application/json"
+                    },
+                    body: getFormData()
+                }
+            )
+            console.log(response)
+            let value = await response.text()
+            console.log(value)
+
+            if (response.status === 200) {
+                gotoSignIn()
+            } else if (response.status === 500) {
+                setError("An account is already registered")
+            } else {
+                setError("Unable to sign up.")
+            }
+        } catch (error) {
+            console.log(error)
+            setError("Unable to sign up.")
+        }
+        setIsLoading(() => false) 
+    }
+
+
+    useEffect(gotoHomeIfAlreadyLoggedIn);
     return (
         <>
             <div className="block h-screen">
@@ -42,14 +103,43 @@ const SignUpPage = () => {
                             <h1 className="text-xl font-bold font-serif">Sign Up</h1>
                             <p className="text-sm font-serif">Sign up and read the selected articles.</p>
                         </div>
-                        <InputField className="w-full" src={PersonSVG} placeholder="Enter username"/>
-                        <InputField className="w-full" src={MailSVG} placeholder="Enter email address" type="email"/>
+                        <InputField 
+                            className="w-full" src={PersonSVG} 
+                            placeholder="Enter username"
+                            value={username}
+                            onChange={setUsername}
+                        />
+                        <InputField 
+                            className="w-full" src={MailSVG} 
+                            placeholder="Enter email address" 
+                            type="email"
+                            value={email}
+                            onChange={setEmail}
+                        />
                         <Dropdown title={faculty ? faculty : "Select faculty"} options={faculties} onChange={(option, index) => {
                             setFaculty(option)
                         }}/>
-                        <InputField className="w-full" src={LockSVG} placeholder="Enter password" type="password"/>
-                        <InputField className="w-full" src={LockSVG} placeholder="Retype password" type="password"/>
-                        <button className="text-xs font-serif font-bold mt-[25px] py-3 px-16 bg-[#0077B6] text-white rounded-full hover:opacity-75 transition-all">Sign Up</button>
+                        <InputField 
+                            className="w-full" src={LockSVG} placeholder="Enter password" 
+                            type="password"
+                            value={password}
+                            onChange={setPassword}    
+                        />
+                        <InputField 
+                            className="w-full" 
+                            src={LockSVG} 
+                            placeholder="Retype password" type="password"
+                            value={retype}
+                            onChange={setRetype}
+                        />
+                        {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">{error}</p>}
+                        <div className=" mt-[25px] pb-[50px]">
+                            <button 
+                                className={`${isLoading && 'hidden'} text-xs font-serif font-bold py-3 px-16 bg-[#0077B6] text-white rounded-full hover:opacity-75 transition-all`}
+                                onClick={signup}
+                            >Sign Up</button>
+                            {isLoading && <LoadingIndicator/>}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -138,7 +138,7 @@ const SignInPage = () => {
                                 }}
                             >Forget password?</button>
                         </div>
-                        <div className="mt-[25px]">
+                        <div className="mt-[25px] pb-[25px]">
                             <button 
                                 className={`${isLoading && "hidden"} text-xs font-serif font-bold py-3 px-16 bg-[#0077B6] text-white rounded-full hover:opacity-75 transition-all`}
                                 onClick={login}

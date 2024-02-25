@@ -1435,6 +1435,14 @@ video {
   padding-top: 4rem;
 }
 
+.pb-\[50px\] {
+  padding-bottom: 50px;
+}
+
+.pb-\[25px\] {
+  padding-bottom: 25px;
+}
+
 .text-left {
   text-align: left;
 }
