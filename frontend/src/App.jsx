@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage'
 import NotFoundPage from "./pages/NotFoundPage"
 import UsersPage from "./pages/UsersPage"
 import BaseNavigation from "./pages/BaseNavigation"
+import StudentRegistrationPage from "./pages/StudentRegistrationPage"
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path="/" element={<BaseNavigation/>}>
           <Route path="home" element={<DashboardPage/>}/>
           <Route path="users" element={<UsersPage/>}/>
-          <Route path="users/new" element={<p>New Registration</p>}/>
+          <Route path="users/new" element={<StudentRegistrationPage/>}/>
           <Route path="faculty" element={<p>Faculties</p>}/>
           <Route path="contribution" element={<p>Contributions</p>}/>
         </Route>

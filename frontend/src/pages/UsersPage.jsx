@@ -4,21 +4,21 @@ import "../style/tailwind.css"
 import { useEffect, useRef, useState } from "react"
 import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
-/*
-<SideNav>
-    <SideNavItem cta="Dashboard 123" onClick={() => {navigate("/home")}}/>
-    <SideNavItem selected cta="Users"/>
-    <SideNavItem cta="Faculty"/>
-    <SideNavItem cta="Contributions"/>
-    <SideNavItem cta="Logout" onClick={logout}/>
-</SideNav>
-*/
+import Breadcrumb from "../components/Breadcrumb"
+
 export default () => {
     let navigate = useNavigate()
+
     return (
-        <div className="grow">
-            <span className="flex p-4 px-8 gap-2 items-center">
-                <Link to="/">home</Link><span>/</span><button disabled className="text-blue-400">users</button>
+        <div className="grow p-4 px-8">
+            <div className="flex gap-2 items-center">
+                <Breadcrumb 
+                    className="py-2"
+                    links={[
+                        {name: "home", link: "/home"},
+                        {name: "users", current: true}
+                    ]}
+                />
                 <span className="grow"/>
                 <button 
                     className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
@@ -28,7 +28,7 @@ export default () => {
                 >
                     New Registration
                 </button>
-            </span>
+            </div>
         </div>
     )
 }
