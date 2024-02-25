@@ -6,6 +6,7 @@ import Breadcrumb from "../components/Breadcrumb"
 import AuthContext from "../contexts/AuthContext"
 import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 const NewFacultyPage = () => {
     let navigate = useNavigate()
@@ -13,18 +14,31 @@ const NewFacultyPage = () => {
 
     let [facultyName, setFacultyName] = useState("");
     let [description, setDescription] = useState("");
+    let [roomNo, setRoomNo] = useState("");
+    let [buildingNo, setBuildingNo] = useState("");
     let [username, setUsername] = useState("");
     let [email, setEmail] = useState("");
-    let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
+    // let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
     let [phone, setPhone] = useState("");
     let [address, setAddress] = useState("");
     let [password, setPassword] = useState("");
     let [retype, setRetype] = useState("");
-    let [faculty, setFaculty] = useState(null);
+    // let [faculty, setFaculty] = useState(null);
 
     let [error, setError] = useState(null);
     let [isLoading, setIsLoading] = useState(false);
     
+    function getFormData() {
+        let form = new FormData();
+        form.set("name", username)
+        form.set("email", email)
+        form.set('phone', phone)
+        form.set("description", description)
+        form.set("room_no", roomNo)
+        form.set("building_no", buildingNo)
+        return form;
+    }
+
     async function createAccount() {
         setError(null)
         if (!facultyName) { setError("Faculty name must not be empty") ; return }
@@ -32,14 +46,14 @@ const NewFacultyPage = () => {
         if (!username) { setError("Username must not be empty") ; return }
         if (!email) { setError("Email must not be empty") ; return }
 
-        if (!faculty) { setError("Faculty is not selected"); return }
+        // if (!faculty) { setError("Faculty is not selected"); return }
 
         if (!password) { setError("Password must not be empty") ; return }
         if (!retype || password !== retype) { setError("Password must be the same") ; return }
 
         setIsLoading(() => true)
 
-        let response = await fetch('http://127.0.0.1:8000/api/student-register', {
+        let response = await fetch('http://127.0.0.1:8000/api/faculties', {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -51,9 +65,9 @@ const NewFacultyPage = () => {
         try {
             if (response.status === 200) {
                 let json = await response.json();
-                navigate("/users")
+                navigate("/faculty")
             } else if (response.status === 422) {
-                setError("Account with same email is already registered.")
+                setError("Faculty already created")
             } else {
                 setError("Unable to create student account. (Parse Error)")
             }
@@ -81,6 +95,10 @@ const NewFacultyPage = () => {
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
                     <InputField className="grow" placeholder="faculty name" value={facultyName} onChange={setFacultyName}/>
                     <InputField className="grow" placeholder="description" value={description} onChange={setDescription}/>
+                </div>
+                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
+                    <InputField className="grow" placeholder="room number" value={roomNo} onChange={setRoomNo}/>
+                    <InputField className="grow" placeholder="building number" value={buildingNo} onChange={setBuildingNo}/>
                 </div>
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
                     <InputField className="grow" placeholder="username" value={username} onChange={setUsername}/>
