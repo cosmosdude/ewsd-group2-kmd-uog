@@ -7,7 +7,11 @@ import SideNavItem from "../components/SideNavItem"
 
 const DashboardPage = () => {
     return (
-        <div></div>
+        <div className="block border">
+            <div className="inline-flex p-0 border mx-auto">
+                <div className="inline-block w-[25px] h-[25px] bg-slate-200 rounded"/>
+            </div>
+        </div>
     )
 }
 
