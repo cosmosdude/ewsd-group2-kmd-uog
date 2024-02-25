@@ -17,9 +17,12 @@ class AuthController extends Controller
         $user_id = Auth::user()->id;
         $auth_user_info = DB::table('users')
             ->select(
+                'users.id as user_id',
                 'users.name as user_name',
                 'users.email as user_email',
                 'falculties.name as faculty_name',
+                'faculty_users.faculty_id',
+                'roles.id as role_id',
                 'roles.name as role_name',
             )
             ->join('roles', 'users.role_id', '=', 'roles.id')
