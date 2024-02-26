@@ -56,7 +56,7 @@ As a MC, I want to see guest list of my faculty.
 As a MM, I want to login
 As a MM, I want to see timestamp of my last login.
 
-As an admin, I want to login
+As an admin, I want to login.
 As an admin, I want to see timestamp of my last login.
 As an admin, I want to see user list.
 As an admin, I want to create faculty along with MC account.
@@ -74,24 +74,24 @@ As a student, I want to receive email when MC comments on my contribution.
 >>>>>>>>>>>>>>>>>>>> View Selected Contribution
 As a Guest, I want to see selected contributions of each closure for registered faculties.
 As a Guest, I want to see selected contributions of each closure filteredy by a registered faculty.
-As a Guest, I want to see detail of a selected contribution.
+-> As a Guest, I want to see detail of a selected contribution.
 
 As a student, I want to see selected contributions of each closure for all faculties.
 As a student, I want to see selected contributions of each closure filteredy by a faculty.
-As a student, I want to see detail of a selected contribution.
+-> As a student, I want to see detail of a selected contribution.
 
 As a MC, I want to see selected contributions of each closure for all faculties.
 As a MC, I want to see selected contributions of each closure filteredy by a faculty.
-As a MC, I want to see detail of a selected contribution.
+-> As a MC, I want to see detail of a selected contribution.
 
 As a MM, I want to see selected contributions of each closure for all faculties.
 As a MM, I want to see selected contributions of each closure filteredy by a faculty.
 As a MM, I want to download selected contributions of each closure filtered by a faculty.
-As a MM, I want to see detail of a selected contribution.
+-> As a MM, I want to see detail of a selected contribution.
 
 As an admin, I want to see selected contributions of each closure for all faculties.
 As an admin, I want to see selected contributions of each closure filteredy by a faculty.
-As an admin, I want to see detail of a selected contribution.
+-> As an admin, I want to see detail of a selected contribution.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Academic Year & Magazine

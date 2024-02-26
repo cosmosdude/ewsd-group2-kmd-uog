@@ -5,30 +5,16 @@ import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
 import AuthContext from "../contexts/AuthContext"
 
-import SearchIcon from "../assets/search.png"
 import ThreeDotIcon from "../assets/threedots.png"
 
-const UsersPage = () => {
-    let navigate = useNavigate()
+const AcademicYearPage = () => {
 
-    let [searchText, setSearchText] = useState("");
+    let navigate = useNavigate()
 
     let accessToken = useContext(AuthContext);
     let [page, setPage] = useState(0);
 
     let [users, setUsers] = useState([])
-    // let users = []
-    let [filteredUsers, setFilteredUsers] = useState([]);
-
-    function filterUsers() {
-        setFilteredUsers(
-            searchText 
-            // if search text is not empty, filter it
-            ? users.filter(user => user.user_name.toLowerCase().includes(searchText.toLowerCase()))
-            // otherwise, take all users
-            : [...users]
-        )
-    }
 
     async function fetchUsers() {
         try {
@@ -51,10 +37,6 @@ const UsersPage = () => {
         fetchUsers()
     }, [page])
 
-    useEffect(() => {
-        filterUsers()
-    }, [searchText, users])
-
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-hidden">
             <div className="flex gap-2 items-center">
@@ -62,7 +44,7 @@ const UsersPage = () => {
                     className="py-2"
                     links={[
                         {name: "home", link: "/home"},
-                        {name: "users", current: true}
+                        {name: "academic year", current: true}
                     ]}
                 />
                 <span className="grow"/>
@@ -72,49 +54,28 @@ const UsersPage = () => {
                         navigate('new')
                     }}
                 >
-                    New Registration
+                    New Academic Year
                 </button>
-            </div>
-            <div className="flex">
-                <div className="inline-flex items-center gap-2 p-1 border-2 mx-auto w-full md:w-auto rounded">
-                    <img src={SearchIcon} className="inline-block w-[18px] h-[18px]"/>
-                    <input 
-                        className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent" 
-                        type="text" 
-                        placeholder="Search by username, role or faculty"
-                        value={searchText}
-                        onChange={(e) => { 
-                            setSearchText(e.target.value)
-                        }}
-                    />
-                    {/* <div className="grow"/> */}
-                </div>
             </div>
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
                     <tr className="sticky bg-slate-100">
                         <th className="p-5">No</th>
-                        <th className="p-5">ID</th>
-                        <th className="p-5">Name</th>
-                        <th className="p-5">Email</th>
-                        <th className="p-5">Faculty</th>
-                        <th className="p-5">Role</th>
-                        <th className="p-5">Status</th>
+                        <th className="p-5">Academic Year</th>
+                        <th className="p-5">Start Date</th>
+                        <th className="p-5">End Date</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredUsers.map((user, index) => {
+                    {users.map((user, index) => {
                         return (
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
-                                <td className="p-3">{user.user_id}</td>
                                 <td className="p-3">{user.user_name}</td>
                                 <td className="p-3">{user.user_email}</td>
                                 <td className="p-3">{user.faculty_name}</td>
-                                <td className="p-3">{user.role_name}</td>
-                                <td className="p-3">N/A</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">
@@ -127,11 +88,24 @@ const UsersPage = () => {
                                                     onClick={
                                                         () => { 
                                                             console.log("User id", user.user_id && user.user_id)
-                                                            navigate(`/users/${user.user_id ? user.user_id : ''}`) 
+                                                            navigate(`/academicyear/${user.user_id ? user.user_id : ''}`) 
                                                         }
                                                     }
                                                 >
-                                                    Detail
+                                                    Update
+                                                </button>
+                                            </li> 
+                                            <li>
+                                                <button 
+                                                    className="inline-block text-sm font-bold rounded w-full h-full hover:bg-gray-200 p-2"
+                                                    onClick={
+                                                        () => { 
+                                                            console.log("User id", user.user_id && user.user_id)
+                                                            navigate(`/academicyear/${user.user_id ? user.user_id : ''}`) 
+                                                        }
+                                                    }
+                                                >
+                                                    Delete
                                                 </button>
                                             </li> 
                                         </ul>
@@ -156,9 +130,7 @@ const UsersPage = () => {
                     </button>
                 </div>
             </div>
-
-            
         </div>
     )
 }
-export default UsersPage
+export default AcademicYearPage

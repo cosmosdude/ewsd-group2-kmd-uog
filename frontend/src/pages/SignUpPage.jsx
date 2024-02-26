@@ -2,7 +2,7 @@ import {Link, useNavigate} from "react-router-dom"
 
 // Images
 import PersonSVG from "../assets/account.svg"
-import MailSVG from "../assets/mail2.svg"
+import MailSVG from "../assets/mail.svg"
 import LockSVG from "../assets/password.svg"
 
 // Components

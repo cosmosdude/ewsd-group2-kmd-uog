@@ -120,7 +120,6 @@ const StudentRegistrationPage = () => {
                     </Link>
                     {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
                 </div>
-                    
             </div>
         </div>
     )

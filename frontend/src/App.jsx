@@ -9,22 +9,25 @@ import NotFoundPage from "./pages/NotFoundPage"
 import UsersPage from "./pages/UsersPage"
 import BaseNavigation from "./pages/BaseNavigation"
 import StudentRegistrationPage from "./pages/StudentRegistrationPage"
-import AuthContext from "./contexts/AuthContext"
 import FacultiesPage from "./pages/FacultiesPage"
 import NewFacultyPage from "./pages/NewFacultyPage"
+import ContributionsPage from "./pages/ContributionsPage"
+import UserDetailPage from "./pages/UserDetailPage"
+import AcademicYearPage from "./pages/AcademicYearPage"
 
 function App() {
   return (
     <>
-      
         <Routes>
           <Route path="/" element={<BaseNavigation/>}>
             <Route path="home" element={<DashboardPage/>}/>
             <Route path="users" element={<UsersPage/>}/>
             <Route path="users/new" element={<StudentRegistrationPage/>}/>
+            <Route path="users/:id" element={<UserDetailPage/>}/>
             <Route path="faculty" element={<FacultiesPage/>}/>
             <Route path="faculty/new" element={<NewFacultyPage/>}/>
-            <Route path="contribution" element={<p>Contributions</p>}/>
+            <Route path="contribution" element={<ContributionsPage/>}/>
+            <Route path="academicyear" element={<AcademicYearPage/>}/>
           </Route>
           
           <Route path="/signin" element={<SignInPage/>}/>

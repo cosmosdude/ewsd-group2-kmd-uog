@@ -37,7 +37,7 @@ const BaseNavigation = () => {
     useEffect(gotoHomeIfRouteIsIndex)
     useEffect(gotoSignInIfNotAuthorized)
 
-    console.log(accessToken)
+    console.log('Base Navigation Called')
 
     let [showLogoutDialog, setShowLogoutDialog] = useState(false)
     return (
@@ -79,6 +79,12 @@ const BaseNavigation = () => {
                             onClick={() => {navigate('/contribution')}}
                         />
                         <SideNavItem 
+                            selected={path.startsWith('/academicyear')}
+                            src={null}
+                            cta="Academic Year" 
+                            onClick={() => {navigate('/academicyear')}}
+                        />
+                        <SideNavItem 
                             cta="Logout"
                             src={LogoutIcon}
                             onClick={() => { setShowLogoutDialog(true) }}
@@ -87,7 +93,7 @@ const BaseNavigation = () => {
                     {/* right
                     side */}
 
-                    <div className="grow overflow-y-hidden">
+                    <div className="block grow h-full overflow-y-hidden">
                         <Outlet/>
                     </div>
                     {/* <h1>Welcome to Dashboard!</h1> */}
