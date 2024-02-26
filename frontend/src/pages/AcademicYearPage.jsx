@@ -27,7 +27,7 @@ const AcademicYearPage = () => {
 
             let json = await response.json()
             if (response.status === 200) {
-                setUsers(json.data)
+                // setUsers(json.data)
             }
         } catch { }
         return () => {}
