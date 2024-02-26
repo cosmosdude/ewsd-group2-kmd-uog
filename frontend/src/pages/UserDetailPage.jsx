@@ -5,10 +5,11 @@ import MailIcon from "../assets/mail.svg"
 import FacultyIcon from "../assets/sidenav/departments.png"
 import PhoneIcon from "../assets/phone.png"
 import HistoryIcon from "../assets/history.png"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import AuthContext from "../contexts/AuthContext"
 
 const UserDetailPage = () => {
+    let navigate = useNavigate()
     let { id } = useParams()
     let accessToken = useContext(AuthContext)
 
@@ -39,8 +40,11 @@ const UserDetailPage = () => {
             let json = await response.json()
             console.log(json)
             if (response.status === 200) {
+                if (!json.data) navigate('notfound')
                 setUserDetails(json.data)
-            }
+            } else if (response.status === 404) {     
+                navigate('notfound')
+            } 
 
         } catch (e) {
             console.log('Error', e)
@@ -53,7 +57,7 @@ const UserDetailPage = () => {
     }, [])
 
     return (
-        <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-hidden">
+        <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-scroll">
             <div className="flex gap-2 items-center">
                 <Breadcrumb 
                     className="py-2"
@@ -66,9 +70,9 @@ const UserDetailPage = () => {
                 <span className="grow"/>
             </div>
             <div className="flex h-[150px] bg-gray-200">
-                <div className="inline-block mx-auto w-[150px] h-[150px] bg-gray-500 rounded-full mt-[75px]"></div>
+                <div className="inline-block mx-auto z-10 w-[150px] h-[150px] bg-gray-500 rounded-full mt-[75px]"></div>
             </div>
-            <div className="flex h-[75px] bg-transparent"></div>
+            <div className="flex min-h-[75px] bg-transparent"/>
             <div className="inline-block mx-auto text-center">
                 <h1 className="text-2xl font-bold">
                     {details && details.user_name}
@@ -77,14 +81,14 @@ const UserDetailPage = () => {
                     ID: {details && details.user_id}
                 </p>
             </div>
-            <div className="inline-block mx-auto">
-                <table className="table-auto border-spacing-1">
+            <div className="block mx-auto">
+                <table className="table-fixed md:table-auto border-spacing-1">
                     <tbody>
                         <tr className="align-middle">
                             <td className="py-2">
-                                <img className='inline-block w-[24px] h-[24px]' src={MailIcon}/>
+                                <img className='inline-block min-w-[24px] min-h-[24px] w-[24px] h-[24px]' src={MailIcon}/>
                             </td>
-                            <td  className="pl-2 pr-[10px] md:pr-[50px]">
+                            <td  className="pl-2 pr-[10px] md:pr-[50px] font-bold">
                                 <label>Email</label>
                             </td>
                             <td>
@@ -95,7 +99,7 @@ const UserDetailPage = () => {
                             <td className="py-2">
                                 <img className='inline-block w-[24px] h-[24px]' src={FacultyIcon}/>
                             </td>
-                            <td  className="pl-2 pr-[10px] md:pr-[50px]">
+                            <td  className="pl-2 pr-[10px] md:pr-[50px] font-bold">
                                 <label>Faculty</label>
                             </td>
                             <td>
@@ -106,7 +110,7 @@ const UserDetailPage = () => {
                             <td className="py-2">
                                 <img className='inline-block w-[24px] h-[24px]' src={PhoneIcon}/>
                             </td>
-                            <td  className="pl-2 pr-[10px] md:pr-[50px]">
+                            <td  className="pl-2 pr-[10px] md:pr-[50px] font-bold">
                                 <label>Phone</label>
                             </td>
                             <td>
@@ -117,7 +121,7 @@ const UserDetailPage = () => {
                             <td className="py-2"> 
                                 <img className='inline-block w-[24px] h-[24px]' src={HistoryIcon}/>
                             </td>
-                            <td  className="pl-2 pr-[10px] md:pr-[50px]">
+                            <td  className="pl-2 pr-[10px] md:pr-[50px] font-bold">
                                 <label>Last Accessed</label>
                             </td>
                             <td>

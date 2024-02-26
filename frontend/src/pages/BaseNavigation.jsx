@@ -9,6 +9,7 @@ import HomeIcon from "../assets/sidenav/home.svg"
 import ContributionIcon from "../assets/sidenav/contributions.png"
 import DepartmentsIcon from "../assets/sidenav/departments.png"
 import UsersIcon from "../assets/sidenav/users.png"
+import CalendarIcon from "../assets/sidenav/calendar.png"
 import LogoutIcon from "../assets/sidenav/logout.png"
 
 const BaseNavigation = () => {
@@ -80,7 +81,7 @@ const BaseNavigation = () => {
                         />
                         <SideNavItem 
                             selected={path.startsWith('/academicyear')}
-                            src={null}
+                            src={CalendarIcon}
                             cta="Academic Year" 
                             onClick={() => {navigate('/academicyear')}}
                         />

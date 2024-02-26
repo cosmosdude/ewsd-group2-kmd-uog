@@ -13,18 +13,7 @@ const MagazineCurrentPage = () => {
     let accessToken = useContext(AuthContext);
     let navigate = useNavigate()
 
-    let [magazines, setMagazines] = useState([
-        {
-            "id": 1,
-            "name": "Closure One",
-            "start_date": "2024-01-19",
-            "closure_date": "2024-01-28",
-            "final_closure_date": "2024-02-14",
-            "academic_id": 1,
-            "created_at": "2024-02-21T17:26:14.000000Z",
-            "updated_at": "2024-02-21T17:26:14.000000Z"
-        }
-    ])
+    let [magazines, setMagazines] = useState([])
 
     useEffect(() => {
         // To handle abortion
@@ -39,13 +28,16 @@ const MagazineCurrentPage = () => {
                         'Accept': 'application/json'
                     }
                 })
-    
+                console.log(response.status)
                 let json = await response.json()
                 if (response.status === 200) {
                     let results = json.data.data 
                     setMagazines(results)
-                }
-            } catch { }
+                    console.log("Success")
+                } 
+            } catch (e) { 
+                console.log("Error", e)
+            }
         }
         // fetch async
         fetchData()

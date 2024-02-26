@@ -53,6 +53,7 @@ const NewFacultyPage = () => {
 
         setIsLoading(() => true)
 
+        
         let response = await fetch('http://127.0.0.1:8000/api/faculties', {
             method: "POST",
             headers: {
@@ -61,7 +62,7 @@ const NewFacultyPage = () => {
             },
             body: getFormData()
         })
-
+        
         try {
             if (response.status === 200) {
                 let json = await response.json();
@@ -92,26 +93,25 @@ const NewFacultyPage = () => {
                 <span className="grow"/>
             </div>
             <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll">
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow" placeholder="faculty name" value={facultyName} onChange={setFacultyName}/>
-                    <InputField className="grow" placeholder="description" value={description} onChange={setDescription}/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow" placeholder="room number" value={roomNo} onChange={setRoomNo}/>
-                    <InputField className="grow" placeholder="building number" value={buildingNo} onChange={setBuildingNo}/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow" placeholder="username" value={username} onChange={setUsername}/>
-                    <InputField className="grow" placeholder="email" value={email} onChange={setEmail}/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow" placeholder="phone number" value={phone} onChange={setPhone}/>
-                    <InputField className="grow" placeholder="address" value={address} onChange={setAddress}/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow" placeholder="password" type="password" value={password} onChange={setPassword}/>
-                    <InputField className="grow" placeholder="retype password" type="password" value={retype} onChange={setRetype}/>
-                </div>
+                <fieldset className="border-2 rounded p-4">
+                    <legend className="px-2">Faculty Information</legend>
+                        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
+                            <InputField placeholder="faculty name*" value={facultyName} onChange={setFacultyName}/>
+                            <InputField className="grow" placeholder="room number (opt.)" value={roomNo} onChange={setRoomNo}/>
+                            <InputField className="grow" placeholder="building number (opt.)" value={buildingNo} onChange={setBuildingNo}/>
+                            <InputField placeholder="description (opt.)" value={description} onChange={setDescription}/>
+                    </div>
+                </fieldset>
+                <fieldset className="border-2 rounded p-4">
+                    <legend className="px-2">Marketing Coordinator Information</legend>
+                    <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
+                        <InputField className="grow" placeholder="username*" value={username} onChange={setUsername}/>
+                        <InputField className="grow" placeholder="phone number*" value={phone} onChange={setPhone}/>
+                        <InputField className="grow" placeholder="email*" value={email} onChange={setEmail}/>
+                        <InputField className="grow" placeholder="password*" type="password" value={password} onChange={setPassword}/>
+                        <InputField className="grow" placeholder="retype password*" type="password" value={retype} onChange={setRetype}/>
+                    </div>
+                </fieldset>
                 {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">
                     {error}
                 </p>}

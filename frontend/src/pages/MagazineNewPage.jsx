@@ -63,7 +63,7 @@ const MagazineNewPage = () => {
         if (!magazine.final_closure_date) { setError('Final closure date must not be empty'); return}
 
         setIsLoading(() => true)
-
+        
         try {
             let response = await fetch('http://127.0.0.1:8000/api/closures', {
                 method: "POST",
@@ -115,7 +115,9 @@ const MagazineNewPage = () => {
                     let results = json.data
                     console.log(results)
                     setMagazine(results)
-                }
+                } else if (response.status === 404) {     
+                    navigate('notfound')
+                } 
             } catch { }
         }
         // fetch async
