@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClosureController;
 use App\Http\Controllers\ContributionController;
@@ -19,7 +20,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('/closures/current', [ClosureController::class, 'getCurrentClosures']);
     Route::apiResource('/closures', ClosureController::class)->except('destroy');
-    Route::get('/me',[AuthController::class,'me']);
+    Route::get('/me', [AuthController::class, 'me']);
     Route::get('users/{id}', [UserController::class, 'show']);
 
     Route::middleware('role:m_coordinator')->group(function () {
@@ -35,13 +36,12 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware('role:administrator')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
-        Route::post('/student-register', [AuthController::class, 'studentRegister']);
+        Route::post('/register', [AuthController::class, 'register']);
         Route::post('/faculties', [FalcultyController::class, 'store']);
+        Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
     });
 
     Route::middleware('role:m_manager')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
-
-
