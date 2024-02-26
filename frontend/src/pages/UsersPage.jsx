@@ -1,111 +1,149 @@
 import {Link, useNavigate} from "react-router-dom"
 
 import "../style/tailwind.css"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
+import Breadcrumb from "../components/Breadcrumb"
+import AuthContext from "../contexts/AuthContext"
 
-export default () => {
-    let navigate = useNavigate();
+const UsersPage = () => {
+    let navigate = useNavigate()
 
-    function gotoSignIn() { navigate("signin") }
+    let [searchText, setSearchText] = useState("");
 
-    useEffect(() => {
-        if (!window.localStorage.getItem("accessToken")) gotoSignIn()
-    })
+    let accessToken = useContext(AuthContext);
+    let [page, setPage] = useState(0);
 
-    function logout() {
-        window.localStorage.removeItem("accessToken", null)
-        gotoSignIn()
+    let [users, setUsers] = useState([])
+    // let users = []
+    let [filteredUsers, setFilteredUsers] = useState([]);
+
+    function filterUsers() {
+        setFilteredUsers(
+            searchText 
+            // if search text is not empty, filter it
+            ? users.filter(user => user.user_name.toLowerCase().includes(searchText.toLowerCase()))
+            // otherwise, take all users
+            : [...users]
+        )
     }
 
-    return (
-        <div className="h-screen flex bg-slate-50">
-            {/* left side */}
-            <SideNav>
-                <SideNavItem cta="Dashboard 123" onClick={() => {navigate("/")}}/>
-                <SideNavItem selected cta="Users"/>
-                <SideNavItem cta="Faculty"/>
-                <SideNavItem cta="Contributions"/>
-                <SideNavItem cta="Logout" onClick={logout}/>
-            </SideNav>
-            {/* right
-             side */}
-            <detail className="grow">
-                <span className="flex p-4 px-8 gap-2 items-center">
-                    <Link to="/">home</Link><span>/</span><button disabled className="text-blue-400">users</button>
-                    <span className="grow"/>
-                    <button className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded">New Registration</button>
-                </span>
-                <div className="flex items-center">
-                    <div className="flex gap-3 bg-gray-200 rounded p-2 px-6 mx-4 grow md:grow-0 md:mx-auto">
-                        <img className="w-[24px] h-[24px]"/>
-                        <input 
-                            className="appearance-none bg-transparent focus:outline-none grow md:w-[300px]"
-                            type="text" 
-                            placeholder="Search by username, role or faculty"
-                        />
-                    </div>
-                </div>
-                <div className="flex mt-[25px] p-8">
-                    <div className="flex w-full items-center bg-gray-100 justify-center">
-                        <table className="table-auto w-full">
-                            <thead>
-                                <tr className="bg-slate-100 border rounded">
-                                    <th className="px-4 py-2 text-emerald-600">No</th>
-                                    <th className="px-4 py-2 text-emerald-600">ID</th>
-                                    <th className="px-4 py-2 text-emerald-600">Name</th>
-                                    <th className="px-4 py-2 text-emerald-600">Faculty</th>
-                                    <th className="px-4 py-2 text-emerald-600">Role</th>
-                                    <th className="px-4 py-2 text-emerald-600">Status</th>
-                                    <th className="px-4 py-2 text-emerald-600"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="text-center">
-                                    <td className="px-4 py-2 ">1</td>
-                                    <td className="px-4 py-2 ">001</td>
-                                    <td className="px-4 py-2 ">Naw Naw</td>
-                                    <td className="px-4 py-2 ">IT</td>
-                                    <td className="px-4 py-2 ">Student</td>
-                                    <td className="px-4 py-2 ">Active</td>
-                                    <td className="px-4 py-2 ">
-                                        <span className="block w-[18px] h-[18px] bg-gray-900"></span>
-                                    </td>
-                                </tr>
-                                <tr className="text-center">
-                                    <td className="px-4 py-2 ">1</td>
-                                    <td className="px-4 py-2 ">001</td>
-                                    <td className="px-4 py-2 ">Naw Naw</td>
-                                    <td className="px-4 py-2 ">IT</td>
-                                    <td className="px-4 py-2 ">Student</td>
-                                    <td className="px-4 py-2 ">Active</td>
-                                    <td className="px-4 py-2 ">
-                                        <span className="block w-[18px] h-[18px] bg-gray-900"></span>
-                                    </td>
-                                </tr>
-                                <tr className="text-center">
-                                    <td className="px-4 py-2 ">1</td>
-                                    <td className="px-4 py-2 ">001</td>
-                                    <td className="px-4 py-2 ">Naw Naw</td>
-                                    <td className="px-4 py-2 ">IT</td>
-                                    <td className="px-4 py-2 ">Student</td>
-                                    <td className="px-4 py-2 ">Active</td>
-                                    <td className="px-4 py-2 ">
-                                        <span className="block w-[18px] h-[18px] bg-gray-900"></span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div>
-            </detail>
-            {/* <h1>Welcome to Dashboard!</h1> */}
-            {/* <button onClick={logout}>Logout</button> */}
+    async function fetchUsers() {
+        let response = await fetch('http://127.0.0.1:8000/api/users', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Accept': 'application/json'
+            }
+        })
+        try {
+            let json = await response.json()
+            setUsers(json.data)
+        } catch { }
+        return () => {}
+    }
 
+    useEffect(() => {
+        fetchUsers()
+    }, [page])
+
+    useEffect(() => {
+        filterUsers()
+    }, [searchText, users])
+
+    return (
+        <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-hidden">
+            <div className="flex gap-2 items-center">
+                <Breadcrumb 
+                    className="py-2"
+                    links={[
+                        {name: "home", link: "/home"},
+                        {name: "users", current: true}
+                    ]}
+                />
+                <span className="grow"/>
+                <button 
+                    className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
+                    onClick={()=>{
+                        navigate('new')
+                    }}
+                >
+                    New Registration
+                </button>
+            </div>
+            <div className="flex">
+                <div className="inline-flex gap-2 p-1 border-2 mx-auto w-full md:w-auto rounded">
+                    <div className="inline-block w-[25px] h-[25px] bg-slate-200 rounded"/>
+                    <input 
+                        className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent" 
+                        type="text" 
+                        placeholder="Search by username, role or faculty"
+                        value={searchText}
+                        onChange={(e) => { 
+                            setSearchText(e.target.value)
+                        }}
+                    />
+                    {/* <div className="grow"/> */}
+                </div>
+            </div>
+            <div className="block w-full h-full overflow-scroll">
+                <table className="table-auto mx-0 md:w-full">
+                    <thead>
+                    <tr className="sticky bg-slate-100">
+                        <th className="p-5">No</th>
+                        <th className="p-5">ID</th>
+                        <th className="p-5">Name</th>
+                        <th className="p-5">Email</th>
+                        <th className="p-5">Faculty</th>
+                        <th className="p-5">Role</th>
+                        <th className="p-5">Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredUsers.map((user, index) => {
+                        return (
+                            <tr key={index} className="text-center hover:bg-slate-100">
+                                <td className="p-3">{index + 1}</td>
+                                <td className="p-3">{user.user_id}</td>
+                                <td className="p-3">{user.user_name}</td>
+                                <td className="p-3">{user.user_email}</td>
+                                <td className="p-3">{user.faculty_name}</td>
+                                <td className="p-3">{user.role_name}</td>
+                                <td className="p-3">N/A</td>
+                                <td className="p-3">
+                                    <div className="group relative inline-flex bg-gray-100">
+                                        <div className="inline-flex w-[25px] h-[25px] bg-slate-200 rounded">
+                                        </div>
+                                        <ul className="absolute flex flex-col gap-2 top-full right-0 z-10 p-2 px-4 shadow-xl invisible group-hover:visible bg-slate-100 rounded">
+                                           <li><button className="hover:opacity-50">Detail</button></li> 
+                                           <li><button className="hover:opacity-50">Update</button></li> 
+                                           <li><button className="hover:opacity-50">Deactivate</button></li> 
+                                        </ul>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                        )
+                    }) }
+                    </tbody>
+                </table>
+                <div className="inline-block h-[50px]"></div>
+                <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
+                    <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
+                        &lt;
+                    </button>
+                    <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
+                        1
+                    </button>
+                    <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
+                        &gt;
+                    </button>
+                </div>
+            </div>
+
+            
         </div>
     )
 }
-
-
+export default UsersPage

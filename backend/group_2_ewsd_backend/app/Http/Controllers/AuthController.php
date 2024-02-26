@@ -60,9 +60,9 @@ class AuthController extends Controller
             $success['faculty_user'] = $faculty_user;
             return $success;
         });
-        $token = $user->createToken('auth_token')->accessToken;
-        $success['name'] = $user->name;
-        $success['email'] = $user->email;
+        $token = $user['user']->createToken('auth_token')->accessToken;
+        $success['name'] = $user['user']->name;
+        $success['email'] = $user['user']->email;
         $success['token'] = $token;
         return $this->sendResponse($success, "User Registered", 200);
     }

@@ -142,7 +142,6 @@ As an Admin, I want to see Statistical Report
 >>>>>>>>>>>>>>>>>>>> Lowest Priority Others
 As an Admin, I want to deactivate/activate a user.
 [Conflict] => Should be guest only
-
 <<<<<<<<<<<<<<<<<<<<
 
 // Marketing Manager (Special Case: Auto Create)

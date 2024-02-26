@@ -1,6 +1,6 @@
 import "../style/tailwind.css"
 
-export default ({title, subtitle, cta, onCTA}) => {
+const SignInNavBar = ({title, subtitle, cta, onCTA}) => {
 
     return (
         <nav className="flex items-center p-6 bg-[#00476D]">
@@ -18,3 +18,4 @@ export default ({title, subtitle, cta, onCTA}) => {
         </nav>
     )
 }
+export default SignInNavBar
