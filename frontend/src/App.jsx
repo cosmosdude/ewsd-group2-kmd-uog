@@ -17,6 +17,7 @@ import AcademicYearPage from "./pages/AcademicYearPage"
 import NewAcademicYearPage from "./pages/NewAcademicYearPage"
 import MagazineHistoryPage from "./pages/MagazineHistoryPage"
 import MagazineCurrentPage from "./pages/MagazineCurrentPage"
+import MagazineNewPage from "./pages/MagazineNewPage"
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="academicyear/new" element={<NewAcademicYearPage/>}/>
             <Route path="magazine/history" element={<MagazineHistoryPage/>}/>
             <Route path="magazine/current" element={<MagazineCurrentPage/>}/>
+            <Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
           </Route>
           
           <Route path="/signin" element={<SignInPage/>}/>

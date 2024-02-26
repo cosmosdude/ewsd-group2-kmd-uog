@@ -22,14 +22,14 @@ const InputField = ({className, id, src, placeholder, type, value, onChange, err
                 // klasjdfkl
                     id={id}
                     type={secure ? type : 'text'}
-                    className={`grow focus:outline-none bg-transparent font-serif`} 
+                    className={`grow peer focus:outline-none bg-transparent font-serif`} 
                     placeholder={placeholder}
                     value={value ? value : ""}
                     onChange={(e) => { 
                         onChange && onChange(e.target.value) 
                     }}
                 />
-                {isDateOrDateTime && !value && <p className="absolute inline-block py-2 left-4 right-10 grow bg-white pointer-events-none font-serif text-gray-400">{placeholder}</p>}
+                {isDateOrDateTime && !value && <p className="peer-focus:invisible absolute inline-block py-2 left-4 right-10 grow bg-white pointer-events-none font-serif text-gray-400">{placeholder}</p>}
                 {secureTextEntry && <img src={EyeSVG} className={`w-[20px] h-[20px] inline-block rounded ${secure ? "opacity-100" : "opacity-50"}`} onClick={
                     () => {
                         setSecure(!secure)
