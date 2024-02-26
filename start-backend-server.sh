@@ -10,7 +10,7 @@ sleep 0.1
 echo ""
 echo "[ewsd]: Installing composer vendor files..."
 sleep 1
-composer install
+composer install --verbose
 echo "[ewsd]: Composer Install [DONE]"
 
 echo "[ewsd]: Migrating database ..."

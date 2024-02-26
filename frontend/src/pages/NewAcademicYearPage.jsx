@@ -13,60 +13,52 @@ const NewAcademicYearPage = () => {
     let accessToken = useContext(AuthContext);
     let navigate = useNavigate()
 
-    let [username, setUsername] = useState("");
-    let [email, setEmail] = useState("");
-    let [phone, setPhone] = useState("");
-    let [password, setPassword] = useState("");
+    let [name, setName] = useState("");
+    let [startDate, setStartDate] = useState("");
+    let [endDate, setEndDate] = useState("");
+    
 
     let [error, setError] = useState(null);
     let [isLoading, setIsLoading] = useState(false);
 
     function getFormData() {
         let form = new FormData();
-        form.set("name", username)
-        form.set("email", email)
-        form.set("password", password)
-        form.set("role_id", "4")
-        form.set("faculty_id", "1")
-        form.set('phone', phone)
+        form.set("name", name)
         return form;
     }
 
-    async function createAccount() {
+    async function createAcademicYear() {
         setError(null)
-        if (!username) { setError("Username must not be empty") ; return }
-        if (!email) { setError("Email must not be empty") ; return }
+        if (!name) { setError("Academic name must not be empty") ; return }
+        if (!startDate) { setError("Start date must not be empty") ; return }
 
-        if (!faculty) { setError("Faculty is not selected"); return }
+        if (!endDate) { setError("End date is not selected"); return }
 
-        if (!password) { setError("Password must not be empty") ; return }
-        if (!retype || password !== retype) { setError("Password must be the same") ; return }
+        // setIsLoading(() => true)
 
-        setIsLoading(() => true)
+        // let response = await fetch('http://127.0.0.1:8000/api/student-register', {
+        //     method: "POST",
+        //     headers: {
+        //         'Authorization': `Bearer ${accessToken}`,
+        //         'Accept': 'application/json'
+        //     },
+        //     body: getFormData()
+        // })
 
-        let response = await fetch('http://127.0.0.1:8000/api/student-register', {
-            method: "POST",
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Accept': 'application/json'
-            },
-            body: getFormData()
-        })
+        // try {
+        //     if (response.status === 200) {
+        //         let json = await response.json();
+        //         navigate("/users")
+        //     } else if (response.status === 422) {
+        //         setError("Account with same email is already registered.")
+        //     } else {
+        //         setError("Unable to create student account. (Parse Error)")
+        //     }
+        // } catch {
+        //     setError("Unable to create student account. (Fetch Error)")
+        // }
 
-        try {
-            if (response.status === 200) {
-                let json = await response.json();
-                navigate("/users")
-            } else if (response.status === 422) {
-                setError("Account with same email is already registered.")
-            } else {
-                setError("Unable to create student account. (Parse Error)")
-            }
-        } catch {
-            setError("Unable to create student account. (Fetch Error)")
-        }
-
-        setIsLoading(() => false)
+        // setIsLoading(() => false)
     }
 
     return (
@@ -83,11 +75,11 @@ const NewAcademicYearPage = () => {
             </div>
             <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll">
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow basis-0" placeholder="academic name" value={username} onChange={setUsername}/>
-                    <InputField className="grow basis-0" placeholder="start date" type="date" value={email} onChange={setEmail}/>
+                    <InputField className="grow basis-0" placeholder="academic name" value={name} onChange={setName}/>
+                    <InputField className="grow basis-0" placeholder="start date" type="date" value={startDate} onChange={setStartDate}/>
                 </div>
                 <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
-                    <InputField className="grow basis-0" placeholder="end date" type="date" value={password} onChange={setPassword}/>
+                    <InputField className="grow basis-0" placeholder="end date" type="date" value={endDate} onChange={setEndDate}/>
                     <div className="grow basis-0"/>
                 </div>
                 {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">
@@ -96,7 +88,7 @@ const NewAcademicYearPage = () => {
                 <div className="flex w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
                     <button 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
-                        onClick={createAccount}
+                        onClick={createAcademicYear}
                     >Save</button>
                     <Link 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-gray-400 text-white text-center hover:opacity-50 transition-all`} 

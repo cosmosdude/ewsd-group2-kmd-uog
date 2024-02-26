@@ -6,7 +6,7 @@ echo "[ewsd]: Now in '$PWD'"
 
 echo "[ewsd]: Installing node_modules ..."
 # install node modules
-npm install
+npm install --verbose --silly
 
 # start node server
 echo "[ewsd]: Starting FRONTEND server ..."
