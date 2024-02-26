@@ -18,6 +18,7 @@ import NewAcademicYearPage from "./pages/NewAcademicYearPage"
 import MagazineHistoryPage from "./pages/MagazineHistoryPage"
 import MagazineCurrentPage from "./pages/MagazineCurrentPage"
 import MagazineNewPage from "./pages/MagazineNewPage"
+import MagazinePage from "./pages/MagazinePage"
 
 function App() {
   return (
@@ -25,17 +26,22 @@ function App() {
         <Routes>
           <Route path="/" element={<BaseNavigation/>}>
             <Route path="home" element={<DashboardPage/>}/>
+
             <Route path="users" element={<UsersPage/>}/>
             <Route path="users/new" element={<StudentRegistrationPage/>}/>
             <Route path="users/:id" element={<UserDetailPage/>}/>
+
             <Route path="faculty" element={<FacultiesPage/>}/>
             <Route path="faculty/new" element={<NewFacultyPage/>}/>
+
             <Route path="contribution" element={<ContributionsPage/>}/>
-            <Route path="academicyear" element={<AcademicYearPage/>}/>
-            <Route path="academicyear/new" element={<NewAcademicYearPage/>}/>
             <Route path="magazine/history" element={<MagazineHistoryPage/>}/>
+            <Route path="magazine/history/:magazineId" element={<MagazinePage/>}/>
             <Route path="magazine/current" element={<MagazineCurrentPage/>}/>
             <Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
+            
+            <Route path="academicyear" element={<AcademicYearPage/>}/>
+            <Route path="academicyear/new" element={<NewAcademicYearPage/>}/>
           </Route>
           
           <Route path="/signin" element={<SignInPage/>}/>

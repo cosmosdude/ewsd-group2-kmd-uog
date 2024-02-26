@@ -28,7 +28,7 @@ const MagazineHistoryPage = () => {
         // To handle abortion
         let aborter = new AbortController()
 
-        async function fetchUsers() {
+        async function fetchData() {
             try {
                 let response = await fetch('http://127.0.0.1:8000/api/closures', {
                     signal: aborter.signal,
@@ -46,7 +46,7 @@ const MagazineHistoryPage = () => {
             } catch { }
         }
         // fetch async
-        fetchUsers()
+        fetchData()
         // clean up by aborting the request
         return () => { aborter.abort() }
     }, []) // [] is required to ensure single call
@@ -79,7 +79,7 @@ const MagazineHistoryPage = () => {
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3 underline text-violet-500 font-semibold decoration-3 decoration-gray-400">
-                                    <Link>{magazine.name}</Link>
+                                    <Link to={`${magazine.id}`}>{magazine.name}</Link>
                                 </td>
                                 <td className="p-3">{magazine.start_date}</td>
                                 <td className="p-3">{magazine.final_closure_date}</td>
