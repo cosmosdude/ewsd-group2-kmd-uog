@@ -3,7 +3,7 @@ import { useState } from "react"
 import EyeSVG from "../assets/eyeopen.svg"
 import "../style/tailwind.css"
 
-const InputField = ({className, id, src, placeholder, type, value, onChange, error}) => {
+const InputField = ({className, disabled, id, src, placeholder, type, value, onChange, error}) => {
     let secureTextEntry = type === 'password'
     let [secure, setSecure] = useState(true);
 
@@ -22,6 +22,7 @@ const InputField = ({className, id, src, placeholder, type, value, onChange, err
                 // klasjdfkl
                     id={id}
                     type={secure ? type : 'text'}
+                    disabled={disabled}
                     className={`grow peer focus:outline-none bg-transparent font-serif`} 
                     placeholder={placeholder}
                     value={value ? value : ""}
