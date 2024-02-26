@@ -31,6 +31,7 @@ const StudentRegistrationPage = () => {
         form.set("role_id", "4")
         form.set("faculty_id", "1")
         form.set('phone', phone)
+        form.set('academic_id', 1)
         return form;
     }
 
@@ -38,15 +39,13 @@ const StudentRegistrationPage = () => {
         setError(null)
         if (!username) { setError("Username must not be empty") ; return }
         if (!email) { setError("Email must not be empty") ; return }
-
         if (!faculty) { setError("Faculty is not selected"); return }
-
         if (!password) { setError("Password must not be empty") ; return }
         if (!retype || password !== retype) { setError("Password must be the same") ; return }
 
         setIsLoading(() => true)
 
-        let response = await fetch('http://127.0.0.1:8000/api/student-register', {
+        let response = await fetch('http://127.0.0.1:8000/api/register', {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
