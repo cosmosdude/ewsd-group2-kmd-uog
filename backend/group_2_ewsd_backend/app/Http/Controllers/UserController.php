@@ -12,6 +12,38 @@ class UserController extends Controller
 {
     public function index()
     {
+        // $users = DB::table('users')
+        //     ->select(
+        //         'users.id as user_id',
+        //         'users.name as user_name',
+        //         'users.email as user_email',
+        //         'falculties.name as faculty_name',
+        //         'faculty_users.faculty_id',
+        //         'roles.id as role_id',
+        //         'roles.name as role_name',
+        //     )
+        //     ->join('roles', 'users.role_id', '=', 'roles.id')
+        //     ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+        //     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+        //     ->get();
+
+
+        // $users = DB::table('users')
+        //     ->select(
+        //         'users.id as user_id',
+        //         'users.name as user_name',
+        //         'users.email as user_email',
+        //         'falculties.name as faculty_name',
+        //         'faculty_users.faculty_id',
+        //         'roles.id as role_id',
+        //         'roles.name as role_name',
+        //     )
+        //     ->join('roles', 'users.role_id', '=', 'roles.id')
+        //     ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+        //     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+        //     ->groupBy('users.id', 'users.name', 'users.email', 'falculties.name', 'faculty_users.faculty_id', 'roles.id', 'roles.name')
+        //     ->get();
+
         $users = DB::table('users')
             ->select(
                 'users.id as user_id',
@@ -25,7 +57,6 @@ class UserController extends Controller
             ->join('roles', 'users.role_id', '=', 'roles.id')
             ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
             ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
-            // ->orderBy('users.name', 'asc')
             ->get();
         return $this->sendResponse($users, "User Retrieved Successfully", 200);
     }
