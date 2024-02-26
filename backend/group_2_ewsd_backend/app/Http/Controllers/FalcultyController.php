@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class FalcultyController extends Controller
 {
-    public function index(){}
+    public function index(){
+        $faculties = Falculty::all();
+        return $this->sendResponse($faculties,"Faculty Lists",200);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

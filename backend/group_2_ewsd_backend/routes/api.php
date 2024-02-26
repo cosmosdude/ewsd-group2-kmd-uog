@@ -24,20 +24,21 @@ Route::middleware('auth:api')->group(function () {
     Route::get('users/{id}', [UserController::class, 'show']);
 
     Route::middleware('role:m_coordinator')->group(function () {
-        Route::put('/contributions/staus/{id}', [ContributionController::class, 'changeStatus']);
+        Route::put('/contributions/status/{id}', [ContributionController::class, 'changeStatus']);
         //accept closure id as a parameter
         Route::get('/closures/{id}/submit', [ClosureController::class, 'getSubmittedContributionsWithinFaculty']);
     });
 
     Route::middleware('role:student')->group(function () {
         Route::post('/contributions', [ContributionController::class, 'store']);
+        Route::put('/contributions/{id}', [ContributionController::class, 'update']);
     });
 
     Route::middleware('role:administrator')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/faculties', [FalcultyController::class, 'store']);
+        Route::apiResource('faculties',FalcultyController::class)->except('show', 'destroy');
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
     });
 
