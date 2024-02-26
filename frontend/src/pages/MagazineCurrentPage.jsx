@@ -21,7 +21,7 @@ const MagazineCurrentPage = () => {
 
         async function fetchData() {
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/closures', {
+                let response = await fetch('http://127.0.0.1:8000/api/closures/current', {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
@@ -31,7 +31,7 @@ const MagazineCurrentPage = () => {
                 console.log(response.status)
                 let json = await response.json()
                 if (response.status === 200) {
-                    let results = json.data.data 
+                    let results = json.data 
                     setMagazines(results)
                     console.log("Success")
                 } 

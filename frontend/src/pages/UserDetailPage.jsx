@@ -114,7 +114,7 @@ const UserDetailPage = () => {
                                 <label>Phone</label>
                             </td>
                             <td>
-                                <label>N/A</label>
+                                <label>{details && details.phone}</label>
                             </td>
                         </tr>
                         <tr className="align-middle">
