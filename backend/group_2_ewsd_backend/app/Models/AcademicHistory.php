@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AcademicHistory extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'academic_year','active_status'];
+    protected $fillable = ['user_id', 'academic_year_id','active_status'];
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

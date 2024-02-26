@@ -92,19 +92,45 @@ class ContributionController extends Controller
 
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
-    //send email noti to coordiantor
-    private function sendEmailWithFiles($uploadedFiles, $uploadedImages)
-    {
-        $recipient = 'yopmail.com';
-        $subject = 'New Article Uploaded';
-        $content = 'New Article have been uploaded from Student' . '_' . $request->name;
 
-        Mail::to($recipient)->send(new Contribution($subject, $content, $uploadedFiles, $uploadedImages));
-    }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'files' => 'required|mimes:doc,docx',
+            'closure_id' => 'required'
+        ]);
+
+        //checking the closure is expired or not
+        $closure = Closure::findOrFail($request->closure_id);
+        if (Carbon::parse($closure->final_closure_date)->isPast()) {
+            return $this->sendError('The closure is expired', 400);
+        }
+
+        $contribution = Contribution::findOrFail($id);
+        //=====================need to check the uploaded file is changed or not================================================
+        if ($request->hasFile('files')) {
+            $file = $request->file('files');
+            if ($file->isValid()) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads'), $fileName);
+                $uploadedFiles[] = $fileName;
+            }
+        }
+
+        $contributionData = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'files' => implode(',', $uploadedFiles),
+            'attempt_number' => $contribution->attempt_number++,
+
+        ];
+        $contribution->update($contributionData);
+        return $this->sendResponse($contribution, "Contribution Update Successfully", 200);
     }
+
 
     //this function is used to approve or reject a contribution by marketing coordinator
     public function changeStatus(Request $request, $id)
@@ -147,5 +173,15 @@ class ContributionController extends Controller
             return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
         }
         return $this->sendError("You don't have permission to update this contribution", 403);
+    }
+
+    //send email noti to coordiantor
+    private function sendEmailWithFiles($uploadedFiles, $uploadedImages)
+    {
+        $recipient = 'yopmail.com';
+        $subject = 'New Article Uploaded';
+        $content = 'New Article have been uploaded from Student' . '_' . $request->name;
+
+        Mail::to($recipient)->send(new Contribution($subject, $content, $uploadedFiles, $uploadedImages));
     }
 }
