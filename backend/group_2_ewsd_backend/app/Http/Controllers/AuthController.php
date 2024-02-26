@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicHistory;
+use App\Models\AcademicYear;
 use App\Models\FacultyUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,8 +35,8 @@ class AuthController extends Controller
             ->first();
         return $this->sendResponse($auth_user_info, "User Retrieved Successfully", 200);
     }
-    //student registration
-    public function studentRegister(Request $request)
+    //academic_id par yin student_registration
+    public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|max:100',
@@ -43,7 +45,38 @@ class AuthController extends Controller
             'phone' => 'required',
             // 'role_id' => 'required',
             'faculty_id' => 'required',
+            // 'academic_id' => 'required',
         ]);
+        if ($request->academic_id) {
+            $user = DB::transaction(function () use ($request) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'phone' => $request->phone,
+                    'role_id' => 4,
+                    'academic_id' => $request->academic_id
+                ]);
+                $faculty_user = FacultyUser::create([
+                    'user_id' => $user->id,
+                    'faculty_id' => $request->faculty_id,
+                ]);
+                $academic_histories = AcademicHistory::create([
+                    'user_id' => $user->id,
+                    'academic_year_id' => $request->academic_id,
+                    'active_status' => 'active',
+                ]);
+                $success['user'] = $user;
+                $success['faculty_user'] = $faculty_user;
+                $success['academic_histories'] = $academic_histories;
+                return $success;
+            });
+            $token = $user['user']->createToken('auth_token')->accessToken;
+            $success['name'] = $user['user']->name;
+            $success['email'] = $user['user']->email;
+            $success['token'] = $token;
+            return $this->sendResponse($success, "Student Registered", 200);
+        }
         $user = DB::transaction(function () use ($request) {
             $user = User::create([
                 'name' => $request->name,
@@ -56,7 +89,8 @@ class AuthController extends Controller
                 'user_id' => $user->id,
                 'faculty_id' => $request->faculty_id,
             ]);
-            $success['user'] = $user;
+            $academic_histories =
+                $success['user'] = $user;
             $success['faculty_user'] = $faculty_user;
             return $success;
         });
