@@ -38,7 +38,7 @@ const AcademicYearPage = () => {
     }, [page])
 
     return (
-        <div className="flex flex-col h-full p-4 px-8 gap-3 overflow-y-hidden">
+        <div className="flex flex-col h-full p-4 px-8 gap-8 overflow-y-hidden">
             <div className="flex gap-2 items-center">
                 <Breadcrumb 
                     className="py-2"

@@ -6,9 +6,12 @@ import "../style/tailwind.css"
 const InputField = ({className, id, src, placeholder, type, value, onChange, error}) => {
     let secureTextEntry = type === 'password'
     let [secure, setSecure] = useState(true);
+
+    let isDateOrDateTime = type === 'date' || type === 'datetime-local' || type=== 'time'
+
     return (
         <>
-        <div className={`flex flex-col ${className ? className : ""}`}>
+        <div className={`relative flex flex-col ${className ? className : ""}`}>
             <div className={`
             min-w-100 flex grow gap-2 p-2 pl-4 pr-2 items-center rounded 
             border ${error && 'border-red-500'}
@@ -19,13 +22,14 @@ const InputField = ({className, id, src, placeholder, type, value, onChange, err
                 // klasjdfkl
                     id={id}
                     type={secure ? type : 'text'}
-                    className="grow focus:outline-none bg-transparent font-serif" 
+                    className={`grow focus:outline-none bg-transparent font-serif`} 
                     placeholder={placeholder}
                     value={value ? value : ""}
                     onChange={(e) => { 
                         onChange && onChange(e.target.value) 
                     }}
                 />
+                {isDateOrDateTime && !value && <p className="absolute inline-block py-2 left-4 right-10 grow bg-white pointer-events-none font-serif text-gray-400">{placeholder}</p>}
                 {secureTextEntry && <img src={EyeSVG} className={`w-[20px] h-[20px] inline-block rounded ${secure ? "opacity-100" : "opacity-50"}`} onClick={
                     () => {
                         setSecure(!secure)
