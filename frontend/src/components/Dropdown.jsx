@@ -17,7 +17,7 @@ const Dropdown = ({className, title, index, onChange, options, disabled}) => {
                 <img className="w-[24px] h-[24px]" src={DownArrowSVG}/>
             </div>
 
-            <ul className="absolute px-[4px] py-[4px] top-full inline-block w-full max-h-[200px] overflow-y-scroll invisible group-hover:visible bg-white border rounded shadow-xl">
+            <ul className="absolute z-10 px-[4px] py-[4px] top-full inline-block w-full max-h-[200px] overflow-y-scroll invisible group-hover:visible bg-white border rounded shadow-xl">
                 {!items && <li className="flex min-h-[38px] px-[4px] items-center justify-center text-xs text-[#808080] font-serif" >No options</li>}
                 {items.map((option, index) => {
                     return (
