@@ -32,11 +32,7 @@ class FileUploaded extends Mailable
                     ->attach(public_path($this->uploadedFiles))
                     ->attach(public_path($this->uploadedImages));
     }
-    /**
-     * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
-     */
+
     public function envelope()
     {
         return new Envelope(

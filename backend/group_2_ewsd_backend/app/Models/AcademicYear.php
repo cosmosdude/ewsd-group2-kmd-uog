@@ -16,4 +16,7 @@ class AcademicYear extends Model
     {
         return $this->hasMany(Closure::class, 'academic_year_id', 'id');
     }
+    protected $fillable = [
+        'name', 'start_date', 'end_date'
+    ];
 }

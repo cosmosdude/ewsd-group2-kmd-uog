@@ -20,8 +20,8 @@ class ContributionController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user->role_id !== 4){
-            return response()->json(['error'=>'Unauthorized', 401]);
+        if ($user->role !== 4) {
+            return response()->json(['error' => 'Unauthorized', 401]);
         }
         $contributions = Contribution::all();
         return response()->json(['contributions' => $contributions], 200);
@@ -91,16 +91,16 @@ class ContributionController extends Controller
 
         //send email noti to coordiantor
 
-        $this->sendEmailWithFile($uploadedFiles,$uploadedImages);
-
+        $this->sendEmailWithFile($uploadedFiles, $uploadedImages);
 
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
     //send email noti to coordiantor
-    private function sendEmailWithFiles($uploadedFiles, $uploadedImages){
+    private function sendEmailWithFiles($uploadedFiles, $uploadedImages)
+    {
         $recipient = 'yopmail.com';
         $subject = 'New Article Uploaded';
-        $content = 'New Article have been uploaded from Student' .'_'.$request->name;
+        $content = 'New Article have been uploaded from Student' . '_' . $request->name;
 
         Mail::to($recipient)->send(new Contribution($subject, $content, $uploadedFiles, $uploadedImages));
     }
