@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Falculty;
 use App\Http\Controllers\Controller;
+use App\Models\FacultyUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,10 @@ class FalcultyController extends Controller
                 'phone' => $request->phone,
                 //need to manage the role_id
                 'role_id' => 3,
+            ]);
+            $faculty_user = FacultyUser::create([
+                'user_id' => $user->id,
+                'faculty_id' => $success['faculty_info']->id,
             ]);
             $token = $user->createToken('auth_token')->accessToken;
             $success['coordinator_name'] = $user->name;

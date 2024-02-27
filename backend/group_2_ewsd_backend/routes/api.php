@@ -30,8 +30,10 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::middleware('role:student')->group(function () {
+        Route::get('/contributions',[ContributionController::class,'index']);
         Route::post('/contributions', [ContributionController::class, 'store']);
-        Route::put('/contributions/{id}', [ContributionController::class, 'update']);
+        Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
+        // Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
     });
 
     Route::middleware('role:administrator')->group(function () {

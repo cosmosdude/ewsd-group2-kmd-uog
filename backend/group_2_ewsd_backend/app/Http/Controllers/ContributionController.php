@@ -23,9 +23,7 @@ class ContributionController extends Controller
         $contributions = Contribution::all();
         return response()->json(['contributions' => $contributions], 200);
     }
-    public function show($id)
-    {
-    }
+
 
 
     public function store(Request $request)
@@ -93,44 +91,49 @@ class ContributionController extends Controller
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
 
-
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'files' => 'required|mimes:doc,docx',
-            'closure_id' => 'required'
+            'files' => 'nullable|mimes:doc,docx',
+            'closure_id' => 'required|exists:closures,id',
+            // 'user_id' => 'required|exists:users,id',
         ]);
 
-        //checking the closure is expired or not
-        $closure = Closure::findOrFail($request->closure_id);
+        $closure = Closure::find($request->closure_id);
         if (Carbon::parse($closure->final_closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
 
+
         $contribution = Contribution::findOrFail($id);
-        //=====================need to check the uploaded file is changed or not================================================
+        if (Auth::user()->id != $contribution->user_id) {
+            return $this->sendError('You don\'t have permission to update this contribution', 403);
+        }
+
+
         if ($request->hasFile('files')) {
             $file = $request->file('files');
             if ($file->isValid()) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $file->move(public_path('uploads'), $fileName);
-                $uploadedFiles[] = $fileName;
+                if ($contribution->files !== $fileName) {
+                    if (file_exists(public_path('uploads/' . $contribution->files))) {
+                        unlink(public_path('uploads/' . $contribution->files));
+                    }
+                }
+                $contribution->files = $fileName;
             }
         }
+        $contribution->name = $request->name;
+        $contribution->description = $request->description;
+        $contribution->closure_id = $request->closure_id;
+        $contribution->attempt_number = $contribution->attempt_number++;
+        $contribution->save();
 
-        $contributionData = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'files' => implode(',', $uploadedFiles),
-            'attempt_number' => $contribution->attempt_number++,
-
-        ];
-        $contribution->update($contributionData);
-        return $this->sendResponse($contribution, "Contribution Update Successfully", 200);
+        return $this->sendResponse($contribution, "Contribution Updated Successfully!", 200);
     }
-
 
     //this function is used to approve or reject a contribution by marketing coordinator
     public function changeStatus(Request $request, $id)
