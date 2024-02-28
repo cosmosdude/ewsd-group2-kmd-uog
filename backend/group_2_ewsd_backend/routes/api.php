@@ -17,7 +17,7 @@ Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 
 
 Route::middleware('auth:api')->group(function () {
-
+    Route::post('/faculties/{id}/guest-user', [FalcultyController::class, 'getGuestUserList']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('/closures/current', [ClosureController::class, 'getCurrentClosures']);
     Route::apiResource('/closures', ClosureController::class)->except('destroy');
@@ -43,7 +43,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
     });
 
+    Route::middleware(['role:administrator,m_coordinator'])->group(function () {
 
+    });
     Route::middleware('role:administrator')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
@@ -62,5 +64,3 @@ Route::middleware('auth:api')->group(function () {
 });
 Route::post('/academicyear', [AcademicYearController::class, 'store']);
 Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
-
-
