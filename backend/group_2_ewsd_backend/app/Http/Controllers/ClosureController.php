@@ -15,8 +15,9 @@ class ClosureController extends Controller
 {
     public function index()
     {
-        $closures = Closure::orderBy('id', 'asc')->paginate(25);
+        $closures = Closure::orderBy('id',  'asc')->paginate(25);
         return $this->sendResponse($closures, "Closures Retrieved Successfully", 200);
+
     }
     //magazine period filter with academic year
     public function filter(Request $request)
