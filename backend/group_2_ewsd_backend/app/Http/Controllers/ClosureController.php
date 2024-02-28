@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use App\Models\Contribution;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -145,19 +146,16 @@ class ClosureController extends Controller
             return response()->json(['error' => 'Failed to create zip file'], 500);
         }
 
-        foreach ($selected_contributions as $index => $contribution) {
-            // Construct folder paths for each article
+        foreach ($selected_contributions as $contribution) {
             $articleFolderName = $contribution->id . '_' . $contribution->name;
             $articleFolderPath = $articlesFolderPath . DIRECTORY_SEPARATOR . $articleFolderName;
             if (!mkdir($articleFolderPath) && !is_dir($articleFolderPath)) {
                 return response()->json(['error' => 'Failed to create article folder'], 500);
             }
 
-            // Add doc file to the article folder
             $docFilePath = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
             $zip->addFile($docFilePath, $articleFolderName . DIRECTORY_SEPARATOR . basename($contribution->files));
 
-            // Add images to the article folder
             $images = explode(",", $contribution->images);
             foreach ($images as $image) {
                 $imagePath = public_path('images') . DIRECTORY_SEPARATOR . $image;
@@ -166,8 +164,19 @@ class ClosureController extends Controller
         }
 
         $zip->close();
-
-        // Return the download link
         return response()->json(['download_link' => url($zipFileName)]);
+    }
+
+    public function viewUploadContributionofStudent($id)
+    {
+
+        $closure = Closure::findOrFail($id);
+        if (Carbon::parse($closure->final_closure_date)->isPast()) {
+            return $this->sendError('The closure is expired', 400);
+        }
+        $contributions = Contribution::where('closure_id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->get();
+        return $this->sendResponse($contributions, "Studnet's submitted Contributions Retrieved", 200);
     }
 }

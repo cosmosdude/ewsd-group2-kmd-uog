@@ -134,6 +134,13 @@ class ContributionController extends Controller
 
         return $this->sendResponse($contribution, "Contribution Updated Successfully!", 200);
     }
+    //auth user
+    public function downloadContribution($id)
+    {
+        $contribution = Contribution::findOrFail($id);
+        $file = public_path('uploads'). DIRECTORY_SEPARATOR. $contribution->files;
+        return response()->json($file);
+    }
 
     //this function is used to approve or reject a contribution by marketing coordinator
     public function changeStatus(Request $request, $id)
@@ -177,6 +184,7 @@ class ContributionController extends Controller
         }
         return $this->sendError("You don't have permission to update this contribution", 403);
     }
+
 
     //send email noti to coordiantor
     private function sendEmailWithFiles($uploadedFiles, $uploadedImages)
