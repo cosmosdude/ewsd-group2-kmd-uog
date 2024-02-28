@@ -33,6 +33,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::middleware('role:student')->group(function () {
         Route::get('/contributions', [ContributionController::class, 'index']);
+        Route::get('/contributions/{id}', [ContributionController::class, 'show']);
         Route::post('/contributions', [ContributionController::class, 'store']);
         Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
         Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);

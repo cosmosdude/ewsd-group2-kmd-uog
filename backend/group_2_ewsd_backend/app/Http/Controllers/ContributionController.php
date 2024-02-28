@@ -14,6 +14,9 @@ use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class ContributionController extends Controller
 {
+    //need to fix this index function
+    //the role attribute is not define and should be replace with function
+    //need to add comment count in this function
     public function index()
     {
         $user = Auth::user();
@@ -37,8 +40,6 @@ class ContributionController extends Controller
             'closure_id' => 'required|exists:closures,id',
             'user_id' => 'required|exists:users,id',
         ]);
-
-        //checking the closure is expired or not
         $closure = Closure::find($request->closure_id);
         if (Carbon::parse($closure->closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
@@ -51,7 +52,6 @@ class ContributionController extends Controller
                 $uploadedFiles[] = $fileName;
             }
         }
-
         $uploadedImages = [];
         if ($request->hasFile('images')) {
             $images = $request->file('images');
@@ -134,11 +134,19 @@ class ContributionController extends Controller
 
         return $this->sendResponse($contribution, "Contribution Updated Successfully!", 200);
     }
+
+    public function show($id)
+    {
+        $contribution = Contribution::with('comments')
+            ->where('id', $id)
+            ->get();
+        return $this->sendResponse($contribution, "Contribution Retrieved", 200);
+    }
     //auth user
     public function downloadContribution($id)
     {
         $contribution = Contribution::findOrFail($id);
-        $file = public_path('uploads'). DIRECTORY_SEPARATOR. $contribution->files;
+        $file = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
         return response()->json($file);
     }
 
