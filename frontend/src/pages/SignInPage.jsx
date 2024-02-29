@@ -39,8 +39,8 @@ const SignInPage = () => {
     }
 
     function initRememberMe() {
-        console.log("Remember Me", window.localStorage.getItem("rememberMe"))
-        console.log("Remember Me", window.localStorage.getItem("rememberMe") == 'true')
+        // console.log("Remember Me", window.localStorage.getItem("rememberMe"))
+        // console.log("Remember Me", window.localStorage.getItem("rememberMe") == 'true')
         setIsChecked('true' == window.localStorage.getItem("rememberMe"))
     }
 

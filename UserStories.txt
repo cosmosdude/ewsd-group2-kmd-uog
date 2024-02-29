@@ -41,26 +41,26 @@ As an Admin, I want to manage closure date and final closure date
 As an Admin, I want to create academic year
 
 >>>>>>>>>>>>>>>>>>>> Account
-As a guest, I want to register account for selected faculties.
+[done] As a guest, I want to register account for selected faculties.
 [UI] => Multiple faculty select.
-As a Guest, I want to login
-As a Guest, I want to see timestamp of my last login.
+[done] As a Guest, I want to login
+[added] As a Guest, I want to see timestamp of my last login.
 
-As a student, I want to login
-As a student, I want to see timestamp of my last login.
+[done] As a student, I want to login
+[added] As a student, I want to see timestamp of my last login.
 
-As a MC, I want to login
-As a MC, I want to see timestamp of my last login.
-As a MC, I want to see guest list of my faculty.
+[done] As a MC, I want to login
+[added] As a MC, I want to see timestamp of my last login.
+[added] As a MC, I want to see guest list of my faculty.
 
-As a MM, I want to login
-As a MM, I want to see timestamp of my last login.
+[added] As a MM, I want to login
+[added] As a MM, I want to see timestamp of my last login.
 
-As an admin, I want to login.
-As an admin, I want to see timestamp of my last login.
-As an admin, I want to see user list.
-As an admin, I want to create faculty along with MC account.
-As an admin, I want to create student accounts for selected faculty.
+[done] As an admin, I want to login.
+[added] As an admin, I want to see timestamp of my last login.
+[done] As an admin, I want to see user list.
+[done] As an admin, I want to create faculty along with MC account.
+[done] As an admin, I want to create student accounts for selected faculty.
 [UI] => Remove "Select Role", "Phone", "Address"
 <<<<<<<<<<<<<<<<<<<<
 
@@ -72,63 +72,63 @@ As a student, I want to receive email when MC comments on my contribution.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> View Selected Contribution
-As a Guest, I want to see selected contributions of each closure for registered faculties.
-As a Guest, I want to see selected contributions of each closure filteredy by a registered faculty.
+[added] As a Guest, I want to see selected contributions of each closure for registered faculties.
+[added] As a Guest, I want to see selected contributions of each closure filteredy by a registered faculty.
 -> As a Guest, I want to see detail of a selected contribution.
 
-As a student, I want to see selected contributions of each closure for all faculties.
-As a student, I want to see selected contributions of each closure filteredy by a faculty.
+[added] As a student, I want to see selected contributions of each closure for all faculties.
+[added] As a student, I want to see selected contributions of each closure filteredy by a faculty.
 -> As a student, I want to see detail of a selected contribution.
 
-As a MC, I want to see selected contributions of each closure for all faculties.
-As a MC, I want to see selected contributions of each closure filteredy by a faculty.
+[added] As a MC, I want to see selected contributions of each closure for all faculties.
+[added] As a MC, I want to see selected contributions of each closure filteredy by a faculty.
 -> As a MC, I want to see detail of a selected contribution.
 
-As a MM, I want to see selected contributions of each closure for all faculties.
-As a MM, I want to see selected contributions of each closure filteredy by a faculty.
-As a MM, I want to download selected contributions of each closure filtered by a faculty.
+[added] As a MM, I want to see selected contributions of each closure for all faculties.
+[added] As a MM, I want to see selected contributions of each closure filteredy by a faculty.
+[added] As a MM, I want to download selected contributions of each closure filtered by a faculty.
 -> As a MM, I want to see detail of a selected contribution.
 
-As an admin, I want to see selected contributions of each closure for all faculties.
-As an admin, I want to see selected contributions of each closure filteredy by a faculty.
+[added] As an admin, I want to see selected contributions of each closure for all faculties.
+[added] As an admin, I want to see selected contributions of each closure filteredy by a faculty.
 -> As an admin, I want to see detail of a selected contribution.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Academic Year & Magazine
-As an admin, I want to create academic year.
-As an admin, I want to see list of academic years.
+[added] As an admin, I want to create academic year.
+[added] As an admin, I want to see list of academic years.
 
-As an admin, I want to see a list of closures.
-As an admin, I want to filter the closure list by academic year.
-As an admin, I want to create closure within selected academic year.
-As an admin, I want to create closure as name, start date, clsoure date and final closure date.
-As an admin, I want to update closure with name, start date, clsoure date and final closure date.
+[done] As an admin, I want to see a list of closures.
+As an admin, I want to filter the closure list by academic year. [later]
+As an admin, I want to create closure within selected academic year. [later]
+[done] As an admin, I want to create closure as name, start date, clsoure date and final closure date.
+[added] As an admin, I want to update closure with name, start date, clsoure date and final closure date.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Contribution Upload
-As a student, I want to see a list of current closures.
-As a student, I want to choose a current closure before contribution upload.
-As a student, I want to see my uploaded contributions for selected current closure.
-As a student, I want to agree to terms and conditions before uploading a contribution.
-As a student, I want to upload contribution to selected current closure before closure date.
-As a student, I want to include title, description, a Word file and multiple images in an article.
-As a student, I want to see detail of my uploaded contribution.
+[added] As a student, I want to see a list of current closures for my faculty
+[added] As a student, I want to choose a current closure before contribution upload.
+[added] As a student, I want to see my uploaded contributions for selected current closure.
+[added] As a student, I want to agree to terms and conditions before uploading a contribution.
+[added] As a student, I want to upload contribution to selected current closure before closure date.
+[added] As a student, I want to include title, description, a Word file and multiple images in an article.
+[added] As a student, I want to see detail of my uploaded contribution.
 
-As a MC, I want to see a list of current closures.
-As a MC, I want to choose a current closure before reviewing uploaded contributions.
-As a MC, I want to see uploaded contributions of my faculty for selected current closure.
-As a MC, I want to see detail of an uploaded contribution.
-As a MC, I want to approve and reject an uploaded contribution.
+[added] As a MC, I want to see a list of current closures for my faculty. [combined with student]
+[added] As a MC, I want to choose a current closure before reviewing uploaded contributions.
+[added] As a MC, I want to see uploaded contributions of my faculty for selected current closure.
+[added] As a MC, I want to see detail of an uploaded contribution.
+[added] As a MC, I want to approve and reject an uploaded contribution.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Contribution Update
-As a student, I want to update my uploaded contribution before final closure date.
-As a student, I want to update contribution with title, description and a Word file.
+[added] As a student, I want to update my uploaded contribution before final closure date.
+[added] As a student, I want to update contribution with title, description and a Word file.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Contribution Comment
-As a student, I want to comment on my uploaded article before final closure date.
-As a MC, I want to comment on uploaded articles before final closure date.
+[added] As a student, I want to comment on my uploaded article before final closure date.
+[added] As a MC, I want to comment on uploaded articles before final closure date.
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Exception Report
