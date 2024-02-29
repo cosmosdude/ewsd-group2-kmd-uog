@@ -61,8 +61,16 @@ const BaseNavigation = () => {
         if (path === '/') navigate('/home')
     }
 
+    function getAppropriateRoute() {
+        if (path === '/') {
+
+        }
+        return null;
+    }
+
     function redirectAccordingToRole() {
-        let resultantRoute = null
+        let route = getAppropriateRoute()
+        if (route) navigate(route)
     }
 
     function logout() {

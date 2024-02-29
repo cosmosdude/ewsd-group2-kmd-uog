@@ -7,6 +7,7 @@ import Breadcrumb from "../components/Breadcrumb"
 import AuthContext from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 const NewAcademicYearPage = () => {
 
@@ -22,8 +23,15 @@ const NewAcademicYearPage = () => {
     let [isLoading, setIsLoading] = useState(false);
 
     function getFormData() {
+        /*
+            'name' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required'
+        */
         let form = new FormData();
         form.set("name", name)
+        form.set('start_date', startDate)
+        form.set('end_date', endDate)
         return form;
     }
 
@@ -34,31 +42,31 @@ const NewAcademicYearPage = () => {
 
         if (!endDate) { setError("End date is not selected"); return }
 
-        // setIsLoading(() => true)
+        setIsLoading(() => true)
 
-        // let response = await fetch('http://127.0.0.1:8000/api/student-register', {
-        //     method: "POST",
-        //     headers: {
-        //         'Authorization': `Bearer ${accessToken}`,
-        //         'Accept': 'application/json'
-        //     },
-        //     body: getFormData()
-        // })
+        let response = await fetch('http://127.0.0.1:8000/api/academicyear', {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Accept': 'application/json'
+            },
+            body: getFormData()
+        })
 
-        // try {
-        //     if (response.status === 200) {
-        //         let json = await response.json();
-        //         navigate("/users")
-        //     } else if (response.status === 422) {
-        //         setError("Account with same email is already registered.")
-        //     } else {
-        //         setError("Unable to create student account. (Parse Error)")
-        //     }
-        // } catch {
-        //     setError("Unable to create student account. (Fetch Error)")
-        // }
+        try {
+            if (response.status >= 200 && response.status < 300) {
+                let json = await response.json();
+                navigate("/academicyear")
+            } else if (response.status === 422) {
+                setError("Account with same email is already registered.")
+            } else {
+                setError("Unable to create student account. (Parse Error)")
+            }
+        } catch {
+            setError("Unable to create student account. (Fetch Error)")
+        }
 
-        // setIsLoading(() => false)
+        setIsLoading(() => false)
     }
 
     return (

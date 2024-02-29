@@ -17,21 +17,26 @@ function useEffectAllFaculties() {
         // abortion controller
         let aborter = new AbortController()
 
+        let headers = { 'Accepts': 'application/json' }
+        if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`
+
         async function fetchData() {
             try {
                 let response = await fetch('http://127.0.0.1:8000/api/faculties', {
                     signal: aborter.signal,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Accepts': 'application/json'
-                    }
+                    headers: headers
                 })
 
                 let json = await response.json()
-                // capture the payload
-                setFaculties(json.data)
-            } catch {
-
+                if (response.status === 200) {
+                    // capture the response payload
+                    setFaculties(json.data)
+                } else {
+                    setError("Unable to get faculty list.")
+                }
+                
+            } catch (error) {
+                setError(`Unable to get faculty list. ${error}`)
             }
         }
 

@@ -30,7 +30,7 @@ const NewFacultyPage = () => {
     
     function getFormData() {
         let form = new FormData();
-        form.set("name", username)
+        form.set("name", facultyName)
         form.set("email", email)
         form.set('phone', phone)
         form.set("description", description)
