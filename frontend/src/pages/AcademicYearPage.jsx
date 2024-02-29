@@ -6,36 +6,39 @@ import Breadcrumb from "../components/Breadcrumb"
 import AuthContext from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
+import useEffectAllAcademicYears from "../hooks/useEffectAllAcademicYears"
 
 const AcademicYearPage = () => {
 
     let navigate = useNavigate()
 
     let accessToken = useContext(AuthContext);
-    let [page, setPage] = useState(0);
+    // let [page, setPage] = useState(0);
 
-    let [users, setUsers] = useState([])
+    // let [users, setUsers] = useState([])
 
-    async function fetchUsers() {
-        try {
-            let response = await fetch('http://127.0.0.1:8000/api/users', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Accept': 'application/json'
-                }
-            })
+    let [academicYears] = useEffectAllAcademicYears()
 
-            let json = await response.json()
-            if (response.status === 200) {
-                // setUsers(json.data)
-            }
-        } catch { }
-        return () => {}
-    }
+    // async function fetchUsers() {
+    //     try {
+    //         let response = await fetch('http://127.0.0.1:8000/api/users', {
+    //             headers: {
+    //                 'Authorization': `Bearer ${accessToken}`,
+    //                 'Accept': 'application/json'
+    //             }
+    //         })
 
-    useEffect(() => {
-        fetchUsers()
-    }, [page])
+    //         let json = await response.json()
+    //         if (response.status === 200) {
+    //             // setUsers(json.data)
+    //         }
+    //     } catch { }
+    //     return () => {}
+    // }
+
+    // useEffect(() => {
+    //     fetchUsers()
+    // }, [page])
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-8 overflow-y-hidden">
@@ -69,13 +72,13 @@ const AcademicYearPage = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {users.map((user, index) => {
+                    {academicYears.map((year, index) => {
                         return (
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
-                                <td className="p-3">{user.user_name}</td>
-                                <td className="p-3">{user.user_email}</td>
-                                <td className="p-3">{user.faculty_name}</td>
+                                <td className="p-3">{year.name}</td>
+                                <td className="p-3">{year.start_date}</td>
+                                <td className="p-3">{year.end_date}</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">
@@ -87,8 +90,8 @@ const AcademicYearPage = () => {
                                                     className="inline-block text-sm font-bold rounded w-full h-full hover:bg-gray-200 p-2"
                                                     onClick={
                                                         () => { 
-                                                            console.log("User id", user.user_id && user.user_id)
-                                                            navigate(`/academicyear/${user.user_id ? user.user_id : ''}`) 
+                                                            // console.log("User id", user.user_id && user.user_id)
+                                                            navigate(`/academicyear/${year.id ? year.id : ''}`) 
                                                         }
                                                     }
                                                 >
@@ -100,8 +103,8 @@ const AcademicYearPage = () => {
                                                     className="inline-block text-sm font-bold rounded w-full h-full hover:bg-gray-200 p-2"
                                                     onClick={
                                                         () => { 
-                                                            console.log("User id", user.user_id && user.user_id)
-                                                            navigate(`/academicyear/${user.user_id ? user.user_id : ''}`) 
+                                                            // console.log("User id", user.user_id && user.user_id)
+                                                            navigate(`/academicyear/${year.id ? year.id : ''}`) 
                                                         }
                                                     }
                                                 >
