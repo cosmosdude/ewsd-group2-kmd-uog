@@ -9,34 +9,28 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class FileUploaded extends Mailable
+class ArticleUploaded extends Mailable
 {
     use Queueable, SerializesModels;
+    public $studentName;
+    public $articleTitle;
 
-    public $subject;
-    public $content;
-    public $filePath;
+    public function __construct($studentName, $articleTitle){
+        $this->studentName = $studentName;
+        $this->articleTitle = $articleTitle;
+    }
 
-    public function __construct()
+    public function build()
     {
-        //
-        $this->subject = $subject;
-        $this->content = $content;
-        $this->uploadedFiles=$uploadedFiles;
-        $this->uploadedImages=$uploadedImages;
+        return $this->subject('New Article Uploaded by ' . $this->studentName)
+                    ->view('emails.article_uploaded');
     }
 
-    public function build(){
-        return $this->subject($this->subject)
-                    ->view('emails.article_uploaded')
-                    ->attach(public_path($this->uploadedFiles))
-                    ->attach(public_path($this->uploadedImages));
-    }
 
     public function envelope()
     {
         return new Envelope(
-            subject: 'File Uploaded',
+            subject: 'Article Uploaded',
         );
     }
 

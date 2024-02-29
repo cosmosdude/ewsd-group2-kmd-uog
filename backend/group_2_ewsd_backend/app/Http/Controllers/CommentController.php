@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
-{
+{ 
     public function store(Request $request)
     {
         $request->validate([

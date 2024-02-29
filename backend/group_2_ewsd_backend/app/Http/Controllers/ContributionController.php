@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Closure;
 use App\Models\Contribution;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Mail\ArticleUploaded;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class ContributionController extends Controller
@@ -82,10 +84,10 @@ class ContributionController extends Controller
         }
 
         $contribution = Contribution::create($contributionData);
-
-        //send email noti to coordiantor
-
-        $this->sendEmailWithFile($uploadedFiles, $uploadedImages);
+        //send email noti
+        $coordinatorEmail = 'hlaingthinnwe129@gmail.com';
+        $coordinatorName = 'Falculty Coordinator';
+        Mail::to($coordinatorEmail)->send(new ArticleUploaded(auth()->user()->name, $request->name));
 
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
@@ -192,14 +194,4 @@ class ContributionController extends Controller
         return $this->sendError("You don't have permission to update this contribution", 403);
     }
 
-
-    //send email noti to coordiantor
-    private function sendEmailWithFiles($uploadedFiles, $uploadedImages)
-    {
-        $recipient = 'yopmail.com';
-        $subject = 'New Article Uploaded';
-        $content = 'New Article have been uploaded from Student' . '_' . $request->name;
-
-        Mail::to($recipient)->send(new Contribution($subject, $content, $uploadedFiles, $uploadedImages));
-    }
 }
