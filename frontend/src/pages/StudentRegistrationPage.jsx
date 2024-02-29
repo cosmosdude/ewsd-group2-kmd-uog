@@ -5,6 +5,7 @@ import Dropdown from "../components/Dropdown"
 import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
+import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 
 const StudentRegistrationPage = () => {
     
@@ -13,11 +14,15 @@ const StudentRegistrationPage = () => {
 
     let [username, setUsername] = useState("");
     let [email, setEmail] = useState("");
-    let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
+    // let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
+
+    let [faculties] = useEffectAllFaculties();
+
     let [phone, setPhone] = useState("");
     let [address, setAddress] = useState("");
     let [password, setPassword] = useState("");
     let [retype, setRetype] = useState("");
+
     let [faculty, setFaculty] = useState(null);
 
     let [error, setError] = useState(null);
@@ -29,9 +34,11 @@ const StudentRegistrationPage = () => {
         form.set("email", email)
         form.set("password", password)
         form.set("role_id", "4")
-        form.set("faculty_id", "1")
+        form.set("faculty_id", faculty.id)
+        console.log('faculty.id', faculty.id)
         form.set('phone', phone)
         form.set('academic_id', 1)
+        console.log(form)
         return form;
     }
 
@@ -82,29 +89,31 @@ const StudentRegistrationPage = () => {
                     ]}/>
                 <span className="grow"/>
             </div>
-            <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll">
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
+            {/* <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll"> */}
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
+                {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
                     <InputField className="grow" placeholder="username" value={username} onChange={setUsername}/>
                     <InputField className="grow" placeholder="email" value={email} onChange={setEmail}/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
+                {/* </div> */}
+                {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
                     <Dropdown 
                         className="grow bg-white basis-0"
-                        title={faculty ? faculty : "Select faculty"} options={faculties} onChange={(option, index) => {
-                            setFaculty(option)
+                        title={faculty ? faculty.name : "Select faculty"} 
+                        options={faculties.map(x => x.name)} 
+                        onChange={(option, index) => {
+                            setFaculty(faculties[index])
                         }}
                     />
-                    <Dropdown className="grow basis-0" title="Student" disabled/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
+                {/* </div> */}
+                {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
                     <InputField className="grow" placeholder="phone number" value={phone} onChange={setPhone}/>
-                    <InputField className="grow" placeholder="address" value={address} onChange={setAddress}/>
-                </div>
-                <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row">
+                {/* </div> */}
+                {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
                     <InputField className="grow" placeholder="password" type="password" value={password} onChange={setPassword}/>
                     <InputField className="grow" placeholder="retype password" type="password" value={retype} onChange={setRetype}/>
-                </div>
-                {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">
+                {/* </div> */}
+            </div>
+            {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">
                     {error}
                 </p>}
                 <div className="flex w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
@@ -119,7 +128,6 @@ const StudentRegistrationPage = () => {
                     </Link>
                     {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
                 </div>
-            </div>
         </div>
     )
 }
