@@ -7,6 +7,7 @@ use App\Models\AcademicHistory;
 use App\Models\AcademicYear;
 use App\Models\FacultyUser;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -112,6 +113,12 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->accessToken;
             $success['token'] =  $token;
             $success['name'] =  $user->name;
+            if ($user->last_login_time != null) {
+                $success['last_login_time'] = $user->last_login_time;
+            }
+            $user->update([
+                'last_login_time' => Carbon::now()
+            ]);
             return $this->sendResponse($success, 'User login successfully.', 200);
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
@@ -132,7 +139,7 @@ class AuthController extends Controller
             'faculties' => 'required|array'
         ]);
         $guest = DB::transaction(function () use ($request) {
-            $u = User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -140,16 +147,18 @@ class AuthController extends Controller
             ]);
             foreach ($request->faculties as $faculty) {
                 FacultyUser::create([
-                    'user_id' => $u->id,
+                    'user_id' => $user->id,
                     'faculty_id' => $faculty
                 ]);
             }
-            return $u;
+            return $user;
         });
         $token = $guest->createToken('auth_token')->accessToken;
         $success['name'] = $guest->name;
         $success['email'] = $guest->email;
         $success['token'] = $token;
+        //welcome message for guest account creation
+        //need to ask
         return $this->sendResponse($success, "Guest Registered", 200);
     }
 }

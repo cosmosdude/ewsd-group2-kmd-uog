@@ -10,50 +10,85 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+
     public function index()
     {
-
         $users = DB::table('users')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
             ->select(
                 'users.id as user_id',
                 'users.name as user_name',
                 'users.email as user_email',
+                'users.phone as user_phone',
                 'falculties.name as faculty_name',
-                'faculty_users.faculty_id',
                 'roles.id as role_id',
-                'roles.name as role_name',
+                'roles.name as role_name'
             )
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
-            ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+            ->orderBy('users.id')
             ->get();
-        return $this->sendResponse($users, "User Retrieved Successfully", 200);
-    }
 
+        $formattedUsers = [];
+        foreach ($users as $user) {
+            $userId = $user->user_id;
+            if (!isset($formattedUsers[$userId])) {
+                $formattedUsers[$userId] = [
+                    'user_id' => $userId,
+                    'user_name' => $user->user_name,
+                    'user_email' => $user->user_email,
+                    'user_phone' => $user->user_phone,
+                    'role_id' => $user->role_id,
+                    'role_name' => $user->role_name,
+                    'faculty_info' => []
+                ];
+            }
+            $formattedUsers[$userId]['faculty_names'][] = $user->faculty_name;
+        }
+        $formattedUsers = array_values($formattedUsers);
+
+        return $this->sendResponse($formattedUsers, "User Retrieved Successfully", 200);
+    }
 
     public function show($id)
     {
-        if (Auth::user()->id == $id || Auth::user()->hasRole('administrator')) {
+        $authenticatedUserId = Auth::user()->id;
+
+        if ($authenticatedUserId == $id || Auth::user()->hasRole('administrator')) {
             $user = DB::table('users')
                 ->select(
                     'users.id as user_id',
                     'users.name as user_name',
                     'users.email as user_email',
-                    'falculties.name as faculty_name',
-                    'faculty_users.faculty_id',
+                    'users.phone as user_phone',
                     'roles.id as role_id',
-                    'roles.name as role_name',
+                    'roles.name as role_name'
                 )
                 ->join('roles', 'users.role_id', '=', 'roles.id')
-                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
-                ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                 ->where('users.id', $id)
-                // ->orderBy('users.name', 'asc')
+                ->orderBy('users.id')
                 ->first();
-            return $this->sendResponse($user, "User Retrieved Successfully", 200);
+
+            if ($user) {
+                $faculties = DB::table('falculties')
+                    ->select('falculties.name as faculty_name')
+                    ->join('faculty_users', 'falculties.id', '=', 'faculty_users.faculty_id')
+                    ->where('faculty_users.user_id', $id)
+                    ->pluck('faculty_name')
+                    ->toArray();
+
+                $user->faculty_name = $faculties;
+
+                return $this->sendResponse($user, "User Retrieved Successfully", 200);
+            } else {
+                return $this->sendError(null, "User not found", 404);
+            }
         }
-        return $this->sendError($id, "You don't have permission to view this user", 403);
+
+        return $this->sendError(null, "You don't have permission to view this user", 403);
     }
+
 
 
     public function update(Request $request, $id)

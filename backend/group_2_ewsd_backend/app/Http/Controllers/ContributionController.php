@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use App\Models\Contribution;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\CssSelector\Node\FunctionNode;
+
 
 class ContributionController extends Controller
 {
+    //need to fix this index function
+    //the role attribute is not define and should be replace with function
+    //need to add comment count in this function
     public function index()
     {
         $user = Auth::user();
@@ -23,9 +25,7 @@ class ContributionController extends Controller
         $contributions = Contribution::all();
         return response()->json(['contributions' => $contributions], 200);
     }
-    public function show($id)
-    {
-    }
+
 
 
     public function store(Request $request)
@@ -39,8 +39,6 @@ class ContributionController extends Controller
             'closure_id' => 'required|exists:closures,id',
             'user_id' => 'required|exists:users,id',
         ]);
-
-        //checking the closure is expired or not
         $closure = Closure::find($request->closure_id);
         if (Carbon::parse($closure->closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
@@ -53,7 +51,6 @@ class ContributionController extends Controller
                 $uploadedFiles[] = $fileName;
             }
         }
-
         $uploadedImages = [];
         if ($request->hasFile('images')) {
             $images = $request->file('images');
@@ -93,44 +90,64 @@ class ContributionController extends Controller
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
 
-
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'files' => 'required|mimes:doc,docx',
-            'closure_id' => 'required'
+            'files' => 'nullable|mimes:doc,docx',
+            'closure_id' => 'required|exists:closures,id',
+            // 'user_id' => 'required|exists:users,id',
         ]);
 
-        //checking the closure is expired or not
-        $closure = Closure::findOrFail($request->closure_id);
+        $closure = Closure::find($request->closure_id);
         if (Carbon::parse($closure->final_closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
 
+
         $contribution = Contribution::findOrFail($id);
-        //=====================need to check the uploaded file is changed or not================================================
+        if (Auth::user()->id != $contribution->user_id) {
+            return $this->sendError('You don\'t have permission to update this contribution', 403);
+        }
+
+
         if ($request->hasFile('files')) {
             $file = $request->file('files');
             if ($file->isValid()) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $file->move(public_path('uploads'), $fileName);
-                $uploadedFiles[] = $fileName;
+                if ($contribution->files !== $fileName) {
+                    if (file_exists(public_path('uploads/' . $contribution->files))) {
+                        unlink(public_path('uploads/' . $contribution->files));
+                    }
+                }
+                $contribution->files = $fileName;
             }
         }
+        $contribution->name = $request->name;
+        $contribution->description = $request->description;
+        $contribution->closure_id = $request->closure_id;
+        $contribution->attempt_number = $contribution->attempt_number++;
+        $contribution->save();
 
-        $contributionData = [
-            'name' => $request->name,
-            'description' => $request->description,
-            'files' => implode(',', $uploadedFiles),
-            'attempt_number' => $contribution->attempt_number++,
-
-        ];
-        $contribution->update($contributionData);
-        return $this->sendResponse($contribution, "Contribution Update Successfully", 200);
+        return $this->sendResponse($contribution, "Contribution Updated Successfully!", 200);
     }
 
+    public function show($id)
+    {
+        $contribution = Contribution::with('comments')
+            ->where('id', $id)
+            ->get();
+        return $this->sendResponse($contribution, "Contribution Retrieved", 200);
+    }
+    //auth user
+    public function downloadContribution($id)
+    {
+        $contribution = Contribution::findOrFail($id);
+        $file = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+        return response()->json($file);
+    }
 
     //this function is used to approve or reject a contribution by marketing coordinator
     public function changeStatus(Request $request, $id)
@@ -174,6 +191,7 @@ class ContributionController extends Controller
         }
         return $this->sendError("You don't have permission to update this contribution", 403);
     }
+
 
     //send email noti to coordiantor
     private function sendEmailWithFiles($uploadedFiles, $uploadedImages)
