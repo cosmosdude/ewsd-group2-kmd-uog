@@ -112,7 +112,7 @@ const UsersPage = () => {
                                 <td className="p-3">{user.user_id}</td>
                                 <td className="p-3">{user.user_name}</td>
                                 <td className="p-3">{user.user_email}</td>
-                                <td className="p-3">{user.faculty_name}</td>
+                                <td className="p-3">{user.faculty_names.join(',')}</td>
                                 <td className="p-3">{user.role_name}</td>
                                 <td className="p-3">N/A</td>
                                 <td className="p-3">
