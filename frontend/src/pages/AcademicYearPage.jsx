@@ -8,7 +8,7 @@ import AuthContext from "../contexts/AuthContext"
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectAllAcademicYears from "../hooks/useEffectAllAcademicYears"
 
-const AcademicYearPage = () => {
+export default function AcademicYearPage() {
 
     let navigate = useNavigate()
 
@@ -136,4 +136,3 @@ const AcademicYearPage = () => {
         </div>
     )
 }
-export default AcademicYearPage

@@ -30,26 +30,29 @@ const UsersPage = () => {
         )
     }
 
-    async function fetchUsers() {
-        try {
-            let response = await fetch('http://127.0.0.1:8000/api/users', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Accept': 'application/json'
-                }
-            })
-
-            let json = await response.json()
-            if (response.status === 200) {
-                setUsers(json.data)
-            }
-        } catch { }
-        return () => {}
-    }
-
     useEffect(() => {
+        let aborter = new AbortController()
+        async function fetchUsers() {
+            try {
+                let response = await fetch('http://127.0.0.1:8000/api/users', {
+                    signal: aborter.signal,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Accept': 'application/json'
+                    }
+                })
+    
+                let json = await response.json()
+                if (response.status === 200) {
+                    setUsers(json.data)
+                }
+            } catch { }
+            return () => {}
+        }
         fetchUsers()
-    }, [page])
+
+        return () => aborter.abort()
+    }, [])
 
     useEffect(() => {
         filterUsers()
