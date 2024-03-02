@@ -32,8 +32,7 @@ function App() {
             <Route path="users/:id" element={<UserDetailPage/>}/>
 
             <Route path="faculty" element={<FacultiesPage/>}/>
-            <Route path="faculty/new" element={<NewFacultyPage/>}/>
-            <Route path="faculty/:id" element={<p>Faculty details</p>}/>
+            <Route path="faculty/:id" element={<NewFacultyPage/>}/>
 
             <Route path="contribution" element={<ContributionsPage/>}/>
             <Route path="magazine/history" element={<MagazineHistoryPage/>}/>

@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom"
+import {Link, useNavigate, useParams} from "react-router-dom"
 
 import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
@@ -7,10 +7,16 @@ import AuthContext from "../contexts/AuthContext"
 import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
 import LoadingIndicator from "../components/LoadingIndicator"
+import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 
 const NewFacultyPage = () => {
+
+    let { id } = useParams()
+
     let navigate = useNavigate()
     let accessToken = useContext(AuthContext);
+
+    let [allFaculties] = useEffectAllFaculties()
 
     let [facultyName, setFacultyName] = useState("");
     let [description, setDescription] = useState("");
@@ -38,6 +44,22 @@ const NewFacultyPage = () => {
         form.set("building_no", buildingNo)
         return form;
     }
+
+    useEffect(() => {
+        if (id === 'new') return
+        let f = allFaculties.filter(x => x.id == id)[0]
+        if (f) {
+            setFacultyName(f.name)
+            setDescription(f.description)
+            setRoomNo(f.room_no)
+            setBuildingNo(f.building_no)
+            setUsername(`${f.name} Marketing Coordinator`)
+            setEmail(f.email)
+            setPhone(f.phone)
+        }
+        console.log('Faculty:', id)
+        console.log('Faculty:', f)
+    }, [allFaculties])
 
     async function createAccount() {
         setError(null)
