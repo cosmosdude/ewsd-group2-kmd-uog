@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom"
+import {Link, useNavigate, useParams} from "react-router-dom"
 
 import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
@@ -14,6 +14,8 @@ const NewAcademicYearPage = () => {
     let accessToken = useContext(AuthContext);
     let navigate = useNavigate()
 
+    let {id} = useParams()
+
     let [name, setName] = useState("");
     let [startDate, setStartDate] = useState("");
     let [endDate, setEndDate] = useState("");
@@ -21,6 +23,42 @@ const NewAcademicYearPage = () => {
 
     let [error, setError] = useState(null);
     let [isLoading, setIsLoading] = useState(false);
+
+    let commonHeaders = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Accept': 'application/json'
+    }
+
+    useEffect(() => {
+        if (id === 'new') return
+
+        let aborter = new AbortController();
+
+        async function fetchData() {
+            try {
+                let res = await fetch(
+                    `http://127.0.0.1:8000/api/academic-years/${id}`,
+                    {
+                        signal: aborter.signal,
+                        headers: commonHeaders
+                    }
+                )
+
+                let json = await res.json()
+
+                let data = json.data
+                setName(data.name)
+                setStartDate(data.start_date)
+                setEndDate(data.end_date)
+            } catch (error) {
+
+            }
+        }
+
+        fetchData()
+
+        return () => aborter.abort()
+    }, [])
 
     function getFormData() {
         /*
@@ -37,19 +75,16 @@ const NewAcademicYearPage = () => {
 
     async function createAcademicYear() {
         setError(null)
+
         if (!name) { setError("Academic name must not be empty") ; return }
         if (!startDate) { setError("Start date must not be empty") ; return }
-
         if (!endDate) { setError("End date is not selected"); return }
 
         setIsLoading(() => true)
 
         let response = await fetch('http://127.0.0.1:8000/api/academicyear', {
             method: "POST",
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Accept': 'application/json'
-            },
+            headers: commonHeaders,
             body: getFormData()
         })
 
@@ -57,13 +92,55 @@ const NewAcademicYearPage = () => {
             if (response.status >= 200 && response.status < 300) {
                 let json = await response.json();
                 navigate("/academicyear")
-            } else if (response.status === 422) {
-                setError("Account with same email is already registered.")
             } else {
-                setError("Unable to create student account. (Parse Error)")
+                setError("Unable to create academic year. (Parse Error)")
             }
         } catch {
-            setError("Unable to create student account. (Fetch Error)")
+            setError("Unable to create academic year. (Fetch Error)")
+        }
+
+        setIsLoading(() => false)
+    }
+
+    async function update() {
+        setError(null)
+
+        if (!name) { setError("Academic name must not be empty") ; return }
+        if (!startDate) { setError("Start date must not be empty") ; return }
+        if (!endDate) { setError("End date is not selected"); return }
+
+        setIsLoading(() => true)
+
+        let json = {
+            name: name,
+            start_date: startDate,
+            end_date: endDate
+        }
+        console.log(json)
+
+        let jsonString = JSON.stringify(json)
+        console.log(jsonString)
+
+        let response = await fetch(`http://127.0.0.1:8000/api/academicyearupdate/${id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                ...commonHeaders
+            },
+            body: jsonString
+        })
+
+        try {
+            let json = await response.json();
+            if (response.status >= 200 && response.status < 300) {
+                console.log(json)
+                // navigate("/academicyear")
+            }  else {
+                console.log(json)
+                setError("Unable to update academic year. (Parse Error)")
+            }
+        } catch {
+            setError("Unable to update academic year. (Fetch Error)")
         }
 
         setIsLoading(() => false)
@@ -94,15 +171,20 @@ const NewAcademicYearPage = () => {
                     {error}
                 </p>}
                 <div className="flex w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
-                    <button 
+                    {id == 'new' && <button 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
                         onClick={createAcademicYear}
-                    >Save</button>
-                    <Link 
+                    >Save</button>}
+                    {id == 'new' && <Link 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-gray-400 text-white text-center hover:opacity-50 transition-all`} 
                         to="/users">
                         Cancel
-                    </Link>
+                    </Link>}
+                    {id != 'new' && <button 
+                        className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
+                        onClick={update}
+                    >Update</button>}
+                    
                     {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
                 </div>
             </div>

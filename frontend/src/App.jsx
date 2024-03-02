@@ -42,7 +42,7 @@ function App() {
             <Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
 
             <Route path="academicyear" element={<AcademicYearPage/>}/>
-            <Route path="academicyear/new" element={<NewAcademicYearPage/>}/>
+            <Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
           </Route>
           
           <Route path="/signin" element={<SignInPage/>}/>

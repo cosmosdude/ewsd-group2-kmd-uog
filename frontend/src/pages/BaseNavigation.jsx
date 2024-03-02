@@ -126,7 +126,7 @@ const BaseNavigation = () => {
                             <SideNavItem 
                                 selected={path.startsWith('/contribution')}
                                 src={ContributionIcon}
-                                cta="Contributions" 
+                                cta="Magazines" 
                                 onClick={() => {navigate('/contribution')}}
                             />
                             {isAdmin && <SideNavItem 
