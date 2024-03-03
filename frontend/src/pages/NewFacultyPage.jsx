@@ -138,15 +138,19 @@ const NewFacultyPage = () => {
                     {error}
                 </p>}
                 <div className="flex w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
-                    <button 
+                    {id == 'new' && <button 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
                         onClick={createAccount}
-                    >Save</button>
-                    <Link 
+                    >Save</button>}
+                    {id != 'new' && <button 
+                        className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
+                        onClick={null}
+                    >Update</button>}
+                    {id == 'new' &&  <Link 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-gray-400 text-white text-center hover:opacity-50 transition-all`} 
                         to="/users">
                         Cancel
-                    </Link>
+                    </Link>}
                     {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
                 </div>
             </div>
