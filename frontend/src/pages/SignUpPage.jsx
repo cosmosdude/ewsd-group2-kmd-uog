@@ -13,10 +13,11 @@ import "../style/tailwind.css"
 import Dropdown from "../components/Dropdown"
 import { useEffect, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
+import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 
 const SignUpPage = () => {
     let navigate = useNavigate();
-    let faculties = ["Business", "Information Technology", "Marketing", "Arts"]
+    let [faculties] = useEffectAllFaculties()
 
     let [username, setUsername] = useState("");
     let [email, setEmail] = useState("");
@@ -43,7 +44,7 @@ const SignUpPage = () => {
         form.set("name", username)
         form.set("email", email)
         form.set("password", password)
-        form.set("faculties[0]", "1")
+        form.set("faculties[0]", faculty.id)
         return form
     }
 
@@ -116,8 +117,11 @@ const SignUpPage = () => {
                             value={email}
                             onChange={setEmail}
                         />
-                        <Dropdown className="w-full" title={faculty ? faculty : "Select faculty"} options={faculties} onChange={(option, index) => {
-                            setFaculty(option)
+                        <Dropdown className="w-full" 
+                        title={faculty ? faculty.name : "Select faculty"} 
+                        options={faculties.map(x => x.name)} 
+                        onChange={(option, index) => {
+                            setFaculty(faculties[index])
                         }}/>
                         <InputField 
                             className="w-full" src={LockSVG} placeholder="Enter password" 

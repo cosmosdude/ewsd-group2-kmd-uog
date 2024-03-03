@@ -11,14 +11,14 @@ function useEffectAllFaculties() {
     
     let [faculties, setFaculties] = useState([])
     let [error, setError] = useState(null)
-    let accessToken = useContext(AuthContext)
+    // let accessToken = useContext(AuthContext)
 
     useEffect(() => {
         // abortion controller
         let aborter = new AbortController()
 
         let headers = { 'Accepts': 'application/json' }
-        if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`
+        // if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`
 
         async function fetchData() {
             try {

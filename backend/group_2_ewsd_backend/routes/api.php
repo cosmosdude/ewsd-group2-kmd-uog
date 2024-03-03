@@ -50,10 +50,9 @@ Route::middleware('auth:api')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
-        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
+        Route::post('/faculties', [FalcultyController::class, 'store']);
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
-        Route::post('/faculties', [FalcultyController::class, 'store']);
         //academic_year
 
     });
@@ -64,3 +63,4 @@ Route::middleware('auth:api')->group(function () {
 });
 Route::post('/academicyear', [AcademicYearController::class, 'store']);
 Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
+Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
