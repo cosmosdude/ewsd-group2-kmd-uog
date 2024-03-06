@@ -76,6 +76,14 @@ const BaseNavigation = () => {
         if (route) navigate(route)
     }
 
+    function gotoProfile() {
+        // if user is null, just return
+        if (!user) return
+
+        console.log(user)
+        navigate(`/users/${user.user_id}`)
+    }
+
     function logout() {
         console.log("Logout called")
         window.localStorage.removeItem("accessToken", null)
@@ -92,7 +100,6 @@ const BaseNavigation = () => {
     useEffect(() => {
         setShowNav(false)
     }, [location])
-
 
     console.log('Base Navigation Called')
 
@@ -116,7 +123,7 @@ const BaseNavigation = () => {
                             onNav={ () => {
                                 setShowNav(x => !x)
                             }}
-                            onProfile={null}
+                            onProfile={gotoProfile}
                             onLogout={() => { setShowLogoutDialog(true) }}
                         />
                         <div className="relative flex grow bg-slate-50 overflow-scroll">
