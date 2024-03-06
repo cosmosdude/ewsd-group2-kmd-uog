@@ -4,7 +4,7 @@ import SideNavItem from "./SideNavItem"
 const SideNav = ({children}) => {
     return (
         <aside className="hidden md:block min-w-[250px] bg-gray-100 h-full overflow-scroll">
-            <header className="block p-4 text-center text-xl font-bold">Large University</header>
+            {/* <header className="block p-4 text-center text-xl font-bold">Large University</header> */}
             <nav className="mt-[16px]">
                 <ul>
                     {children}

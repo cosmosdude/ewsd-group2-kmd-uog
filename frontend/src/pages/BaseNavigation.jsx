@@ -12,6 +12,7 @@ import UsersIcon from "../assets/sidenav/users.png"
 import CalendarIcon from "../assets/sidenav/calendar.png"
 import LogoutIcon from "../assets/sidenav/logout.png"
 import UserContext from "../contexts/UserContext"
+import TopNav from "../components/TopNav"
 
 const BaseNavigation = () => {
     let navigate = useNavigate()
@@ -102,53 +103,56 @@ const BaseNavigation = () => {
                         dismissCTA={"Cancel"}
                         onDismiss={() => { setShowLogoutDialog(false) }}
                     />}
-                    <div className="h-screen flex bg-slate-50">
-                        {/* left side */}
-                        <SideNav>
-                            {isAdmin && <SideNavItem 
-                                selected={path.startsWith('/home')} 
-                                src={HomeIcon}
-                                cta="Dashboard" 
-                                onClick={() => {navigate('/home')}}
-                            />}
-                            {isAdmin && <SideNavItem 
-                                selected={path.startsWith('/users')} 
-                                src={UsersIcon}
-                                cta="Users" 
-                                onClick={() => {navigate('/users')}}
-                            />}
-                            {isAdmin && <SideNavItem 
-                                selected={path.startsWith('/faculty')} 
-                                src={DepartmentsIcon}
-                                cta="Faculty" 
-                                onClick={() => {navigate('/faculty')}}
-                            />}
-                            <SideNavItem 
-                                selected={path.startsWith('/contribution')}
-                                src={ContributionIcon}
-                                cta="Magazines" 
-                                onClick={() => {navigate('/contribution')}}
-                            />
-                            {isAdmin && <SideNavItem 
-                                selected={path.startsWith('/academicyear')}
-                                src={CalendarIcon}
-                                cta="Academic Year" 
-                                onClick={() => {navigate('/academicyear')}}
-                            />}
-                            <SideNavItem 
-                                cta="Logout"
-                                src={LogoutIcon}
-                                onClick={() => { setShowLogoutDialog(true) }}
-                            />
-                        </SideNav>
-                        {/* right
-                        side */}
 
-                        <div className="block grow h-full overflow-y-hidden">
-                            <Outlet/>
+                    <div className="flex flex-col w-full h-screen ">
+                        {/* <div className="w-full h-full"> */}
+                        <TopNav
+                            onProfile={null}
+                            onLogout={() => { setShowLogoutDialog(true) }}
+                        />
+                        <div className="flex grow bg-slate-50 overflow-scroll">
+                            {/* left side */}
+                            <SideNav>
+                                {isAdmin && <SideNavItem 
+                                    selected={path.startsWith('/home')} 
+                                    src={HomeIcon}
+                                    cta="Dashboard" 
+                                    onClick={() => {navigate('/home')}}
+                                />}
+                                {isAdmin && <SideNavItem 
+                                    selected={path.startsWith('/users')} 
+                                    src={UsersIcon}
+                                    cta="Users" 
+                                    onClick={() => {navigate('/users')}}
+                                />}
+                                {isAdmin && <SideNavItem 
+                                    selected={path.startsWith('/faculty')} 
+                                    src={DepartmentsIcon}
+                                    cta="Faculty" 
+                                    onClick={() => {navigate('/faculty')}}
+                                />}
+                                <SideNavItem 
+                                    selected={path.startsWith('/contribution')}
+                                    src={ContributionIcon}
+                                    cta="Magazines" 
+                                    onClick={() => {navigate('/contribution')}}
+                                />
+                                {isAdmin && <SideNavItem 
+                                    selected={path.startsWith('/academicyear')}
+                                    src={CalendarIcon}
+                                    cta="Academic Year" 
+                                    onClick={() => {navigate('/academicyear')}}
+                                />}
+                            </SideNav>
+                            {/* right
+                            side */}
+
+                            <div className="block grow h-full overflow-y-hidden">
+                                <Outlet/>
+                            </div>
+                            {/* <h1>Welcome to Dashboard!</h1> */}
+                            {/* <button onClick={logout}>Logout</button> */}
                         </div>
-                        {/* <h1>Welcome to Dashboard!</h1> */}
-                        {/* <button onClick={logout}>Logout</button> */}
                     </div>
                 </UserContext.Provider>
             </AuthContext.Provider>
