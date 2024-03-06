@@ -12,18 +12,20 @@ use Illuminate\Queue\SerializesModels;
 class ArticleUploaded extends Mailable
 {
     use Queueable, SerializesModels;
-    public $studentName;
-    public $articleTitle;
+    public $studentname;
+    public $coordinatorname;
+    public $contribution;
 
-    public function __construct($studentName, $articleTitle){
-        $this->studentName = $studentName;
-        $this->articleTitle = $articleTitle;
+    public function __construct($user, $coordinator, $contribution){
+        $this->studentname = $studentname;
+        $this->coordinatorname = $coordinatorname;
+        $this->$contribution = $contribution;
     }
 
     public function build()
     {
-        return $this->subject('New Article Uploaded by ' . $this->studentName)
-                    ->view('emails.article_uploaded');
+        return $this->subject('New Article Uploaded by ' . $this->studentname)
+                    ->view('mail.article_uploaded');
     }
 
 
@@ -42,7 +44,7 @@ class ArticleUploaded extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'mail.article_uploaded',
         );
     }
 

@@ -20,14 +20,19 @@ class ContributionController extends Controller
     //need to add comment count in this function
     public function index()
     {
-        $user = Auth::user();
-        if ($user->role !== 4) {
-            return response()->json(['error' => 'Unauthorized', 401]);
-        }
-        $contributions = Contribution::all();
-        return response()->json(['contributions' => $contributions], 200);
+        //display all contribution list and comment count
+        $commentscount = Contribution::select('contributions.id', 'contributions.name', 'contributions.description', 'contributions.images', 'contributions.files', 'contributions.submitted_date', 'contributions.status', 'contributions.closure_id', 'contributions.user_id as student_id',
+            DB::raw('count(comments.id) as commentcount'))
+            ->leftJoin('comments', 'contributions.id', '=', 'comments.contribution_id')
+            ->groupBy('contributions.id', 'contributions.name', 'contributions.description',
+            'contributions.images', 'contributions.files', 'contributions.submitted_date',
+            'contributions.status', 'contributions.closure_id', 'contributions.user_id' )
+            ->get();
+
+        return response()->json(['Contribution List and Comment Count' => $commentscount ], 200);
     }
 
+    //view all uploaded contributions of each faculty before final closure
 
 
     public function store(Request $request)
@@ -82,12 +87,25 @@ class ContributionController extends Controller
 
             $contributionData['images'] =  implode(',', $uploadedImages);
         }
-
         $contribution = Contribution::create($contributionData);
-        //send email noti
-        $coordinatorEmail = 'hlaingthinnwe129@gmail.com';
-        $coordinatorName = 'Falculty Coordinator';
-        Mail::to($coordinatorEmail)->send(new ArticleUploaded(auth()->user()->name, $request->name));
+        //if student of faculty_id and coordinator of faculty_id are the same send email
+        $user = auth()->user();
+        if ($user->role_id === 4){
+            $coordinator = User::where('faculty_id', $user->faculty_id)
+                                ->where('role_id', 3)
+                                ->first();
+        }
+        if($coordinator){
+            //if there has a problem display with dd first
+            //dd($coordinator);
+            Mail::to ($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
+        }
+
+
+        // //send email noti
+        // $coordinatorEmail = 'ewsdgroup2@yopmail.com';
+        // $coordinatorName = 'Falculty Coordinator';
+        // Mail::to('ewsdgroup2@yopmail.com')->send(new ArticleUploaded(auth()->user()->name, $request->name));
 
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
@@ -192,6 +210,12 @@ class ContributionController extends Controller
             return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
         }
         return $this->sendError("You don't have permission to update this contribution", 403);
+    }
+    // get all uploaded contribution list
+    public function UploadedContributionList(){
+        $user = Auth::user();
+        $uploadedcontributions = Contribution::where('user_id', $user->id )->get();
+        return $this->sendResponse($uploadedcontributions, 'Uploaded Contribution list', 200);
     }
 
 }
