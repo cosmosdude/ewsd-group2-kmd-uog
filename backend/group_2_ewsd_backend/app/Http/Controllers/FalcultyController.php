@@ -57,8 +57,20 @@ class FalcultyController extends Controller
         });
         return $this->sendResponse($faculty, "Faculty Created Successfully", 200);
     }
+    //==============================NEED TO ASK PASSWORD RESET====================================
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'faculty_id' => 'required',
+            'faculty_name' => 'required',
+            'room_no' => 'required',
+            'building_no' => 'required',
+            'coordinator_name' => 'required',
+            'coordinator_email' => 'required',
+            'coordinator_phone' => 'required',
+            //
+        ]);
+
     }
     public function getGuestUserList($id)
     {

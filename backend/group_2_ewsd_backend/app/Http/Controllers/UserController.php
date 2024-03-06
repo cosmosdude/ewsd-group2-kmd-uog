@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -110,17 +111,127 @@ class UserController extends Controller
         }
     }
 
-    //this search function is  not added in the sprint, I added this function because of my own assumptions
-    public function searchUser(Request $request)
+
+    public function searchStudent(Request $request)
     {
         $request->validate([
             'keyword' => 'required',
-
         ]);
-        $users = User::where('id', $request->keyword)
-            ->orWhere('name', 'LIKE', '%' . $request->keyword . '%')
-            ->orWhere('email', 'LIKE', '%' . $request->keyword . '%')
-            ->paginate(25);
-        return $this->sendResponse($users, "User Search Results", 200);
+        if (Auth::user()->hasRole('administrator')) {
+            $students = DB::table('users')
+                ->select(
+                    'users.name as student_name',
+                    'users.email as student_email',
+                    'users.phone as student_phone',
+                    'users.last_login_time as last_access',
+                    'falculties.name as faculty_name',
+                )
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+                ->where('users.role_id', 4)
+                ->where('users.name', 'LIKE', '%' . $request->keyword . '%')
+                ->where('users.email', 'LIKE', '%' . $request->keyword . '%')
+                ->where('falculties.name', 'LIKE', '%' . $request->keyword . '%')
+                ->paginate(25);
+        } elseif (Auth::user()->hasRole('m_coordinator')) {
+            $coordinator_faculty = DB::table('users')
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->first(
+                    'faculty_users.faculty_id'
+                );
+            $students = DB::table('users')
+                ->select(
+                    'users.name as student_name',
+                    'users.email as student_email',
+                    'users.phone as student_phone',
+                    'users.last_login_time as last_access',
+                    'falculties.name as faculty_name',
+                )
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+                ->where('faculty_users.faculty_id', $coordinator_faculty->faculty_id)
+                ->where('users.role_id', 4)
+                ->where('users.name', 'LIKE', '%' . $request->keyword . '%')
+                ->orWhere('users.email', 'LIKE', '%' . $request->keyword . '%')
+                ->orWhere('falculties.name', 'LIKE', '%' . $request->keyword . '%')
+                ->paginate(25);
+        }
+
+        return $this->sendResponse($students, "User Search Results", 200);
+    }
+
+    public function getStudentList()
+    {
+
+        if (Auth::user()->hasRole('administrator')) {
+            $students = DB::table('users')
+                ->select(
+                    'users.name as student_name',
+                    'users.email as student_email',
+                    'users.phone as student_phone',
+                    'users.last_login_time as last_access',
+                    'falculties.name as faculty_name',
+                )
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+                ->where('users.role_id', 4)
+                ->get();
+            // return response()->json($students);
+        } elseif (Auth::user()->hasRole('m_coordinator')) {
+            $coordinator_faculty = DB::table('users')
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->first(
+                    'faculty_users.faculty_id'
+                );
+            $students = DB::table('users')
+                ->select(
+                    'users.name as student_name',
+                    'users.email as student_email',
+                    'users.phone as student_phone',
+                    'users.last_login_time as last_access',
+                    'falculties.name as faculty_name',
+                )
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+                ->where('faculty_users.faculty_id', $coordinator_faculty->faculty_id)
+                ->where('users.role_id', 4)
+                ->get();
+        }
+
+        foreach ($students as $student) {
+            if ($student->last_access == null) {
+                $student->last_access = "Haven't Login";
+            } else {
+                $student->last_access = $this->timeDifference($student->last_access);
+            }
+        }
+        return $this->sendResponse($students, "Student List", 200);
+    }
+    function timeDifference($studentLastAccess)
+    {
+        $currentTime = Carbon::now();
+        $studentLastAccess = Carbon::parse($studentLastAccess);
+        $timeDifference = $currentTime->diff($studentLastAccess);
+        if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
+            return '00 minutes ago';
+        }
+
+        if ($timeDifference->days == 0 && $timeDifference->h == 0) {
+            return $timeDifference->i . ' minutes ago';
+        }
+
+        if ($timeDifference->days == 0) {
+            return $timeDifference->h . ' hours and ' . $timeDifference->i . ' minutes ago';
+        }
+
+        if ($timeDifference->days == 1) {
+            return 'Yesterday ' . $timeDifference->format('%h AM or %h PM') . ' and ' . $timeDifference->i . ' minutes ago';
+        }
+
+        if ($timeDifference->days <= 2) {
+            return 'Yesterday ' . $studentLastAccess->format('g:i A');
+        }
+
+        return $studentLastAccess->format('d-m-Y g:i A');
     }
 }

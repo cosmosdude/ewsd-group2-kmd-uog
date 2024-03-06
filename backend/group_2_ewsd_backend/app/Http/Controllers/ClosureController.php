@@ -17,7 +17,6 @@ class ClosureController extends Controller
     {
         $closures = Closure::orderBy('id',  'asc')->paginate(25);
         return $this->sendResponse($closures, "Closures Retrieved Successfully", 200);
-
     }
     //magazine period filter with academic year
     public function filter(Request $request)
@@ -180,4 +179,11 @@ class ClosureController extends Controller
             ->get();
         return $this->sendResponse($contributions, "Studnet's submitted Contributions Retrieved", 200);
     }
+
+    public function upcomingClosure(){
+        $closures = Closure::all();
+        return response()->json($closures);
+    }
+
+
 }
