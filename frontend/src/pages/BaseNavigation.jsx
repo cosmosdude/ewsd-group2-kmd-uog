@@ -20,6 +20,8 @@ const BaseNavigation = () => {
     let [accessToken, setAccessToken] = useState(window.localStorage.getItem("accessToken"))
     let [user, setUser] = useState(null)
 
+    let [showNav, setShowNav] = useState(false)
+
     let roleId = user && user.role_id && user.role_id
     let isAdmin = roleId === 1
     let isMM = roleId === 2
@@ -87,6 +89,10 @@ const BaseNavigation = () => {
     useEffect(gotoSignInIfNotAuthorized)
     useEffect(fetchUser, [])
 
+    useEffect(() => {
+        setShowNav(false)
+    }, [location])
+
 
     console.log('Base Navigation Called')
 
@@ -107,12 +113,15 @@ const BaseNavigation = () => {
                     <div className="flex flex-col w-full h-screen ">
                         {/* <div className="w-full h-full"> */}
                         <TopNav
+                            onNav={ () => {
+                                setShowNav(x => !x)
+                            }}
                             onProfile={null}
                             onLogout={() => { setShowLogoutDialog(true) }}
                         />
-                        <div className="flex grow bg-slate-50 overflow-scroll">
+                        <div className="relative flex grow bg-slate-50 overflow-scroll">
                             {/* left side */}
-                            <SideNav>
+                            <SideNav showForSM={showNav}>
                                 {isAdmin && <SideNavItem 
                                     selected={path.startsWith('/home')} 
                                     src={HomeIcon}
@@ -149,6 +158,13 @@ const BaseNavigation = () => {
 
                             <div className="block grow h-full overflow-y-hidden">
                                 <Outlet/>
+                            </div>
+                            <div className={`
+                            absolute ${showNav ? 'block opacity-100': 'hidden opacity-0'}
+                            md:hidden
+                            w-full h-full bg-[rgba(0,0,0,0.5)] transition-100
+                            `}>
+
                             </div>
                             {/* <h1>Welcome to Dashboard!</h1> */}
                             {/* <button onClick={logout}>Logout</button> */}
