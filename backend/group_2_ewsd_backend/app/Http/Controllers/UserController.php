@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\FacultyUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -207,7 +208,29 @@ class UserController extends Controller
         }
         return $this->sendResponse($students, "Student List", 200);
     }
-
+    public function registerFacultyByGuest(Request $request)
+    {
+        $request->validate([
+            'faculties' => 'required|array'
+        ]);
+        $registered_faculties = FacultyUser::where('user_id', Auth::user()->id)->pluck('faculty_id');
+        $checked_list = [];
+        foreach ($request->faculties as $faculty) {
+            //check the faculty is already registered or not
+            if ($registered_faculties->contains($faculty)) {
+                return $this->sendError(null, "You have already registered this faculty", 403);
+            } else {
+                $checked_list[] = $faculty;
+            }
+        }
+        foreach ($checked_list as $faculty) {
+            FacultyUser::create([
+                'user_id' => Auth::user()->id,
+                'faculty_id' => $faculty
+            ]);
+        }
+        return $this->sendResponse(Auth::user()->name, "Faculty Registered Successfully");
+    }
     //============================================================Private Function Start==============================================================//
     private function timeDifference($studentLastAccess)
     {

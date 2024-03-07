@@ -28,11 +28,17 @@ Route::middleware('auth:api')->group(function () {
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::get('/contributions/download/{id}', [ContributionController::class, 'downloadContribution']);
 
+
     Route::middleware('role:m_coordinator')->group(function () {
         Route::put('/contributions/status/{id}', [ContributionController::class, 'changeStatus']);
         //accept closure id as a parameter
         Route::get('/closures/{id}/submit', [ClosureController::class, 'getSubmittedContributionsWithinFaculty']);
     });
+
+    Route::middleware('role:guest')->group(function (){
+        Route::post('/guest/faculty-register',[UserController::class,'registerFacultyByGuest']);
+    });
+
     Route::middleware('role:student')->group(function () {
 
         Route::post('/contributions', [ContributionController::class, 'store']);
@@ -64,7 +70,7 @@ Route::middleware('auth:api')->group(function () {
         //academic_year
 
 
-        Route::get('closures/upcoming',[ClosureController::class,'upcomingClosure']);
+        Route::get('upcoming-closures',[ClosureController::class,'upcomingClosure']);
     });
 
     Route::middleware('role:m_manager')->group(function () {

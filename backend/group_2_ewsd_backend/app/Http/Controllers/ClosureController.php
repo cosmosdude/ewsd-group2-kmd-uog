@@ -182,7 +182,13 @@ class ClosureController extends Controller
 
     public function upcomingClosure(){
         $closures = Closure::all();
-        return response()->json($closures);
+        $upcoming = [];
+        foreach ($closures as $closure){
+            if (!Carbon::parse($closure->start_date)->isPast()) {
+                $upcoming[] = $closure;
+            }
+        }
+        return response()->json($upcoming);
     }
 
 
