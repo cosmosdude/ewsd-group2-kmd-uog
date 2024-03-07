@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Comment;
-use App\Models\Contribution;
 use Carbon\Carbon;
+use App\Models\Comment;
+use App\Mail\CommentedEmail;
+use App\Models\Contribution;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CommentController extends Controller
 {
@@ -34,6 +36,18 @@ class CommentController extends Controller
             $contribution->update([
                 'is_commented' => 1
             ]);
+            //send email to student when m_coordinator commented
+            $student = $contribution->user;
+            Mail::to($student->email)->send(new CommentedEmail($student->name,$request->content,$contribution));
+        }else{
+            //send email to coordinator when student commented
+            $coordinator = User::where('faculty_id', $student_faculty_id)
+                                ->where('role_id',3)
+                                ->first();
+            if($coordinator){
+                //dd($coordinator);
+                Mail::to($coordinator->email)->send(new CommentedEmail($coordinator->name, $request->content,$contribution));
+            }
         }
         return $this->sendResponse($comment, "Successfully Commented to Contributions", 200);
     }

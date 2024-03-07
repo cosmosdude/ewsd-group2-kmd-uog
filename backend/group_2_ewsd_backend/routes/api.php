@@ -24,6 +24,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('/closures/current', [ClosureController::class, 'getCurrentClosures']);
     Route::apiResource('/closures', ClosureController::class)->except('destroy');
+    Route::get('/closures/previous', [ClosureController::class, 'getPreviousClosures']);//previous closure list
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::get('/contributions/download/{id}', [ContributionController::class, 'downloadContribution']);
@@ -40,12 +41,13 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::middleware('role:student')->group(function () {
-
         Route::post('/contributions', [ContributionController::class, 'store']);
         Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
         Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
-        // Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
-        Route::get('contributionlist', [ContributionController::class, 'index']);
+        Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
+        Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
+        //contribution and comment count list
+        Route::get('/contributions', [ContributionController::class, 'index']);
     });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
@@ -68,6 +70,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
         Route::post('/faculties', [FalcultyController::class, 'store']);
         //academic_year
+        Route::post('/academicyear', [AcademicYearController::class, 'store']);
+        Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
 
 
         Route::get('upcoming-closures',[ClosureController::class,'upcomingClosure']);
@@ -77,5 +81,5 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
-Route::post('/academicyear', [AcademicYearController::class, 'store']);
-Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
+
+

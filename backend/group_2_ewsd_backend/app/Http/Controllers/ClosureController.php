@@ -72,6 +72,13 @@ class ClosureController extends Controller
         ]);
         return $this->sendResponse($closure, "Closure Updated Successfully", 200);
     }
+    //get previous closures list
+    public function getPreviousClosures(){
+        $previousclosure = Closure::where('final_closure_date','<',now())
+                        ->orderBy('final_closure_date','DESC')
+                        ->get();
+        return $this->sendResponse($previousclosure, "Previous Closures List", 200);
+    }
 
     public function getCurrentClosures()
     {
