@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Mail\ArticleUploaded;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -21,15 +22,33 @@ class ContributionController extends Controller
     public function index()
     {
         //display all contribution list and comment count
-        $commentscount = Contribution::select('contributions.id', 'contributions.name', 'contributions.description', 'contributions.images', 'contributions.files', 'contributions.submitted_date', 'contributions.status', 'contributions.closure_id', 'contributions.user_id as student_id',
-            DB::raw('count(comments.id) as commentcount'))
+        $commentscount = Contribution::select(
+            'contributions.id',
+            'contributions.name',
+            'contributions.description',
+            'contributions.images',
+            'contributions.files',
+            'contributions.submitted_date',
+            'contributions.status',
+            'contributions.closure_id',
+            'contributions.user_id as student_id',
+            DB::raw('count(comments.id) as commentcount')
+        )
             ->leftJoin('comments', 'contributions.id', '=', 'comments.contribution_id')
-            ->groupBy('contributions.id', 'contributions.name', 'contributions.description',
-            'contributions.images', 'contributions.files', 'contributions.submitted_date',
-            'contributions.status', 'contributions.closure_id', 'contributions.user_id' )
+            ->groupBy(
+                'contributions.id',
+                'contributions.name',
+                'contributions.description',
+                'contributions.images',
+                'contributions.files',
+                'contributions.submitted_date',
+                'contributions.status',
+                'contributions.closure_id',
+                'contributions.user_id'
+            )
             ->get();
 
-        return response()->json(['Contribution List and Comment Count' => $commentscount ], 200);
+        return response()->json(['Contribution List and Comment Count' => $commentscount], 200);
     }
 
     //view all uploaded contributions of each faculty before final closure
@@ -92,15 +111,15 @@ class ContributionController extends Controller
         $contribution = Contribution::create($contributionData);
         //if student of faculty_id and coordinator of faculty_id are the same send email
         $user = auth()->user();
-        if ($user->role_id === 4){
+        if ($user->role_id === 4) {
             $coordinator = User::where('faculty_id', $user->faculty_id)
-                                ->where('role_id', 3)
-                                ->first();
+                ->where('role_id', 3)
+                ->first();
         }
-        if($coordinator){
+        if ($coordinator) {
             //if there has a problem display with dd first
             //dd($coordinator);
-            Mail::to ($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
+            Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
 
 
@@ -126,7 +145,6 @@ class ContributionController extends Controller
         if (Carbon::parse($closure->final_closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
-
 
         $contribution = Contribution::findOrFail($id);
         if (Auth::user()->id != $contribution->user_id) {
@@ -155,14 +173,32 @@ class ContributionController extends Controller
 
         return $this->sendResponse($contribution, "Contribution Updated Successfully!", 200);
     }
-
     public function show($id)
     {
-        $contribution = Contribution::with('comments')
-            ->where('id', $id)
-            ->get();
-        return $this->sendResponse($contribution, "Contribution Retrieved", 200);
+        $contribution = Contribution::where('id', $id)->first();
+        $comments = Contribution::with('comments')->where('id', $id)->first()->comments;
+        $date_calculated_comment = [];
+
+        foreach ($comments as $comment) {
+            $user = DB::table('users')
+                ->join('comments', 'comments.user_id', '=', 'users.id')
+                ->where('comments.id', $comment->id)
+                ->where('comments.user_id', $comment->user_id)
+                ->first(['users.name as commenter_name']);
+
+            $date_calculated_comment[] = [
+                'comment_content' => $comment->content,
+                'commenter' => $user->commenter_name,
+                'commented_time' => $this->timeDifference($comment->commented_time)
+            ];
+        }
+
+        $success['contribution'] = $contribution;
+        $success['comments'] = $date_calculated_comment;
+
+        return $this->sendResponse($success, "Contribution Retrieved", 200);
     }
+
     //auth user
     public function downloadContribution($id)
     {
@@ -214,10 +250,10 @@ class ContributionController extends Controller
         return $this->sendError("You don't have permission to update this contribution", 403);
     }
     // get all uploaded contribution list
-    public function UploadedContributionList(){
+    public function UploadedContributionList()
+    {
         $user = Auth::user();
-        $uploadedcontributions = Contribution::where('user_id', $user->id )->get();
+        $uploadedcontributions = Contribution::where('user_id', $user->id)->get();
         return $this->sendResponse($uploadedcontributions, 'Uploaded Contribution list', 200);
     }
-
 }

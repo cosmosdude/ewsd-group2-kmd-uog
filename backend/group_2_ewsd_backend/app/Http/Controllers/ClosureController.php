@@ -73,10 +73,11 @@ class ClosureController extends Controller
         return $this->sendResponse($closure, "Closure Updated Successfully", 200);
     }
     //get previous closures list
-    public function getPreviousClosures(){
-        $previousclosure = Closure::where('final_closure_date','<',now())
-                        ->orderBy('final_closure_date','DESC')
-                        ->get();
+    public function getPreviousClosures()
+    {
+        $previousclosure = Closure::where('final_closure_date', '<', now())
+            ->orderBy('final_closure_date', 'DESC')
+            ->get();
         return $this->sendResponse($previousclosure, "Previous Closures List", 200);
     }
 
@@ -84,10 +85,6 @@ class ClosureController extends Controller
     {
         $closures = DB::select('CALL check_closure_date()');
         return $this->sendResponse($closures, "Current Closures Retrieved", 200);
-    }
-    //par ma par ayin may yan
-    public function destroy($id)
-    {
     }
 
 
@@ -187,16 +184,15 @@ class ClosureController extends Controller
         return $this->sendResponse($contributions, "Studnet's submitted Contributions Retrieved", 200);
     }
 
-    public function upcomingClosure(){
+    public function upcomingClosure()
+    {
         $closures = Closure::all();
         $upcoming = [];
-        foreach ($closures as $closure){
+        foreach ($closures as $closure) {
             if (!Carbon::parse($closure->start_date)->isPast()) {
                 $upcoming[] = $closure;
             }
         }
-        return response()->json($upcoming);
+        return $this->sendResponse($upcoming, "Upcoming Magazines", 200);
     }
-
-
 }

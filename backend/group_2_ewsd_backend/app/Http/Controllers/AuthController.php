@@ -111,7 +111,10 @@ class AuthController extends Controller
         ])) {
             $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
+            $faculty_id = FacultyUser::where('user_id',$user->id)->pluck('faculty_id')->first();;
             $success['token'] =  $token;
+            $success['id'] = $user->id;
+            $success['faculty_id'] =$faculty_id;
             $success['name'] =  $user->name;
 
             $user->update([
