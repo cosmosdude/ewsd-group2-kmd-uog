@@ -111,14 +111,17 @@ class AuthController extends Controller
         ])) {
             $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
+            $faculty_id = FacultyUser::where('user_id',$user->id)->pluck('faculty_id')->first();;
             $success['token'] =  $token;
+            $success['id'] = $user->id;
+            $success['faculty_id'] =$faculty_id;
             $success['name'] =  $user->name;
-            if ($user->last_login_time != null) {
-                $success['last_login_time'] = $user->last_login_time;
-            }
+
             $user->update([
-                'last_login_time' => Carbon::now()
+                'last_login_time' => Carbon::now()->timezone('Europe/London')
             ]);
+            $success['last_login_time'] = $user->last_login_time;
+            // return response()->json($user->last_login_time);
             return $this->sendResponse($success, 'User login successfully.', 200);
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
