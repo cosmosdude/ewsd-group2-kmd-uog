@@ -65,7 +65,6 @@ Route::middleware('auth:api')->group(function () {
 
 
         Route::get('closures/upcoming',[ClosureController::class,'upcomingClosure']);
-
     });
 
     Route::middleware('role:m_manager')->group(function () {

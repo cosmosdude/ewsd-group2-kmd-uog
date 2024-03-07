@@ -207,7 +207,9 @@ class UserController extends Controller
         }
         return $this->sendResponse($students, "Student List", 200);
     }
-    function timeDifference($studentLastAccess)
+
+    //============================================================Private Function Start==============================================================//
+    private function timeDifference($studentLastAccess)
     {
         $currentTime = Carbon::now();
         $studentLastAccess = Carbon::parse($studentLastAccess);
@@ -234,4 +236,5 @@ class UserController extends Controller
 
         return $studentLastAccess->format('d-m-Y g:i A');
     }
+    //============================================================Private Function Start==============================================================//
 }
