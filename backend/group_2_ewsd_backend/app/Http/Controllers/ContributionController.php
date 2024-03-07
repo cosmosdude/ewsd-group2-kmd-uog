@@ -37,8 +37,10 @@ class ContributionController extends Controller
             'images' => 'nullable|max:5',
             // |mimes:jpg,jpeg,png
             'closure_id' => 'required|exists:closures,id',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
         ]);
+
+        $request['user_id'] = Auth::user()->id;
         $closure = Closure::find($request->closure_id);
         if (Carbon::parse($closure->closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);

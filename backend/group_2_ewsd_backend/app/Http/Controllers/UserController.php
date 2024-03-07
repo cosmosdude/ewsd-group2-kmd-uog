@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\FacultyUser;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -232,32 +231,6 @@ class UserController extends Controller
         return $this->sendResponse(Auth::user()->name, "Faculty Registered Successfully");
     }
     //============================================================Private Function Start==============================================================//
-    private function timeDifference($studentLastAccess)
-    {
-        $currentTime = Carbon::now();
-        $studentLastAccess = Carbon::parse($studentLastAccess);
-        $timeDifference = $currentTime->diff($studentLastAccess);
-        if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
-            return '00 minutes ago';
-        }
 
-        if ($timeDifference->days == 0 && $timeDifference->h == 0) {
-            return $timeDifference->i . ' minutes ago';
-        }
-
-        if ($timeDifference->days == 0) {
-            return $timeDifference->h . ' hours and ' . $timeDifference->i . ' minutes ago';
-        }
-
-        if ($timeDifference->days == 1) {
-            return 'Yesterday ' . $timeDifference->format('%h AM or %h PM') . ' and ' . $timeDifference->i . ' minutes ago';
-        }
-
-        if ($timeDifference->days <= 2) {
-            return 'Yesterday ' . $studentLastAccess->format('g:i A');
-        }
-
-        return $studentLastAccess->format('d-m-Y g:i A');
-    }
     //============================================================Private Function Start==============================================================//
 }
