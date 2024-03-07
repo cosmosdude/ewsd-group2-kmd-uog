@@ -13,12 +13,14 @@ import CalendarIcon from "../assets/sidenav/calendar.png"
 import LogoutIcon from "../assets/sidenav/logout.png"
 import UserContext from "../contexts/UserContext"
 import TopNav from "../components/TopNav"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
-const BaseNavigation = () => {
+export default function BaseNavigation() {
     let navigate = useNavigate()
 
     let [accessToken, setAccessToken] = useState(window.localStorage.getItem("accessToken"))
-    let [user, setUser] = useState(null)
+    // fetch user detail upon accessToken change
+    let user = useEffectUserDetail(accessToken)
 
     let [showNav, setShowNav] = useState(false)
 
@@ -30,34 +32,6 @@ const BaseNavigation = () => {
     function gotoSignIn() { navigate("/signin") }
     function gotoSignInIfNotAuthorized() {
         if (!accessToken) gotoSignIn()
-    }
-
-    function fetchUser() {
-        let aborter = new AbortController()
-
-        async function getData() {
-            try {
-                let response = await fetch('http://127.0.0.1:8000/api/me', {
-                    signal: aborter.signal,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                })
-
-                let json = await response.json()
-                console.log(json.data)
-                if (response.status === 200) {
-                    setUser(json.data)
-                }
-                
-            } catch (e) {
-                console.log("Error while fetching user data")
-            }
-        }
-
-        getData()
-
-        return () => aborter.abort()
     }
 
     function gotoHomeIfRouteIsIndex() {
@@ -95,7 +69,6 @@ const BaseNavigation = () => {
 
     useEffect(gotoHomeIfRouteIsIndex)
     useEffect(gotoSignInIfNotAuthorized)
-    useEffect(fetchUser, [])
 
     useEffect(() => {
         setShowNav(false)
@@ -182,5 +155,3 @@ const BaseNavigation = () => {
         </>
     )
 }
-
-export default BaseNavigation

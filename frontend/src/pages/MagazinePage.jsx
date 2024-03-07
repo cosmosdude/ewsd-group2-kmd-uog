@@ -4,6 +4,7 @@ import SearchIcon from "../assets/search.png"
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router"
 import AuthContext from "../contexts/AuthContext"
+import ContributionCard from "../components/ContributionCard"
 
 const MagazinePage = () => {
 
@@ -59,12 +60,12 @@ const MagazinePage = () => {
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
                 <h1>Selected Contributions</h1>
             </div>
-            <div className="flex">
+            <div className="flex flex-col">
                 <div className="inline-flex items-center gap-2 p-1 border-2 mx-auto w-full md:w-auto rounded">
                     <img src={SearchIcon} className="inline-block w-[18px] h-[18px]"/>
                     <input 
                         className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent" 
-                        type="text" 
+                        type="text"
                         placeholder="Search by username, role or faculty"
                         value={searchText}
                         onChange={(e) => { 
@@ -74,6 +75,15 @@ const MagazinePage = () => {
                     {/* <div className="grow"/> */}
                 </div>
             </div>
+            <div className="flex overflow-y-scroll justify-center">
+                {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
+                <div className="grid grid-flow-row grid-cols-3 items-center flex-wrap gap-[24px] overflow-x-scroll">
+                    <ContributionCard />
+                    <div className="bg-slate-200 w-[300px] h-[400px]"></div>
+                    <div className="bg-slate-200 w-[300px] h-[400px]"></div>
+                </div>
+            </div>
+            
         </div>
     )
 }
