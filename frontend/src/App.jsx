@@ -4,6 +4,7 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 
 import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
+
 import DashboardPage from './pages/DashboardPage'
 import NotFoundPage from "./pages/NotFoundPage"
 import UsersPage from "./pages/UsersPage"
@@ -13,7 +14,9 @@ import FacultiesPage from "./pages/FacultiesPage"
 import NewFacultyPage from "./pages/NewFacultyPage"
 import ContributionsPage from "./pages/ContributionsPage"
 import UserDetailPage from "./pages/UserDetailPage"
+
 import AcademicYearPage from "./pages/AcademicYearPage"
+
 import NewAcademicYearPage from "./pages/NewAcademicYearPage"
 import MagazineHistoryPage from "./pages/MagazineHistoryPage"
 import MagazineCurrentPage from "./pages/MagazineCurrentPage"

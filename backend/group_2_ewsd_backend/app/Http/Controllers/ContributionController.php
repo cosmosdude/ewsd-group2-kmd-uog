@@ -22,7 +22,7 @@ class ContributionController extends Controller
     public function index()
     {
         //display all contribution list and comment count
-        $commentscount = Contribution::select(
+        $contributionsWithComments = Contribution::select(
             'contributions.id',
             'contributions.name',
             'contributions.description',
@@ -48,7 +48,8 @@ class ContributionController extends Controller
             )
             ->get();
 
-        return response()->json(['Contribution List and Comment Count' => $commentscount], 200);
+        return $this->sendResponse($contributionsWithComments, 200);
+        // return response()->json(['Contribution List and Comment Count' => $commentscount], 200);
     }
 
     //view all uploaded contributions of each faculty before final closure

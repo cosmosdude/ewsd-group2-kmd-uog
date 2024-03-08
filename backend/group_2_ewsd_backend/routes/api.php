@@ -65,7 +65,7 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
 
-        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
+        // Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
 
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
@@ -80,8 +80,13 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware('role:m_manager')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
+
 });
 
 Route::post('/academicyear', [AcademicYearController::class, 'store']);
 Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
+
+// # Reason
+// Needed to call this api at guest login where accessToken is non-existent.
+Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
 

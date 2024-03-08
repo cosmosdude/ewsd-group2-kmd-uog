@@ -75,15 +75,15 @@ const MagazinePage = () => {
                     {/* <div className="grow"/> */}
                 </div>
             </div>
-            <div className="flex overflow-y-scroll justify-center">
+            <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
                 {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
-                <div className="grid grid-flow-row grid-cols-3 items-center flex-wrap gap-[24px] overflow-x-scroll">
+                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-center flex-wrap gap-[24px]">
                     <ContributionCard />
-                    <div className="bg-slate-200 w-[300px] h-[400px]"></div>
-                    <div className="bg-slate-200 w-[300px] h-[400px]"></div>
+                    <ContributionCard />
+                    <ContributionCard />
+                    <ContributionCard />
                 </div>
             </div>
-            
         </div>
     )
 }

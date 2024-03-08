@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom"
 
-import "../style/tailwind.css"
+// import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
 import AuthContext from "../contexts/AuthContext"

@@ -1,6 +1,6 @@
 import {Link, useNavigate, useParams} from "react-router-dom"
 
-import "../style/tailwind.css"
+// import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import InputField from "../components/InputField"
 import Breadcrumb from "../components/Breadcrumb"

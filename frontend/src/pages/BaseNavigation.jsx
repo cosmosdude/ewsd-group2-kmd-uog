@@ -15,8 +15,13 @@ import UserContext from "../contexts/UserContext"
 import TopNav from "../components/TopNav"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
+/**
+ * Base navigation handler. 
+ * Composed of left side nav bar and right side content view.
+ * */
 export default function BaseNavigation() {
     let navigate = useNavigate()
+    let {pathname: path} = useLocation();
 
     let [accessToken, setAccessToken] = useState(window.localStorage.getItem("accessToken"))
     // fetch user detail upon accessToken change
@@ -34,20 +39,9 @@ export default function BaseNavigation() {
         if (!accessToken) gotoSignIn()
     }
 
-    function gotoHomeIfRouteIsIndex() {
-        if (path === '/') navigate('/home')
-    }
-
-    function getAppropriateRoute() {
-        if (path === '/') {
-
-        }
-        return null;
-    }
-
-    function redirectAccordingToRole() {
-        let route = getAppropriateRoute()
-        if (route) navigate(route)
+    function redirectIfRouteIsIndex() {
+        if (path === '/') // if strictly equal to index
+        navigate('/contribution')
     }
 
     function gotoProfile() {
@@ -64,14 +58,17 @@ export default function BaseNavigation() {
         gotoSignIn()
     }
 
-    let location = useLocation();
-    let path = location.pathname
-
-    useEffect(gotoHomeIfRouteIsIndex)
+    // useEffect(redirectIfRouteIsIndex)
     useEffect(gotoSignInIfNotAuthorized)
 
+    // upon browser location change
     useEffect(() => {
+        // reset nav overlay if it is shown
+        // i.e hide nav overlay on mobile devices
         setShowNav(false)
+
+        // Redirect if required
+        redirectIfRouteIsIndex()
     }, [location])
 
     console.log('Base Navigation Called')

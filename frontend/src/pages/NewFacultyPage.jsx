@@ -36,12 +36,15 @@ const NewFacultyPage = () => {
     
     function getFormData() {
         let form = new FormData();
-        form.set("name", facultyName)
-        form.set("email", email)
-        form.set('phone', phone)
-        form.set("description", description)
+        form.set("faculty_name", facultyName)
         form.set("room_no", roomNo)
         form.set("building_no", buildingNo)
+        form.set("description", description)
+        form.set("username", username)
+        form.set("email", email)
+        form.set('phone', phone)
+        form.set('password', password)
+        
         return form;
     }
 
@@ -90,9 +93,10 @@ const NewFacultyPage = () => {
                 let json = await response.json();
                 navigate("/faculty")
             } else if (response.status === 422) {
-                setError("Faculty already created")
+                let json = await response.json()
+                setError(json.message)
             } else {
-                setError("Unable to create student account. (Parse Error)")
+                setError(`Server error ${respnose.status}`)
             }
         } catch {
             setError("Unable to create student account. (Fetch Error)")

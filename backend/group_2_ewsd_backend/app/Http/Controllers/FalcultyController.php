@@ -42,7 +42,7 @@ class FalcultyController extends Controller
                 'name' => $request->faculty_name,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'description' => $request->faculty_name,
+                'description' => $request->description,
                 'room_no' => $request->room_no,
                 'building_no' => $request->building_no,
             ]);

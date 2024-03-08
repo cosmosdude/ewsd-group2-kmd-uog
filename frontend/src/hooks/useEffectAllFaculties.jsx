@@ -34,9 +34,12 @@ function useEffectAllFaculties() {
                 } else {
                     setError("Unable to get faculty list.")
                 }
+
+                console.log(json)
                 
             } catch (error) {
                 setError(`Unable to get faculty list. ${error}`)
+                console.log(error)
             }
         }
 
