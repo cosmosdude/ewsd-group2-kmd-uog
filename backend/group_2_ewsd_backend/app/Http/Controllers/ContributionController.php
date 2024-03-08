@@ -21,34 +21,36 @@ class ContributionController extends Controller
     //need to add comment count in this function
     public function index()
     {
-        //display all contribution list and comment count
-        $commentscount = Contribution::select(
-            'contributions.id',
-            'contributions.name',
-            'contributions.description',
-            'contributions.images',
-            'contributions.files',
-            'contributions.submitted_date',
-            'contributions.status',
-            'contributions.closure_id',
-            'contributions.user_id as student_id',
-            DB::raw('count(comments.id) as commentcount')
-        )
-            ->leftJoin('comments', 'contributions.id', '=', 'comments.contribution_id')
-            ->groupBy(
-                'contributions.id',
-                'contributions.name',
-                'contributions.description',
-                'contributions.images',
-                'contributions.files',
-                'contributions.submitted_date',
-                'contributions.status',
-                'contributions.closure_id',
-                'contributions.user_id'
-            )
-            ->get();
+        // //display all contribution list and comment count
+        // $commentscount = Contribution::select(
+        //     'contributions.id',
+        //     'contributions.name',
+        //     'contributions.description',
+        //     'contributions.images',
+        //     'contributions.files',
+        //     'contributions.submitted_date',
+        //     'contributions.status',
+        //     'contributions.closure_id',
+        //     'contributions.user_id as student_id',
+        //     DB::raw('count(comments.id) as commentcount')
+        // )
+        //     ->leftJoin('comments', 'contributions.id', '=', 'comments.contribution_id')
+        //     ->groupBy(
+        //         'contributions.id',
+        //         'contributions.name',
+        //         'contributions.description',
+        //         'contributions.images',
+        //         'contributions.files',
+        //         'contributions.submitted_date',
+        //         'contributions.status',
+        //         'contributions.closure_id',
+        //         'contributions.user_id'
+        //     )
+        //     ->get();
 
-        return response()->json(['Contribution List and Comment Count' => $commentscount], 200);
+        // return response()->json(['Contribution List and Comment Count' => $commentscount], 200);
+
+        
     }
 
     //view all uploaded contributions of each faculty before final closure
@@ -109,6 +111,7 @@ class ContributionController extends Controller
             $contributionData['images'] =  implode(',', $uploadedImages);
         }
         $contribution = Contribution::create($contributionData);
+        return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
         //if student of faculty_id and coordinator of faculty_id are the same send email
         $user = auth()->user();
         if ($user->role_id === 4) {
@@ -128,7 +131,7 @@ class ContributionController extends Controller
         // $coordinatorName = 'Falculty Coordinator';
         // Mail::to('ewsdgroup2@yopmail.com')->send(new ArticleUploaded(auth()->user()->name, $request->name));
 
-        return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
+
     }
 
     public function update(Request $request, $id)
@@ -215,15 +218,13 @@ class ContributionController extends Controller
             'status' => 'required',
             'closure_id' => 'required|exists:closures,id'
         ]);
-        //check the contribution exists or not
         $contribution = Contribution::findOrFail($id);
-        //get closure information
         $closure = Closure::find($request->closure_id);
-        //check the final closure date is valid or not
+
         if (Carbon::parse($closure->final_closure_date)->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
-        //get contribution uploaded student id, and student faculty id
+
         $student_info = DB::table('contributions')
             ->select(
                 'users.id as student_id',
@@ -233,7 +234,6 @@ class ContributionController extends Controller
             ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
             ->where('contributions.id', $id)
             ->first();
-        //check Auth user is coordinator
         $auth_user_info = DB::table("users")
             ->select(
                 'faculty_users.user_id',
@@ -242,7 +242,6 @@ class ContributionController extends Controller
             ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
             ->where('users.id', Auth::user()->id)
             ->first();
-        //check student and coordinator has the same faculty
         if ($student_info->faculty_id == $auth_user_info->faculty_id) {
             $contribution->update(['status' => $request->status]);
             return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
