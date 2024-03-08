@@ -2,11 +2,11 @@ import ResponsiveCarousel from 'react-multi-carousel'
 import "react-multi-carousel/lib/styles.css";
 
 function Carousel({images = []}) {
-    console.log("Images", images)
+    // console.log("Images", images)
     // if invalid or not array
     // assume empty
     if (!images || !Array.isArray(images)) images = []
-    console.log(images)
+    // console.log(images)
     let responsive = {
         desktop: {
           breakpoint: {
@@ -17,6 +17,7 @@ function Carousel({images = []}) {
           partialVisibilityGutter: 0
         }
     }
+
     return (
         <div className="aspect-[1/0.75] rounded w-full">
             <ResponsiveCarousel 
@@ -24,7 +25,7 @@ function Carousel({images = []}) {
                 responsive={responsive} 
                 infinite={true}
                 autoPlay={images.length > 1}
-                autoPlaySpeed={1000}
+                autoPlaySpeed={3000}
                 arrows={false}
                 showDots={images.length > 1}
                 dotListClass='
@@ -37,7 +38,7 @@ function Carousel({images = []}) {
             >
                 {images.map((x, i) => {
                     return (
-                        <img className="aspect-[1/0.75] border" key={i} src={x}/>
+                        <img className="object-cover aspect-[1/0.75] border" key={i} src={x}/>
                     )
                 })}
             </ResponsiveCarousel>

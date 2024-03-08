@@ -5,11 +5,17 @@ import Dropdown from "../components/Dropdown"
 import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
 const ContributionsPage = () => {
     
     let accessToken = useContext(AuthContext);
     let navigate = useNavigate()
+
+    let user = useEffectUserDetail()
+    let isStudent = user.role_name === 'student'
+
+    console.log("user detail is", user)
 
     return (
         <div className="flex flex-col gap-8 w-full h-full p-4 px-8 overflow-y-hidden">
@@ -18,7 +24,7 @@ const ContributionsPage = () => {
                     className="py-2"
                     links={[
                         {name: "home", link: "/home"},
-                        {name: "contributions", current: true},
+                        {name: "magazines", current: true},
                     ]}/>
                 <span className="grow"/>
             </div>
@@ -28,14 +34,20 @@ const ContributionsPage = () => {
                         className="flex font-bold bg-purple-100 hover:opacity-50 transition-all"
                         to='/magazine/history'
                     >
-                        <p className="inline-block m-auto">History</p>
+                        <p className="inline-block m-auto">Previous Magazines</p>
                     </Link>
                     <Link 
                         className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
                         to='/magazine/current'
                     >
-                        <p className="inline-block m-auto">Forum</p>
+                        <p className="inline-block m-auto">Current Magazines</p>
                     </Link>
+                    { isStudent && <Link 
+                        className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
+                        // to='/magazine/current'
+                    >
+                        <p className="inline-block m-auto">Add Submission</p>
+                    </Link>}
                     
                     {/* <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/>
                     <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/>

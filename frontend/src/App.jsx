@@ -22,6 +22,7 @@ import MagazineHistoryPage from "./pages/MagazineHistoryPage"
 import MagazineCurrentPage from "./pages/MagazineCurrentPage"
 import MagazineNewPage from "./pages/MagazineNewPage"
 import MagazinePage from "./pages/MagazinePage"
+import UploadPage from "./pages/UploadPage"
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
 
             <Route path="academicyear" element={<AcademicYearPage/>}/>
             <Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
+
+            <Route path="test/upload" element={<UploadPage/>}/>
           </Route>
           
           <Route path="/signin" element={<SignInPage/>}/>

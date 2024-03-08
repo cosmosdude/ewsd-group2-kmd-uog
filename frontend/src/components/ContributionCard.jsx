@@ -1,11 +1,15 @@
 import Carousel from "./Carousel"
 // import { Carousel } from 'react-responsive-carousel'
 
-export default function ContributionCard() {
+export default function ContributionCard({
+    showUpdate,
+    showComment, commentCount = 0
+}) {
+
     return (
         // Outer
-        <button 
-            className="text-left rounded border hover:border-purple-500 transition-all"
+        <div 
+            className="text-left rounded border hover:border-purple-500 transition-all cursor-pointer"
             onClick={e => {
                 e.preventDefault()
             }}
@@ -18,9 +22,9 @@ export default function ContributionCard() {
             </div>
             {/* Carousel container */}
             <Carousel images={[
-                'https://picsum.photos/id/237/500',
-                'https://picsum.photos/id/238/500',
-                'https://picsum.photos/id/239/500',
+                'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                'https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                'https://images.unsplash.com/photo-1679678691006-d8a1484830c4?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             ]}/>
             {/* Name and Academic Year */}
             <div className="flex flex-col">
@@ -46,7 +50,7 @@ export default function ContributionCard() {
                 >
                     Read Contribution
                 </button>
-                <button 
+                {showUpdate && <button 
                     className="
                     bg-white border border-indigo-600 rounded px-[10px] py-[5px] text-indog-600
                     hover:opacity-50
@@ -57,10 +61,10 @@ export default function ContributionCard() {
                     }}
                 >
                     Update
-                </button>
+                </button>}
             </div>
-            <div className="flex border-b border-b-bg-slate-500"/>
-            <div className="flex">
+            { showComment && <div className="flex border-b border-b-bg-slate-500"/>}
+            {showComment && <div className="flex">
                 <div className="grow"/>
 
                 <button 
@@ -74,10 +78,10 @@ export default function ContributionCard() {
                     }}
                 >
                     <img className="w-[24px] h-[24px]"/>
-                    2
+                    {commentCount}
                 </button>
-            </div>
+            </div>}
         </div>
-        </button>
+        </div>
     )
 }

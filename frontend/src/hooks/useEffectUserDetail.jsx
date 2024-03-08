@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../contexts/AuthContext";
 
-export default function useEffectUserDetail(accessToken) {
+export default function useEffectUserDetail(accessToken = undefined) {
+
+    let token = useContext(AuthContext)
+
+    if (!accessToken) accessToken = token
 
     let [user, setUser] = useState({})
 

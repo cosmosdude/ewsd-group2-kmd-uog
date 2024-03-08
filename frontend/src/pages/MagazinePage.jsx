@@ -5,6 +5,8 @@ import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router"
 import AuthContext from "../contexts/AuthContext"
 import ContributionCard from "../components/ContributionCard"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail"
 
 const MagazinePage = () => {
 
@@ -12,35 +14,11 @@ const MagazinePage = () => {
     let { magazineId } = useParams()
     let accessToken = useContext(AuthContext)
     // current closure value
-    let [magazine, setMagazine] = useState()
+    let [magazine] = useEffectMagazineDetail(magazineId)
     let [searchText, setSearchText] = useState('')
 
-    useEffect(() => {
-        // To handle abortion
-        let aborter = new AbortController()
-
-        async function fetchData() {
-            try {
-                let response = await fetch(`http://127.0.0.1:8000/api/closures/${magazineId}`, {
-                    signal: aborter.signal,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Accept': 'application/json'
-                    }
-                })
-    
-                let json = await response.json()
-                if (response.status === 200) {
-                    let results = json.data 
-                    setMagazine(results)
-                }
-            } catch { }
-        }
-        // fetch async
-        fetchData()
-        // clean up by aborting the request
-        return () => { aborter.abort() }
-    },[])
+    let user = useEffectUserDetail()
+    console.log("user detail is", user)
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-8 overflow-y-hidden">
@@ -77,8 +55,8 @@ const MagazinePage = () => {
             </div>
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
                 {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
-                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-center flex-wrap gap-[24px]">
-                    <ContributionCard />
+                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
+                    <ContributionCard showComment commentCount={23}/>
                     <ContributionCard />
                     <ContributionCard />
                     <ContributionCard />

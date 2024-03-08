@@ -7,11 +7,24 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
+
+/**
+ * # Used for
+ * Current Magazine (Admin) <- New Magazine, Name unclickable
+ * Submit
+ * */
 
 const MagazineCurrentPage = () => {
     
     let accessToken = useContext(AuthContext);
     let navigate = useNavigate()
+
+    let user = useEffectUserDetail()
+    let isAdmin = user.role_name == 'administrator'
+    let isStudentOrMC = ['student', 'm_coordinator'].includes(user.role_name)
+    let s = "student"
+    console.log(user.role_name, isStudentOrMC)
 
     let [magazines, setMagazines] = useState([])
 
@@ -56,12 +69,12 @@ const MagazineCurrentPage = () => {
                         {name: "forum", current: true},
                     ]}/>
                 <span className="grow"/>
-                <Link 
+                { isAdmin && <Link 
                     className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
                     to='new'
                 >
                     New Forum
-                </Link>
+                </Link>}
             </div>
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
