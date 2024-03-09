@@ -6,6 +6,13 @@ export default {
         */
         detail(id = ":id") {
             return `/article/${id}`
+        },
+
+        /**
+         * Upload route.
+        */
+        upload() {
+            return `/article/upload`
         }
     }
 }

@@ -14,6 +14,9 @@ const ContributionsPage = () => {
 
     let user = useEffectUserDetail()
     let isStudent = user.role_name === 'student'
+    
+    let shouldShowCurrent = ['administrator', 'm_coordinator', 'student']
+        .includes(user.role_name)
 
     console.log("user detail is", user)
 
@@ -31,23 +34,23 @@ const ContributionsPage = () => {
             <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll">
                 <div className="grid grid-cols-3 gap-3 w-full flex-wrap">
                     <Link 
-                        className="flex font-bold bg-purple-100 hover:opacity-50 transition-all"
+                        className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
                         to='/magazine/history'
                     >
                         <p className="inline-block m-auto">Previous Magazines</p>
                     </Link>
-                    <Link 
+                    {shouldShowCurrent && <Link 
                         className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
                         to='/magazine/current'
                     >
                         <p className="inline-block m-auto">Current Magazines</p>
-                    </Link>
-                    { isStudent && <Link 
+                    </Link>}
+                    {/* { isStudent && <Link 
                         className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
                         // to='/magazine/current'
                     >
                         <p className="inline-block m-auto">Add Submission</p>
-                    </Link>}
+                    </Link>} */}
                     
                     {/* <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/>
                     <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/>

@@ -2,6 +2,9 @@ import Carousel from "./Carousel"
 // import { Carousel } from 'react-responsive-carousel'
 
 export default function ContributionCard({
+    author, 
+    title, subtitle,
+    description, facultyName,
     showUpdate,
     showComment, commentCount = 0,
     onCardClick
@@ -20,8 +23,8 @@ export default function ContributionCard({
         <div className="flex flex-col w-[300px] p-[10px] gap-[10px]">
             <div className="flex gap-[5px] items-center py-[10px] border-b border-b-slate-200">
                 <div className="w-[30px] h-[30px] bg-slate-200 rounded-full"/>
-                <p className="grow">Name</p>
-                <p className="shrink-0">IT Faculty</p>
+                <p className="grow">{author}</p>
+                <p className="shrink-0">{facultyName}</p>
             </div>
             {/* Carousel container */}
             <Carousel images={[
@@ -31,14 +34,12 @@ export default function ContributionCard({
             ]}/>
             {/* Name and Academic Year */}
             <div className="flex flex-col">
-                <p>Name</p>
-                <p>2021-2022 Academic year</p>
+                <p className="font-bold">{title}</p>
+                {subtitle && <p>{subtitle}</p>}
             </div>
             {/* Description */}
             <div className="flex flex-col">
-                <p>
-                    Lorem ipsum dolar armat. Lorem ipsum dolar armat. Lorem ipsum dolar armat. Lorem ipsum dolar armat
-                </p>
+                <p>{description}</p>
             </div>
             <div className="flex gap-[5px]">
                 <button 

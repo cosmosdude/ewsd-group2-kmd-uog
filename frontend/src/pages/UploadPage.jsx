@@ -136,10 +136,10 @@ function UploadPage() {
         {/* Content View */}
         <form 
             className="
-            w-full max-h-full 
+            w-full min-h-[500px] max-h-full
             my-auto 
             p-[25px]
-            flex flex-col items-center 
+            flex flex-col items-center
             bg-white 
             overflow-scroll
             "

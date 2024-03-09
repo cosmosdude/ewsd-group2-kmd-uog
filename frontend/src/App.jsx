@@ -52,12 +52,13 @@ function App() {
             <Route path="academicyear" element={<AcademicYearPage/>}/>
             <Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
 
+            <Route path={routesConfig.contribution.upload()} element={<UploadPage/>}/>
             <Route 
               path={routesConfig.contribution.detail()} 
               element={<ArticleDetailPage/>}
             />
 
-            <Route path="test/upload" element={<UploadPage/>}/>
+            
           </Route>
           
           <Route path="/signin" element={<SignInPage/>}/>
