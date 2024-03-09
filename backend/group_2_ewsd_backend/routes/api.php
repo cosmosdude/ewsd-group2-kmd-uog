@@ -42,9 +42,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:student')->group(function () {
         //contribution and comment count list
-        Route::get('/contributions', [ContributionController::class, 'index']);
         Route::post('/contributions', [ContributionController::class, 'store']);
-        Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
+        Route::apiResource('/contributions', ContributionController::class )->except('index', 'show','destroy');
 
         Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
         Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
@@ -75,7 +74,6 @@ Route::middleware('auth:api')->group(function () {
         //academic_year
         Route::post('/academicyear', [AcademicYearController::class, 'store']);
         Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
-
 
         Route::get('upcoming-closures',[ClosureController::class,'upcomingClosure']);
     });

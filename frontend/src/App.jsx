@@ -23,6 +23,10 @@ import MagazineCurrentPage from "./pages/MagazineCurrentPage"
 import MagazineNewPage from "./pages/MagazineNewPage"
 import MagazinePage from "./pages/MagazinePage"
 import UploadPage from "./pages/UploadPage"
+import StudentContributionHistoryPage from "./pages/StudentContributionHistoryPage"
+import ArticleDetailPage from "./pages/ArticleDetailPage"
+
+import routesConfig from "./configs/routes.config"
 
 function App() {
   return (
@@ -42,10 +46,16 @@ function App() {
             <Route path="magazine/history" element={<MagazineHistoryPage/>}/>
             <Route path="magazine/history/:magazineId" element={<MagazinePage/>}/>
             <Route path="magazine/current" element={<MagazineCurrentPage/>}/>
+            <Route path="magazine/current/history" element={<StudentContributionHistoryPage/>}/>
             <Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
 
             <Route path="academicyear" element={<AcademicYearPage/>}/>
             <Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
+
+            <Route 
+              path={routesConfig.contribution.detail()} 
+              element={<ArticleDetailPage/>}
+            />
 
             <Route path="test/upload" element={<UploadPage/>}/>
           </Route>

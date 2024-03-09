@@ -2,26 +2,14 @@ import Breadcrumb from "../components/Breadcrumb"
 
 import SearchIcon from "../assets/search.png"
 import { useContext, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
 import AuthContext from "../contexts/AuthContext"
 import ContributionCard from "../components/ContributionCard"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail"
 import Dropdown from "../components/Dropdown"
-import routesConfig from "../configs/routes.config"
 
-const MagazinePage = () => {
-
-    let navigate = useNavigate()
-
-    // get route parameters
-    let { magazineId } = useParams()
-    // current closure value
-    let [magazine] = useEffectMagazineDetail(magazineId)
-
-    let user = useEffectUserDetail()
-    console.log("user detail is", user)
-
+const StudentContributionHistoryPage = () => {
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-[10px] overflow-y-hidden">
             <div className="flex gap-2 items-center">
@@ -30,28 +18,25 @@ const MagazinePage = () => {
                     links={[
                         {name: "home", link: "/home"},
                         {name: "magazines", link: '/contribution'},
-                        {name: "previous", link: '/magazine/history'},
-                        {name: magazine && magazine.name && magazine.name, current: true}
+                        {name: "current", link: '/magazine/current'},
+                        {name: "submission history", current: true}
                     ]}
                 />
                 <span className="grow"/>
             </div>
             <div className="flex flex-col items-center gap-2">
-                <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
-                <h1>Selected Contributions</h1>
+                <h1 className="font-bold text-2xl">History</h1>
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
                 <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
                     <label>Filter:</label>
                     <Dropdown title="Select faculty"/>
                 </div>
-            </div>
+            </div> */}
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
                 {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
                 <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
-                    <ContributionCard onCardClick={() => {
-                        navigate(routesConfig.contribution.detail())
-                    }}/>
+                    <ContributionCard />
                     <ContributionCard />
                     <ContributionCard />
                     <ContributionCard />
@@ -61,4 +46,4 @@ const MagazinePage = () => {
     )
 }
 
-export default MagazinePage
+export default StudentContributionHistoryPage

@@ -133,9 +133,9 @@ const MagazineNewPage = () => {
                     className="py-2"
                     links={[
                         {name: "home", link: "/home"},
-                        {name: "contributions", link: "/contribution"},
-                        {name: "forum", link: "/magazine/current"},
-                        {name: id === 'new' ? "new forum" : 'update forum', current: true},
+                        {name: "magazines", link: "/contribution"},
+                        {name: "current", link: "/magazine/current"},
+                        {name: id === 'new' ? "new" : 'update', current: true},
                     ]}/>
                 <span className="grow"/>
             </div>

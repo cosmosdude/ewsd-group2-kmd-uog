@@ -8,6 +8,7 @@ import AuthContext from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import useEffectCurrentMagazines from "../hooks/useEffectCurrentMagazines"
 
 /**
  * # Used for
@@ -22,41 +23,8 @@ const MagazineCurrentPage = () => {
 
     let user = useEffectUserDetail()
     let isAdmin = user.role_name == 'administrator'
-    let isStudentOrMC = ['student', 'm_coordinator'].includes(user.role_name)
-    let s = "student"
-    console.log(user.role_name, isStudentOrMC)
-
-    let [magazines, setMagazines] = useState([])
-
-    useEffect(() => {
-        // To handle abortion
-        let aborter = new AbortController()
-
-        async function fetchData() {
-            try {
-                let response = await fetch('http://127.0.0.1:8000/api/closures/current', {
-                    signal: aborter.signal,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Accept': 'application/json'
-                    }
-                })
-                console.log(response.status)
-                let json = await response.json()
-                if (response.status === 200) {
-                    let results = json.data 
-                    setMagazines(results)
-                    console.log("Success")
-                } 
-            } catch (e) { 
-                console.log("Error", e)
-            }
-        }
-        // fetch async
-        fetchData()
-        // clean up by aborting the request
-        return () => { aborter.abort() }
-    }, []) // [] is required to ensure single call
+    let isStudent = ['student'].includes(user.role_name)
+    let magazines = useEffectCurrentMagazines()
 
     return (
         <div className="flex flex-col gap-8 w-full h-full p-4 px-8 overflow-y-hidden">
@@ -65,10 +33,17 @@ const MagazineCurrentPage = () => {
                     className="py-2"
                     links={[
                         {name: "home", link: "/home"},
-                        {name: "contributions", link: "/contribution"},
-                        {name: "forum", current: true},
+                        {name: "magazines", link: "/contribution"},
+                        {name: "current", current: true},
                     ]}/>
                 <span className="grow"/>
+                { isStudent && <Link 
+                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                    to='history'
+                >
+                    History
+                </Link>}
+
                 { isAdmin && <Link 
                     className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
                     to='new'
@@ -94,7 +69,7 @@ const MagazineCurrentPage = () => {
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">
-                                    <Link>{magazine.name}</Link>
+                                    <Link to =''>{magazine.name}</Link>
                                 </td>
                                 <td className="p-3">{magazine.start_date}</td>
                                 <td className="p-3">{magazine.closure_date}</td>

@@ -3,7 +3,8 @@ import Carousel from "./Carousel"
 
 export default function ContributionCard({
     showUpdate,
-    showComment, commentCount = 0
+    showComment, commentCount = 0,
+    onCardClick
 }) {
 
     return (
@@ -12,6 +13,8 @@ export default function ContributionCard({
             className="text-left rounded border hover:border-purple-500 transition-all cursor-pointer"
             onClick={e => {
                 e.preventDefault()
+                e.stopPropagation()
+                onCardClick()
             }}
         >
         <div className="flex flex-col w-[300px] p-[10px] gap-[10px]">
@@ -46,6 +49,7 @@ export default function ContributionCard({
                     "
                     onClick={e => {
                         e.preventDefault()
+                        e.stopPropagation()
                     }}
                 >
                     Read Contribution
@@ -58,6 +62,7 @@ export default function ContributionCard({
                     "
                     onClick={e => {
                         e.preventDefault()
+                        e.stopPropagation()
                     }}
                 >
                     Update
@@ -75,6 +80,7 @@ export default function ContributionCard({
                     "
                     onClick={e => {
                         e.preventDefault()
+                        e.stopPropagation()
                     }}
                 >
                     <img className="w-[24px] h-[24px]"/>
