@@ -17,6 +17,8 @@ Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
+
     Route::get('/contributions', [ContributionController::class, 'index']);
     Route::get('/contributions/{id}', [ContributionController::class, 'show']);
 
