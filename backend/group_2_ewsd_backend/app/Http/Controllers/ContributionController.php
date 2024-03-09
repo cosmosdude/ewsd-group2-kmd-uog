@@ -56,13 +56,14 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status'
                     ]);
-                $images = [];
+                // $images = [];
                 foreach ($contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
+                    $contribution->images = $images;
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
                     $contribution->comment_count = $comment_count;
@@ -92,13 +93,14 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status'
                     ]);
-                $images = [];
+                // $images = [];
                 foreach ($contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
+                    $contribution->images = $images;
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
                     $contribution->comment_count = $comment_count;
@@ -127,13 +129,14 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status'
                     ]);
-                $images = [];
+                // $images = [];
                 foreach ($contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
+                    $contribution->images = $images;
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
                     $contribution->comment_count = $comment_count;
@@ -162,7 +165,7 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status',
                     ]);
-                $images = [];
+                // $images = [];
                 $overdue_contributions = [];
                 foreach ($contributions as $contribution) {
                     // $contribution->submitted_date = Carbon::parse($contribution->submitted_date)->format('d-m-Y');
@@ -174,10 +177,11 @@ class ContributionController extends Controller
                 }
                 foreach ($overdue_contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
+                    $contribution->images = $images;
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
                     $contribution->comment_count = $comment_count;
@@ -189,7 +193,7 @@ class ContributionController extends Controller
                 $contributions = DB::table('contributions')
                     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
                     ->join('users', 'users.id', '=', 'contributions.user_id')
-                    ->join('faculty_users','faculty_users.users_id','=','users.id')
+                    ->join('faculty_users','faculty_users.user_id','=','users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('closures.id', $request->closure_id)
                     ->where('contributions.user_id', Auth::user()->id)
@@ -208,13 +212,14 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status'
                     ]);
-                $images = [];
+                // $images = [];
                 foreach ($contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
+                    $contribution->images = $images;
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
                     $contribution->comment_count = $comment_count;
@@ -224,7 +229,7 @@ class ContributionController extends Controller
                 $contributions = DB::table('contributions')
                     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
                     ->join('users', 'users.id', '=', 'contributions.user_id')
-                    ->join('faculty_users','faculty_users.users_id','=','users.id')
+                    ->join('faculty_users','faculty_users.user_id','=','users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('closures.id', $request->closure_id)
                     ->where('contributions.user_id', Auth::user()->id)
@@ -244,13 +249,14 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status'
                     ]);
-                $images = [];
+                // $images = [];
                 foreach ($contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
+                    $contribution->images = $images;
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
                     $contribution->comment_count = $comment_count;
@@ -260,7 +266,7 @@ class ContributionController extends Controller
                 $contributions = DB::table('contributions')
                     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
                     ->join('users', 'users.id', '=', 'contributions.user_id')
-                    ->join('faculty_users','faculty_users.users_id','=','users.id')
+                    ->join('faculty_users','faculty_users.user_id','=','users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('closures.id', $request->closure_id)
                     ->where('contributions.user_id', Auth::user()->id)
@@ -280,12 +286,12 @@ class ContributionController extends Controller
                         'contributions.attempt_number as contribution_attempt_number',
                         'contributions.status as contribution_status'
                     ]);
-                $images = [];
+                // $images = [];
                 foreach ($contributions as $contribution) {
                     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                    $images[] = explode(",", $contribution->images);
-                    foreach ($images as $image) {
-                        $image = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
                     }
                     $contribution->images = $images;
                     $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
