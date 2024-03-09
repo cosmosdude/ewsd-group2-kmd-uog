@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\FacultyUser;
+use App\Models\Falculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -231,7 +232,16 @@ class UserController extends Controller
         }
         return $this->sendResponse(Auth::user()->name, "Faculty Registered Successfully");
     }
-    //============================================================Private Function Start==============================================================//
-
-    //============================================================Private Function Start==============================================================//
+    public function getUnregisteredFacultyOfGuest($id)
+    {
+        $registered_faculties = DB::table('users')
+            ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+            ->where('users.id', $id)
+            ->pluck('faculty_users.faculty_id')
+            ->toArray();
+        $faculties = Falculty::all()->pluck("id")->toArray();
+        $unregistered_faculties = array_diff($faculties, $registered_faculties);
+        $unregistered_faculties = array_values($unregistered_faculties);
+        return $this->sendResponse($unregistered_faculties, "Unregistered faculties", 200);
+    }
 }
