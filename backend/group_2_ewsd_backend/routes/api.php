@@ -51,6 +51,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
+        Route::post('/contributions/all', [ContributionController::class, 'getAllContributionsByCoordinatorAndStudent']);
     });
 
     Route::middleware(['role:administrator,m_coordinator'])->group(function () {
