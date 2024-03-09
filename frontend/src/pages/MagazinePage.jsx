@@ -9,6 +9,7 @@ import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail"
 import Dropdown from "../components/Dropdown"
 import routesConfig from "../configs/routes.config"
+import { Link } from "react-router-dom"
 
 const MagazinePage = () => {
 
@@ -20,6 +21,7 @@ const MagazinePage = () => {
     let [magazine] = useEffectMagazineDetail(magazineId)
 
     let user = useEffectUserDetail()
+    let isStudent = 'student' === user.role_name
     console.log("user detail is", user)
 
     return (
@@ -35,6 +37,12 @@ const MagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
+                { isStudent && <Link 
+                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                    to={routesConfig.contribution.upload()}
+                >
+                    Add Submissions
+                </Link>}
             </div>
             <div className="flex flex-col items-center gap-2">
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>

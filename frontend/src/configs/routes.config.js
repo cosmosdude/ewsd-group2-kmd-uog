@@ -9,10 +9,17 @@ export default {
         },
 
         /**
-         * Upload route.
+         * Route for uploading article/contributions.
         */
         upload() {
-            return `/article/upload`
+            return `/article/upload/:magazineId`
+        },
+
+        /**
+         * Route for updating article/contributions.
+        */
+        update() {
+            return `/article/update`
         }
     }
 }
