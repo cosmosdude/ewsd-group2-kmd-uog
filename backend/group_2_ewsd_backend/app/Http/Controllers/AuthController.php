@@ -18,6 +18,7 @@ class AuthController extends Controller
     public function me()
     {
         $user_id = Auth::user()->id;
+        //dd($user_id);
         $auth_user_info = DB::table('users')
             ->select(
                 'users.id as user_id',
@@ -44,7 +45,7 @@ class AuthController extends Controller
             'email' => 'required|unique:users|max:255',
             'password' => 'required|min:8',
             'phone' => 'required',
-            // 'role_id' => 'required',
+            //'role_id' => 'required',
             'faculty_id' => 'required',
             // 'academic_id' => 'required',
         ]);
@@ -113,6 +114,7 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->accessToken;
             $success['token'] =  $token;
             $success['name'] =  $user->name;
+            $success['id'] = $user->id;
             if ($user->last_login_time != null) {
                 $success['last_login_time'] = $user->last_login_time;
             }

@@ -29,7 +29,8 @@ class ContributionController extends Controller
             'contributions.status', 'contributions.closure_id', 'contributions.user_id' )
             ->get();
 
-        return response()->json(['Contribution List and Comment Count' => $commentscount ], 200);
+        return $this->sendResponse($commentscount, "Contribution List and Comment Count", 201);
+
     }
 
     //view all uploaded contributions of each faculty before final closure
@@ -44,7 +45,7 @@ class ContributionController extends Controller
             'images' => 'nullable|max:5',
             // |mimes:jpg,jpeg,png
             'closure_id' => 'required|exists:closures,id',
-            'user_id' => 'required|exists:users,id',
+            //'user_id' => 'required|exists:users,id',
         ]);
         $closure = Closure::find($request->closure_id);
         if (Carbon::parse($closure->closure_date)->isPast()) {
@@ -58,6 +59,7 @@ class ContributionController extends Controller
                 $uploadedFiles[] = $fileName;
             }
         }
+
         $uploadedImages = [];
         if ($request->hasFile('images')) {
             $images = $request->file('images');
@@ -71,7 +73,7 @@ class ContributionController extends Controller
             }
         }
 
-
+        return response()->json(Auth::user());
         $contributionData = [
             'name' => $request->name,
             'description' => $request->description,
@@ -88,11 +90,13 @@ class ContributionController extends Controller
             $contributionData['images'] =  implode(',', $uploadedImages);
         }
         $contribution = Contribution::create($contributionData);
+
         //if student of faculty_id and coordinator of faculty_id are the same send email
         $user = auth()->user();
         if ($user->role_id === 4){
-            $coordinator = User::where('faculty_id', $user->faculty_id)
-                                ->where('role_id', 3)
+            $coordinator = User::join('faculty_users', 'users.id', '=' , 'faculty_users.user_id')
+                                ->where('faculty_users.faculty_id', $user->faculty_id)
+                                ->where('users.role_id', 3)
                                 ->first();
         }
         if($coordinator){
@@ -100,14 +104,8 @@ class ContributionController extends Controller
             //dd($coordinator);
             Mail::to ($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
-
-
-        // //send email noti
-        // $coordinatorEmail = 'ewsdgroup2@yopmail.com';
-        // $coordinatorName = 'Falculty Coordinator';
-        // Mail::to('ewsdgroup2@yopmail.com')->send(new ArticleUploaded(auth()->user()->name, $request->name));
-
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
+
     }
 
     public function update(Request $request, $id)
