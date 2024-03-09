@@ -63,6 +63,7 @@ class UserController extends Controller
                     'users.name as user_name',
                     'users.email as user_email',
                     'users.phone as user_phone',
+                    'users.last_login_time as user_last_access_time',
                     'roles.id as role_id',
                     'roles.name as role_name'
                 )
@@ -80,7 +81,7 @@ class UserController extends Controller
                     ->toArray();
 
                 $user->faculty_name = $faculties;
-
+                $user->user_last_access_time = $this->timeDifference($user->user_last_access_time);
                 return $this->sendResponse($user, "User Retrieved Successfully", 200);
             } else {
                 return $this->sendError(null, "User not found", 404);

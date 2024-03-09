@@ -3,12 +3,14 @@ import Carousel from "./Carousel"
 
 export default function ContributionCard({
     author, 
+    srcs = [],
     title, subtitle,
     description, facultyName,
     showUpdate,
     showComment, commentCount = 0,
     onCardClick
 }) {
+    console.log("image srcs", srcs)
 
     return (
         // Outer
@@ -27,11 +29,7 @@ export default function ContributionCard({
                 <p className="shrink-0">{facultyName}</p>
             </div>
             {/* Carousel container */}
-            <Carousel images={[
-                'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                'https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                'https://images.unsplash.com/photo-1679678691006-d8a1484830c4?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            ]}/>
+            <Carousel images={srcs}/>
             {/* Name and Academic Year */}
             <div className="flex flex-col">
                 <p className="font-bold">{title}</p>

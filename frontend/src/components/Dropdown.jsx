@@ -25,7 +25,7 @@ const Dropdown = ({className, title, index, onChange, options, disabled}) => {
                             className="flex gap-[4px] min-h-[38px] px-[4px] items-center cursor-pointer hover:bg-slate-50 rounded"
                             onClick={() => { 
                                 setSelected(index) 
-                                onChange && onChange(option, index)
+                                onChange?.(option, index)
                             }}
                         >
                             <img className={`${(selected === index) ? "" : "invisible"} inline-block w-[14px] h-[14px]`} src={TickSVG}/>

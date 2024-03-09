@@ -27,6 +27,7 @@ import StudentContributionHistoryPage from "./pages/StudentContributionHistoryPa
 import ArticleDetailPage from "./pages/ArticleDetailPage"
 
 import routesConfig from "./configs/routes.config"
+import LiveMagazinePage from "./pages/LiveMagazinePage"
 
 function App() {
   return (
@@ -46,7 +47,9 @@ function App() {
             <Route path="magazine/history" element={<MagazineHistoryPage/>}/>
             <Route path="magazine/history/:magazineId" element={<MagazinePage/>}/>
             <Route path="magazine/current" element={<MagazineCurrentPage/>}/>
+            <Route path="magazine/current/:magazineId/view" element={<LiveMagazinePage/>}/>
             <Route path="magazine/current/history" element={<StudentContributionHistoryPage/>}/>
+            {/* Create and Update  */}
             <Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
 
             <Route path="academicyear" element={<AcademicYearPage/>}/>

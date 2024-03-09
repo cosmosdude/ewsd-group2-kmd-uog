@@ -18,7 +18,23 @@ class FalcultyController extends Controller
         $faculties = Falculty::all();
         return $this->sendResponse($faculties, "Faculty Lists", 200);
     }
-
+    public function show($id)
+    {
+        $faculty = DB::table('falculties')
+            ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
+            ->join('users', 'users.id', '=', 'faculty_users.user_id')
+            ->where('falculties.id', $id)
+            ->first([
+                'falculties.name as faculty_name',
+                'falculties.room_no as room_no',
+                'falculties.building_no as building_no',
+                'falculties.description as description',
+                'users.name as coordinator_name',
+                'users.email as coordinator_email',
+                'users.phone as coordinator_phone',
+            ]);
+        return $this->sendResponse($faculty, "Faculty Details", 200);
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -34,7 +50,8 @@ class FalcultyController extends Controller
             'username' => 'required',
             'email' => 'required|unique:falculties,email',
             'phone' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'description' => 'required'
         ]);
         $role = Role::where('name', 'm_coordinator')->first();
         $faculty = DB::transaction(function () use ($request, $role) {
@@ -45,6 +62,7 @@ class FalcultyController extends Controller
                 'description' => $request->description,
                 'room_no' => $request->room_no,
                 'building_no' => $request->building_no,
+                'description' => $request->description
             ]);
             $user = User::create([
                 'name' => $request->username,
@@ -75,6 +93,7 @@ class FalcultyController extends Controller
             'username' => 'required',
             'email' => 'required|unique:falculties,email,' . $id . ',id',
             'phone' => 'required',
+            'description' => 'required',
         ]);
         $requestData['faculty_name'] = $request->faculty_name;
         $requestData['room_no'] = $request->room_no;
@@ -82,6 +101,8 @@ class FalcultyController extends Controller
         $requestData['username'] = $request->username;
         $requestData['coordinator_email'] = $request->email;
         $requestData['coordinator_phone'] = $request->phone;
+        $requestData['description'] = $request->description;
+
         if ($request->password) {
             $requestData['password'] = $request->password;
         }
@@ -99,6 +120,7 @@ class FalcultyController extends Controller
                 'phone' => $requestData['coordinator_phone'],
                 'room_no' => $requestData['room_no'],
                 'building_no' => $requestData['building_no'],
+                'description' => $requestData['description'],
             ]);
             if ($request->password) {
                 $coordinator->update([

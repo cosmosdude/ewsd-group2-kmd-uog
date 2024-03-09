@@ -24,7 +24,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('/closures/current', [ClosureController::class, 'getCurrentClosures']);
     Route::apiResource('/closures', ClosureController::class)->except('destroy');
-    Route::get('/closures/previous', [ClosureController::class, 'getPreviousClosures']);//previous closure list
+    Route::get('/closures/previous', [ClosureController::class, 'getPreviousClosures']); //previous closure list
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::get('/contributions/download/{id}', [ContributionController::class, 'downloadContribution']);
@@ -36,58 +36,49 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/closures/{id}/submit', [ClosureController::class, 'getSubmittedContributionsWithinFaculty']);
     });
 
-    Route::middleware('role:guest')->group(function (){
-        Route::post('/guest/faculty-register',[UserController::class,'registerFacultyByGuest']);
+    Route::middleware('role:guest')->group(function () {
+        Route::post('/guest/faculty-register', [UserController::class, 'registerFacultyByGuest']);
     });
 
     Route::middleware('role:student')->group(function () {
-        //contribution and comment count list
         Route::post('/contributions', [ContributionController::class, 'store']);
-        Route::apiResource('/contributions', ContributionController::class )->except('index', 'show','destroy');
-
         Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
         Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
-        
+        Route::apiResource('/contributions', ContributionController::class)->except('index', 'show', 'destroy');
         Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
-        
+        //contribution and comment count list
+        Route::get('/contributions', [ContributionController::class, 'index']);
     });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
-
+        Route::post('/contributions/all', [ContributionController::class, 'getAllContributionsByCoordinatorAndStudent']);
     });
 
     Route::middleware(['role:administrator,m_coordinator'])->group(function () {
-        Route::post('/students/search',[UserController::class,'searchStudent']);
-        Route::get('/users/roles/students',[UserController::class,'getStudentList']);
-
-
+        Route::post('/students/search', [UserController::class, 'searchStudent']);
+        Route::get('/users/roles/students', [UserController::class, 'getStudentList']);
+    });
+    Route::middleware(['role:administrator,m_coordinator,student,m_manager'])->group(function () {
+        Route::get('/faculties/{id}', [FalcultyController::class, 'show']);
     });
     Route::middleware('role:administrator')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
 
-        // Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
-
+        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
+        // Route::post('/faculties', [FalcultyController::class, 'store']);
         //academic_year
         Route::post('/academicyear', [AcademicYearController::class, 'store']);
         Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
 
-        Route::get('upcoming-closures',[ClosureController::class,'upcomingClosure']);
+
+        Route::get('upcoming-closures', [ClosureController::class, 'upcomingClosure']);
     });
 
     Route::middleware('role:m_manager')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
-
 });
-
-Route::post('/academicyear', [AcademicYearController::class, 'store']);
-Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
-
-// # Reason
-// Needed to call this api at guest login where accessToken is non-existent.
-Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
-

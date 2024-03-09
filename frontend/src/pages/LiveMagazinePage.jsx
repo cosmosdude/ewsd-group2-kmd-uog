@@ -1,0 +1,137 @@
+import Breadcrumb from "../components/Breadcrumb"
+
+import SearchIcon from "../assets/search.png"
+import { useContext, useEffect, useState } from "react"
+import { useLocation, useNavigate, useParams } from "react-router"
+import AuthContext from "../contexts/AuthContext"
+import ContributionCard from "../components/ContributionCard"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail"
+import Dropdown from "../components/Dropdown"
+import routesConfig from "../configs/routes.config"
+import { Link } from "react-router-dom"
+import useEffectArticlesOfCurrentMagazine from "../hooks/useEffectArticlesOfCurrentMagazine"
+import apiConfig from "../configs/api.config"
+
+const filter = {
+    
+    get statusOptions() {
+        return [
+            {id: 'all', name: "All"},
+            {id: 'approve', name: "Approved"},
+            {id: 'reject', name: "Rejected"},
+        ]
+    },
+
+    get commentOptions() {
+        return [
+        // all/ non-commented/ commented/ overdue(for coordinatort)
+            {id: 'all', name: "All"},
+            {id: 'non-commented', name: "Non-Commented"},
+            {id: 'commented', name: "Commented"},
+            {id: 'overdue', name: "Overdue"},
+        ]
+    }
+}
+
+
+
+const LiveMagazinePage = () => {
+
+    let navigate = useNavigate()
+    let {pathname} = useLocation()
+    // get route parameters
+    let { magazineId } = useParams()
+    console.log(pathname, magazineId)
+    // current closure value
+    let [magazine] = useEffectMagazineDetail(magazineId)
+
+    let user = useEffectUserDetail()
+    let isStudent = 'student' === user.role_name
+    let isMC = 'm_coordinator' === user.role_name
+    console.log("user detail is", user)
+
+    let [statusFilter, setStatusFilter] = useState(filter.statusOptions[0])
+    let [commentFilter, setCommentFilter] = useState(filter.commentOptions[0])
+
+    let magazines = useEffectArticlesOfCurrentMagazine({
+        magazineId: magazineId,
+        status: isStudent ? statusFilter.id : commentFilter.id
+    })
+
+    return (
+        <div className="flex flex-col h-full p-4 px-8 gap-[10px] overflow-y-hidden">
+            <div className="flex gap-2 items-center">
+                <Breadcrumb 
+                    className="py-2"
+                    links={[
+                        {name: "home", link: "/home"},
+                        {name: "magazines", link: '/contribution'},
+                        {name: "current", link: '/magazine/current'},
+                        {name: magazine && magazine.name && magazine.name, current: true}
+                    ]}
+                />
+                <span className="grow"/>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+                <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
+                <h1>Selected Contributions</h1>
+            </div>
+            <div className="flex flex-col">
+                <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
+                    <label>Filter:</label>
+                    {isMC && <Dropdown 
+                        className="min-w-[200px]"
+                        title={commentFilter.name} 
+                        options={filter.commentOptions.map(x => x.name)}
+                        onChange={(_, index) => {
+                            setCommentFilter(filter.commentOptions[index])
+                        }}
+                    />}
+                    {isStudent && <Dropdown 
+                        className="min-w-[200px]"
+                        title={statusFilter.name}
+                        options={filter.statusOptions.map(x => x.name)}
+                        onChange={(_, index) => {
+                            setStatusFilter(filter.statusOptions[index])
+                        }}
+                    />}
+                </div>
+            </div>
+            <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
+                {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
+                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
+                    {/* <ContributionCard onCardClick={() => {
+                        navigate(routesConfig.contribution.detail())
+                    }}/>
+                    <ContributionCard />
+                    <ContributionCard />
+                    <ContributionCard /> */}
+                    {magazines.map((item, index) => {
+                        return (
+                            <ContributionCard 
+                                key={index}
+                                author={item.user_name}
+                                srcs={
+                                    item.images.map(x => {
+                                        return apiConfig.host + x.split('public')[1]
+                                        // console.log()
+                                        // return x
+                                    })
+                                }
+                                title={item.contribution_name} 
+                                subtitle={"gg"}
+                                description={item.contribution_description}
+                                onCardClick={() => {
+                                    navigate(routesConfig.contribution.detail())
+                                }}
+                            />
+                        )
+                    })}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default LiveMagazinePage

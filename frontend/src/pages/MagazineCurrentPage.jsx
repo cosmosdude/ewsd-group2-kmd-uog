@@ -69,7 +69,7 @@ const MagazineCurrentPage = () => {
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">
-                                    <Link to =''>{magazine.name}</Link>
+                                    <Link to ={`${magazine.id}/view`}>{magazine.name}</Link>
                                 </td>
                                 <td className="p-3">{magazine.start_date}</td>
                                 <td className="p-3">{magazine.closure_date}</td>
