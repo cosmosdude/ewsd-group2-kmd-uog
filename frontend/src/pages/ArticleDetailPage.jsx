@@ -1,8 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb";
 import ContributionCard from "../components/ContributionCard";
+import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
+import apiConfig from "../configs/api.config";
+import useEffectUserDetail from "../hooks/useEffectUserDetail";
 
 function ArticleDetailPage() {
+    let {id} = useParams()
+
+    let user = useEffectUserDetail()
+    let isStudent = user.role_name === 'student'
+
+    let detail = useEffectArticleDetail(id)
+    console.log(detail)
     return (
         // Full container
         // if not on small device, it will be 2 panels.
@@ -26,8 +36,21 @@ function ArticleDetailPage() {
                 <div className="flex flex-col gap-[20px] items-center md:overflow-y-scroll">
                     <h1 className="text-2xl font-bold">Comment Section</h1>
                     <div className="flex flex-col gap-[20px]">
-                        <ContributionCard/>
-                        <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
+                        <ContributionCard
+                            author={detail.contribution?.user_name}
+                            srcs={
+                                [apiConfig.host + "/images/" + detail.contribution?.images]
+                                // detail.contribution?.images?.map(x => {
+                                //     return apiConfig.host + x.split('public')[1]
+                                //     // console.log()
+                                //     // return x
+                                // }) ?? []
+                            }
+                            title={detail.contribution?.name} 
+                            subtitle={"gg"}
+                            description={detail.contribution?.description}
+                        />
+                        {!isStudent && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
                             <button 
                                 className="
                                 rounded bg-blue-400 text-white py-[5px]
@@ -42,7 +65,7 @@ function ArticleDetailPage() {
                                 transition-all
                                 "
                             >Reject</button>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -52,11 +75,10 @@ function ArticleDetailPage() {
             p-[20px]
             bg-slate-200 
             ">
-                <Comment/>
-                <Comment/>
-                <Comment/>
-                <Comment/>
-                <Comment/>
+                {detail?.comments?.map((x, i) => {
+                    return <Comment key={i}/>
+                }) ?? false}
+
                 <CommentBox/>
             </div>
         </div>

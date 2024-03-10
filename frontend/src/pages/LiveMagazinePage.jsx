@@ -123,7 +123,7 @@ const LiveMagazinePage = () => {
                                 subtitle={"gg"}
                                 description={item.contribution_description}
                                 onCardClick={() => {
-                                    navigate(routesConfig.contribution.detail())
+                                    navigate(routesConfig.contribution.detail(item.contribution_id))
                                 }}
                             />
                         )
