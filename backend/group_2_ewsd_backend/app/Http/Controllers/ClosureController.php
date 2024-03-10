@@ -29,7 +29,7 @@ class ClosureController extends Controller
         }
         $filtered = $closure->get();
         return response()->json(['filtered' => $filtered], 200);
-    }
+    } 
 
     public function show($id)
     {
