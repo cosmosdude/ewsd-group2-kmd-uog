@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 
-export default function useEffectArticleDetail(id) {
+export default function useEffectArticleDetail(id, dependencies = []) {
 
     let token = useContext(AuthContext)
 
@@ -34,7 +34,7 @@ export default function useEffectArticleDetail(id) {
         if (token) getData()
 
         return () => aborter.abort()
-    }, [id])
+    }, [id, ...dependencies])
 
     return data
 }

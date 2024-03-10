@@ -4,7 +4,7 @@ import ContributionCard from "../components/ContributionCard";
 import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 import apiConfig from "../configs/api.config";
 import useEffectUserDetail from "../hooks/useEffectUserDetail";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 
 function ArticleDetailPage() {
@@ -14,7 +14,9 @@ function ArticleDetailPage() {
     let user = useEffectUserDetail()
     let isStudent = user.role_name === 'student'
 
-    let detail = useEffectArticleDetail(id)
+    let [commentUUID, setCommentUUID] = useState(Math.random())
+
+    let detail = useEffectArticleDetail(id, [commentUUID])
     console.log(detail)
 
     async function updateStatus(status) {
@@ -46,6 +48,29 @@ function ArticleDetailPage() {
             }
         } catch (e) { 
             console.log("FUCK Error", e)
+        }
+    }
+
+    async function comment(text) {
+        if (!text) return
+
+        try {
+            let f = new FormData()
+            f.append('contribution_id', id)
+            f.append('content', text)
+            
+            let res = await fetch('http://127.0.0.1:8000/api/comments', {
+                method: "POST",
+                headers: {
+                    'accepts': 'application/json',
+                    'authorization': `Bearer ${accessToken}`
+                },
+                body: f
+            })
+            setCommentUUID(Math.random())
+
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -85,6 +110,8 @@ function ArticleDetailPage() {
                             title={detail.contribution?.name} 
                             // subtitle={"gg"}
                             description={detail.contribution?.description}
+                            status={detail.contribution?.status}
+                            commentCount={detail.comments?.length}
                         />
                         {!isStudent && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
                             <button 
@@ -122,7 +149,7 @@ function ArticleDetailPage() {
                     />
                 }) ?? false}
 
-                <CommentBox/>
+                <CommentBox onComment={comment}/>
             </div>
         </div>
     );
@@ -147,18 +174,26 @@ function Comment({author, ago, comment}) {
     );
 }
 
-function CommentBox() {
+function CommentBox({onComment}) {
+    let textArea = useRef()
     return (
         <div className="flex gap-[10px] items-start bg-white p-[20px]">
             <div className="block w-[40px] aspect-square border rounded-full"/>
             <div className="grow flex flex-col items-end gap-[10px]">
-                <textarea className="p-[5px] w-full h-[75px] resize-none border"/>
+                <textarea ref={textArea} className="p-[5px] w-full h-[75px] resize-none border"/>
                 <button 
                     className="
                     flex w-[30px] aspect-square 
                     border-[2px] border-slate-200 rounded-full
                     bg-slate-50 hover:bg-slate-200
                     "
+                    onClick={e => {
+                        e.preventDefault()
+                        console.log(textArea)
+                        console.log(textArea.current.value)
+                        onComment?.(textArea.current.value)
+                        textArea.current.value = ""
+                    }}
                 />
             </div>
         </div>
