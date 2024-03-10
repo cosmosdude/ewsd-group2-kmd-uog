@@ -22,15 +22,7 @@ function ArticleDetailPage() {
     console.log(detail, isUpload)
 
     async function updateStatus(status) {
-        // let f = new FormData()
-        // f.append('closure_id', detail?.contribution?.closure_id)
-        // f.append('status', status)
-        // let ff = new FormData()
-        // ff.append('closure_id', null)
-        // ff.append('status', status)
         let data = `closure_id=${detail?.contribution?.closure_id}&status=${status}`
-        console.log('closure_id', detail?.contribution?.closure_id)
-        console.log('status', status)
         try {
             let response = await fetch('http://127.0.0.1:8000/api/contributions/status/'+id, {
                 method: 'PUT',

@@ -28,6 +28,7 @@ import ArticleDetailPage from "./pages/ArticleDetailPage"
 
 import routesConfig from "./configs/routes.config"
 import LiveMagazinePage from "./pages/LiveMagazinePage"
+import GuestListPage from "./pages/GuestListPage"
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
             <Route path="users" element={<UsersPage/>}/>
             <Route path="users/new" element={<StudentRegistrationPage/>}/>
             <Route path="users/:id" element={<UserDetailPage/>}/>
+
+            <Route path="guests" element={<GuestListPage/>}/>
 
             <Route path="faculty" element={<FacultiesPage/>}/>
             <Route path="faculty/:id" element={<NewFacultyPage/>}/>

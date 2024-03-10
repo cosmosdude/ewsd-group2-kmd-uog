@@ -29,6 +29,7 @@ export default function useEffectUserDetail(accessToken = undefined) {
                 
             } catch (e) {
                 console.log("Error while fetching user data")
+                console.log(e)
             }
         }
 

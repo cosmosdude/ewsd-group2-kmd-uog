@@ -32,6 +32,7 @@ export default function BaseNavigation() {
     let roleId = user && user.role_id && user.role_id
     let isAdmin = roleId === 1
     let isMM = roleId === 2
+    let isMC = roleId === 3 
     let isAdminOrMM = isAdmin || isMM
 
     function gotoSignIn() { navigate("/signin") }
@@ -110,6 +111,12 @@ export default function BaseNavigation() {
                                     src={UsersIcon}
                                     cta="Users" 
                                     onClick={() => {navigate('/users')}}
+                                />}
+                                {isMC && <SideNavItem 
+                                    selected={path.startsWith('/guests')} 
+                                    src={UsersIcon}
+                                    cta="Guests" 
+                                    onClick={() => {navigate('/guests')}}
                                 />}
                                 {isAdmin && <SideNavItem 
                                     selected={path.startsWith('/faculty')} 

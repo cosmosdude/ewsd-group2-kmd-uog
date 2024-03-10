@@ -63,7 +63,7 @@ const UserDetailPage = () => {
                     className="py-2"
                     links={[
                         {name: "home", link: "/home"},
-                        {name: "users", link: "/users"},
+                        {name: "users", link: -1},
                         {name: "details", current: true}
                     ]}
                 />
