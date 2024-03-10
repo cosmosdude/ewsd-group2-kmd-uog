@@ -17,7 +17,6 @@ class ClosureController extends Controller
     {
         $closures = Closure::orderBy('id',  'asc')->paginate(25);
         return $this->sendResponse($closures, "Closures Retrieved Successfully", 200);
-
     }
     //magazine period filter with academic year
     public function filter(Request $request)
@@ -29,7 +28,7 @@ class ClosureController extends Controller
         }
         $filtered = $closure->get();
         return response()->json(['filtered' => $filtered], 200);
-    } 
+    }
 
     public function show($id)
     {
@@ -74,21 +73,48 @@ class ClosureController extends Controller
         return $this->sendResponse($closure, "Closure Updated Successfully", 200);
     }
     //get previous closures list
-    public function getPreviousClosures(){
-        $previousclosure = Closure::where('final_closure_date','<',now())
-                        ->orderBy('final_closure_date','DESC')
-                        ->get();
-        return $this->sendResponse($previousclosure, "Previous Closures List", 200);
+    public function getPreviousClosures()
+    {
+        if(Auth::user()->hasRole('administrator')){
+            $previousClosure = Closure::where('final_closure_date', '<', now())
+                ->select(
+                    'id as No',
+                    'name as Title',
+                    'start_date as start_date',
+                    'final_closure_date as end_date'
+                )
+                ->orderBy('final_closure_date', 'desc')
+                ->get();
+
+        } else if(Auth::user()->hasRole('m_coordinator')){
+            $coordinator_faculty_id = DB::table('users')
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->where('users.id', Auth::user()->id)
+                ->value('faculty_users.faculty_id');
+
+            $previousClosure = DB::table('closures')
+                ->join('contributions', 'contributions.closure_id', '=', 'closures.id')
+                ->join('users', 'users.id', '=', 'contributions.user_id')
+                ->join('faculty_users', 'faculty_users.faculty_id', '=', 'faculties.id')
+                ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
+                ->where('faculties.id', $coordinator_faculty_id)
+                ->where('closures.final_closure_date', '<', now())
+                ->select(
+                    'closures.id as No',
+                    'closures.name as Title',
+                    'closures.start_date as start_date',
+                    'closures.final_closure_date as end_date'
+                )
+                ->distinct()
+                ->get();
+        }
+        return $this->sendResponse($previousClosure, "Previous Closures List", 200);
     }
 
     public function getCurrentClosures()
     {
         $closures = DB::select('CALL check_closure_date()');
         return $this->sendResponse($closures, "Current Closures Retrieved", 200);
-    }
-    //par ma par ayin may yan
-    public function destroy($id)
-    {
     }
 
 
@@ -186,5 +212,17 @@ class ClosureController extends Controller
             ->where('user_id', Auth::user()->id)
             ->get();
         return $this->sendResponse($contributions, "Studnet's submitted Contributions Retrieved", 200);
+    }
+
+    public function upcomingClosure()
+    {
+        $closures = Closure::all();
+        $upcoming = [];
+        foreach ($closures as $closure) {
+            if (!Carbon::parse($closure->start_date)->isPast()) {
+                $upcoming[] = $closure;
+            }
+        }
+        return $this->sendResponse($upcoming, "Upcoming Magazines", 200);
     }
 }
