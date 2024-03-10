@@ -9,17 +9,18 @@ export default {
         },
 
         /**
+         * Route for updating article/contributions.
+         * @param id Path variable. Default is :id
+        */
+        update(id = ":id") {
+            return `/article/${id}/update`
+        },
+
+        /**
          * Route for uploading article/contributions.
         */
         upload(magazineId = ":magazineId") {
             return `/article/upload/${magazineId}`
-        },
-
-        /**
-         * Route for updating article/contributions.
-        */
-        update() {
-            return `/article/update`
         }
     }
 }

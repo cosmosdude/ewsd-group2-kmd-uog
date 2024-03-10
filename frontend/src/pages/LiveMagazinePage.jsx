@@ -83,7 +83,7 @@ const LiveMagazinePage = () => {
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
                 <h1>Selected Contributions</h1>
             </div> */}
-            <div className="flex flex-col">
+            <div className="flex flex-col z-[1001]">
                 <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
                     <label>Filter:</label>
                     {isMC && <Dropdown 
@@ -129,6 +129,11 @@ const LiveMagazinePage = () => {
                                     )
                                 }}   
                                 allowsUpdate={isStudent && isUpload}
+                                onUpdate={() => {
+                                    navigate(
+                                        routesConfig.contribution.update(item.contribution_id)
+                                    )
+                                }}
                                 commentCount={item.comment_count}
                                 onCardClick={() => {
                                     navigate(routesConfig.contribution.detail(item.contribution_id))

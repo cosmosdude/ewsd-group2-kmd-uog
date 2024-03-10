@@ -1,7 +1,8 @@
-import { forwardRef, useContext, useRef, useState } from "react";
+import { forwardRef, useContext, useEffect, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail";
+import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 
 let InlineTextField = forwardRef(function ({required}, ref) {
     return (
@@ -64,14 +65,15 @@ function ClickToUploadLabel() {
 }
 
 
-function UploadPage() {
+function UpdateContributionPage() {
     
-    let { magazineId } = useParams()
+    let { id } = useParams()
     let auth = useContext(AuthContext)
     let navigate = useNavigate()
 
-    let [magazine] = useEffectMagazineDetail(magazineId)
-    
+    let article = useEffectArticleDetail(id)
+    let [magazine] = useEffectMagazineDetail(article?.contribution?.closure_id)
+
     console.log("Magazine", magazine)
     let nameField = useRef()
     let descField = useRef()
@@ -84,6 +86,12 @@ function UploadPage() {
 
     let [error, setError] = useState()
     let [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        console.log("Refs", nameField, descField)
+        nameField.current.value = article?.contribution?.name
+        descField.current.value = article?.contribution?.description
+    }, [article])
 
     function updateDocSrcState() {
         let input = fileInput.current
@@ -105,19 +113,18 @@ function UploadPage() {
         let f = new FormData()
         f.set('name', nameField.current.value)
         f.set('description', descField.current.value)
-        f.set('closure_id', magazineId)
+        f.set('closure_id', magazine?.id)
         f.set('files', docFile)
-        imageFiles.forEach((x, i) => {
-            f.set(`images[${i}]`, x)
-        })
-        
+        // imageFiles.forEach((x, i) => {
+        //     f.set(`images[${i}]`, x)
+        // })
         return f
     }
 
-    async function uploadArticle() {
+    async function updateArticle() {
         setError(null)
         try {
-            let res = await fetch('http://127.0.0.1:8000/api/contributions', {
+            let res = await fetch(`http://127.0.0.1:8000/api/contributions/update/${id}`, {
                 method: "POST",
                 headers: {
                     'accept': 'application/json',
@@ -164,7 +171,7 @@ function UploadPage() {
             // }}
             onSubmit={e => {
                 e.preventDefault()
-                uploadArticle()
+                updateArticle()
             }}
         >
             {/* Center View */}
@@ -177,12 +184,38 @@ function UploadPage() {
                 {/* Input Row */}
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
                     <label className="grow text-left">Title*</label>
-                    <InlineTextField ref={nameField} required/>
+                    {/* <InlineTextField ref={nameField} required/> */}
+                    <div 
+                        className="
+                        outline-none 
+                        flex items-center 
+                        p-[10px]
+                        w-[250px] h-[38px] 
+                        border-2 border-slate-200 focus-within:border-indigo-500
+                        rounded
+                        transition-all
+                        "
+                    >
+                        <input ref={nameField} className="outline-none" required/>
+                    </div>
                 </div>
                 {/* Input Row */}
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
                     <label className="grow text-left">Description*</label>
-                    <InlineTextField ref={descField} required/>
+                    {/* <InlineTextField ref={descField} required/> */}
+                        <div 
+                            className="
+                            outline-none 
+                            flex items-center 
+                            p-[10px]
+                            w-[250px] h-[38px] 
+                            border-2 border-slate-200 focus-within:border-indigo-500
+                            rounded
+                            transition-all
+                            "
+                        >
+                            <input ref={descField} className="outline-none" required/>
+                        </div>
                 </div>
 
                 {/* File Row */}
@@ -221,70 +254,8 @@ function UploadPage() {
                     </div>
                 </div>
 
-                
-                {/* Images */}
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <label className="grow text-left">Images*</label>
-                    
-                    <div 
-                        className="
-                        relative
-                        flex items-center 
-                        w-[250px]
-                        transition-all
-                        "
-                    >
-                        <input 
-                            ref={imageInput} 
-                            className="absolute w-[1px] opacity-0 h-full outline-none" type="file" 
-                            // word file only
-                            accept="image/*"
-                            onChange={e => {
-                                setImageFiles(getSelectedImageFiles())
-                            }}
-                            multiple
-                        />
-                        <div
-                            className="
-                            relative
-                            grid grid-cols-3
-                            gap-[5px]
-                            p-[10px]
-                            w-[250px] min-h-[125px] 
-                            items-start
-                            border-2 border-slate-200
-                            hover:border-indigo-500
-                            cursor-pointer
-                            rounded
-                            transition-all
-                            " 
-                            onClick={e => {
-                                e.preventDefault()
-                                imageInput.current.showPicker()
-                            }}>
-                            { imageFiles.length === 0 && <ClickToUploadLabel/> }
-                            {/* <ImageFile/>
-                            <ImageFile/> */}
-                            {imageFiles.map(x => URL.createObjectURL(x)).map((src, i) => {
-                                return <ImageFile 
-                                    key={i} src={src}
-                                    onDelete={() => {
-                                        // let newFiles = getSelectedImageFiles()
-                                        //     .filter((_, index) => i !== index)
-                                        // imageInput.current.files = new FileList(newFiles)
-                                        // updateImageSrcsState()
-                                        setImageFiles(
-                                            imageFiles.filter((v, index) => index !== i)
-                                        )
-                                    }}
-                                />
-                            })}
-                        </div>
-                        
-                    </div>
-                </div>
                 <div className="flex flex-col items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <p className="md:max-w-[400px] text-center">By clicking Submit button, you agree to the Terms and Conditions of Large University.</p>
+                    {/* <p className="md:max-w-[400px] text-center">By clicking Submit button, you agree to the Terms and Conditions of Large University.</p> */}
                     {error && <p className="text-red-500 md:max-w-[400px] text-center">{error}</p>}
                 </div> 
                 {/* Input Row */}
@@ -296,7 +267,7 @@ function UploadPage() {
                         bg-indigo-600 rounded
                         " 
                         onClick={e => {}}>
-                        Submit
+                        Update
                     </button>
                 </div>
             </div>
@@ -305,4 +276,4 @@ function UploadPage() {
     );
 }
 
-export default UploadPage;
+export default UpdateContributionPage;

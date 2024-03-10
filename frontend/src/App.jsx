@@ -29,6 +29,7 @@ import ArticleDetailPage from "./pages/ArticleDetailPage"
 import routesConfig from "./configs/routes.config"
 import LiveMagazinePage from "./pages/LiveMagazinePage"
 import GuestListPage from "./pages/GuestListPage"
+import UpdateContributionPage from "./pages/UpdateContributionPage"
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
             <Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
 
             <Route path={routesConfig.contribution.upload()} element={<UploadPage/>}/>
+            <Route path={routesConfig.contribution.update()} element={<UpdateContributionPage/>}/>
             <Route 
               path={routesConfig.contribution.detail()} 
               element={<ArticleDetailPage/>}

@@ -32,7 +32,8 @@ export default function ContributionCard({
             onClick={e => {
                 e.preventDefault()
                 e.stopPropagation()
-                onCardClick()
+                onCardClick?.()
+                console.log()
             }}
         >
             <div className="flex flex-col w-[300px] p-[10px] gap-[10px]">
