@@ -21,9 +21,6 @@ export default function ContributionCard({
     status = undefined, commentCount = undefined,
     onCardClick
 }) {
-    console.log("image srcs", srcs)
-    console.log("status is", status)
-    console.log("comment count", commentCount)
 
     let showBottom = status || commentCount
 

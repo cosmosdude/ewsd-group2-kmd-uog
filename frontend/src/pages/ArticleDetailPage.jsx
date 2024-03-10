@@ -17,24 +17,28 @@ function ArticleDetailPage() {
     let [commentUUID, setCommentUUID] = useState(Math.random())
 
     let detail = useEffectArticleDetail(id, [commentUUID])
-    console.log(detail)
+    let status = detail?.contribution?.status
+    let isUpload = status !== 'approve' && status !== 'reject'
+    console.log(detail, isUpload)
 
     async function updateStatus(status) {
-        let f = new FormData()
-        f.append('closure_id', detail.closure_id)
-        f.append('status', status)
-        console.log('id', id)
-        console.log('closure_id', deatil.closure_id)
-        consolee.log('status', status)
-        console.log("done")
-
+        // let f = new FormData()
+        // f.append('closure_id', detail?.contribution?.closure_id)
+        // f.append('status', status)
+        // let ff = new FormData()
+        // ff.append('closure_id', null)
+        // ff.append('status', status)
+        let data = `closure_id=${detail?.contribution?.closure_id}&status=${status}`
+        console.log('closure_id', detail?.contribution?.closure_id)
+        console.log('status', status)
         try {
             let response = await fetch('http://127.0.0.1:8000/api/contributions/status/'+id, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Accept': 'application/json'
-                }, body: f
+                    'authorization': `Bearer ${accessToken}`,
+                    'accept': 'application/json',
+                    'content-type': 'application/x-www-form-urlencoded'
+                }, body: data
             })
             console.log('FUCK', response.status)
             // console.log(await response.text())
@@ -42,10 +46,12 @@ function ArticleDetailPage() {
             console.log('FUCK json', json)
             if (response.status === 200) {
                 let results = json?.data 
-                console.log(results)
+                console.log("FUCK", results)
             } else {
                 console.log('FUCK json', json)
             }
+
+            setCommentUUID(Math.random())
         } catch (e) { 
             console.log("FUCK Error", e)
         }
@@ -113,7 +119,7 @@ function ArticleDetailPage() {
                             status={detail.contribution?.status}
                             commentCount={detail.comments?.length}
                         />
-                        {!isStudent && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
+                        {(isUpload && !isStudent) && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
                             <button 
                                 className="
                                 rounded bg-blue-400 text-white py-[5px]
