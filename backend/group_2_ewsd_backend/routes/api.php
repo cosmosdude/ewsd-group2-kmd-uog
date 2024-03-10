@@ -15,7 +15,6 @@ Route::post('login', [AuthController::class, 'login']);
 // guest user register
 Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 
-
 Route::middleware('auth:api')->group(function () {
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
 
@@ -64,24 +63,20 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware(['role:administrator,m_coordinator,student,m_manager'])->group(function () {
         Route::get('/faculties/{id}', [FalcultyController::class, 'show']);
     });
-    Route::middleware('role:administrator')->group(function () {
-        //in most of the LMS, update student information only done by the admin
-        Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
-        Route::post('/register', [AuthController::class, 'register']);
 
-        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
-        Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
-        Route::post('/student-register', [AuthController::class, 'studentRegister']);
-        // Route::post('/faculties', [FalcultyController::class, 'store']);
-        //academic_year
-        Route::post('/academicyear', [AcademicYearController::class, 'store']);
-        Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
+    Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
+    Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
+    Route::post('/student-register', [AuthController::class, 'studentRegister']);
+    // Route::post('/faculties', [FalcultyController::class, 'store']);
+    //academic_year
+    Route::post('/academicyear', [AcademicYearController::class, 'store']);
+    Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
 
 
-        Route::get('upcoming-closures', [ClosureController::class, 'upcomingClosure']);
-    });
+    Route::get('upcoming-closures', [ClosureController::class, 'upcomingClosure']);
 
     Route::middleware('role:m_manager')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
+

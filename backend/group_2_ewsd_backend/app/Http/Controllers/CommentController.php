@@ -48,6 +48,7 @@ class CommentController extends Controller
             Mail::to($student->email)->send(new CommentedEmail($student->name, $request->content, $contribution));
         } else {
             //send email to coordinator when student commented
+            $student_faculty_id = $this->getFacultyId($contribution->user_id);
             $coordinator = User::where('faculty_id', $student_faculty_id)
                 ->where('role_id', 3)
                 ->first();
@@ -56,6 +57,7 @@ class CommentController extends Controller
                 Mail::to($coordinator->email)->send(new CommentedEmail($coordinator->name, $request->content, $contribution));
             }
         }
+
         return $this->sendResponse($comment, "Successfully Commented to Contributions", 200);
 
     }
