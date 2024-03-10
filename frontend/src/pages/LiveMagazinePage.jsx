@@ -34,8 +34,6 @@ const filter = {
     }
 }
 
-
-
 const LiveMagazinePage = () => {
 
     let navigate = useNavigate()
@@ -54,7 +52,7 @@ const LiveMagazinePage = () => {
     let [statusFilter, setStatusFilter] = useState(filter.statusOptions[0])
     let [commentFilter, setCommentFilter] = useState(filter.commentOptions[0])
 
-    let magazines = useEffectArticlesOfCurrentMagazine({
+    let articles = useEffectArticlesOfCurrentMagazine({
         magazineId: magazineId,
         status: isStudent ? statusFilter.id : commentFilter.id
     })
@@ -72,11 +70,17 @@ const LiveMagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
+                { isStudent && <Link 
+                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                    to={routesConfig.contribution.upload(magazineId)}
+                >
+                    Add Submissions
+                </Link>}
             </div>
-            <div className="flex flex-col items-center gap-2">
+            {/* <div className="flex flex-col items-center gap-2">
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
                 <h1>Selected Contributions</h1>
-            </div>
+            </div> */}
             <div className="flex flex-col">
                 <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
                     <label>Filter:</label>
@@ -99,15 +103,8 @@ const LiveMagazinePage = () => {
                 </div>
             </div>
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
-                {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
                 <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
-                    {/* <ContributionCard onCardClick={() => {
-                        navigate(routesConfig.contribution.detail())
-                    }}/>
-                    <ContributionCard />
-                    <ContributionCard />
-                    <ContributionCard /> */}
-                    {magazines.map((item, index) => {
+                    {articles.map((item, index) => {
                         return (
                             <ContributionCard 
                                 key={index}
@@ -115,13 +112,14 @@ const LiveMagazinePage = () => {
                                 srcs={
                                     item.images.map(x => {
                                         return apiConfig.host + x.split('public')[1]
-                                        // console.log()
-                                        // return x
                                     })
                                 }
                                 title={item.contribution_name} 
-                                subtitle={"gg"}
+                                // subtitle={"gg"}
                                 description={item.contribution_description}
+                                status={item.contribution_status}
+                                // status={undefined}
+                                commentCount={item.comment_count}
                                 onCardClick={() => {
                                     navigate(routesConfig.contribution.detail(item.contribution_id))
                                 }}

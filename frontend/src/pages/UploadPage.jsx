@@ -1,6 +1,6 @@
 import { forwardRef, useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 let InlineTextField = forwardRef(function ({required}, ref) {
     return (
@@ -65,6 +65,7 @@ function ClickToUploadLabel() {
 
 function UploadPage() {
     
+    let { magazineId } = useParams()
     let auth = useContext(AuthContext)
     let navigate = useNavigate()
 
@@ -97,10 +98,10 @@ function UploadPage() {
         let f = new FormData()
         f.append('name', nameField.current.value)
         f.append('description', descField.current.value)
-        f.append('closure_id', '4')
+        f.append('closure_id', magazineId)
         f.append('files', docFile)
-        imageFiles.forEach(x => {
-            f.append('images', x)
+        imageFiles.forEach((x, i) => {
+            f.append(`images[${i}]`, x)
         })
         
         return f
@@ -128,7 +129,6 @@ function UploadPage() {
         } catch (error) {
             console.log(error)
         }
-        
     }
 
     return (

@@ -22,7 +22,7 @@ export default function useEffectArticleDetail(id) {
                 let json = await response.json()
                 console.log(json.data)
                 if (response.status === 200) {
-                    json.data.comments = [10, 20]
+                    // json.data.comments = [10, 20]
                     setData(json.data)
                 }
                 

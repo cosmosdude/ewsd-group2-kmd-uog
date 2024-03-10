@@ -4,15 +4,51 @@ import ContributionCard from "../components/ContributionCard";
 import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 import apiConfig from "../configs/api.config";
 import useEffectUserDetail from "../hooks/useEffectUserDetail";
+import { useContext } from "react";
+import AuthContext from "../contexts/AuthContext";
 
 function ArticleDetailPage() {
     let {id} = useParams()
+    let accessToken = useContext(AuthContext)
 
     let user = useEffectUserDetail()
     let isStudent = user.role_name === 'student'
 
     let detail = useEffectArticleDetail(id)
     console.log(detail)
+
+    async function updateStatus(status) {
+        let f = new FormData()
+        f.append('closure_id', detail.closure_id)
+        f.append('status', status)
+        console.log('id', id)
+        console.log('closure_id', deatil.closure_id)
+        consolee.log('status', status)
+        console.log("done")
+
+        try {
+            let response = await fetch('http://127.0.0.1:8000/api/contributions/status/'+id, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Accept': 'application/json'
+                }, body: f
+            })
+            console.log('FUCK', response.status)
+            // console.log(await response.text())
+            let json = await response.json()
+            console.log('FUCK json', json)
+            if (response.status === 200) {
+                let results = json?.data 
+                console.log(results)
+            } else {
+                console.log('FUCK json', json)
+            }
+        } catch (e) { 
+            console.log("FUCK Error", e)
+        }
+    }
+
     return (
         // Full container
         // if not on small device, it will be 2 panels.
@@ -47,7 +83,7 @@ function ArticleDetailPage() {
                                 // }) ?? []
                             }
                             title={detail.contribution?.name} 
-                            subtitle={"gg"}
+                            // subtitle={"gg"}
                             description={detail.contribution?.description}
                         />
                         {!isStudent && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
@@ -57,6 +93,7 @@ function ArticleDetailPage() {
                                 hover:opacity-50
                                 transition-all
                                 "
+                                onClick={() => updateStatus('approve')}
                             >Approve</button>
                             <button 
                                 className="
@@ -64,6 +101,7 @@ function ArticleDetailPage() {
                                 hover:opacity-50
                                 transition-all
                                 "
+                                onClick={() => updateStatus('reject')}
                             >Reject</button>
                         </div>}
                     </div>
@@ -76,7 +114,12 @@ function ArticleDetailPage() {
             bg-slate-200 
             ">
                 {detail?.comments?.map((x, i) => {
-                    return <Comment key={i}/>
+                    return <Comment 
+                        key={i}
+                        author={x.commenter}
+                        ago={x.commented_time}
+                        comment={x.comment_content}
+                    />
                 }) ?? false}
 
                 <CommentBox/>
@@ -87,13 +130,13 @@ function ArticleDetailPage() {
 
 export default ArticleDetailPage;
 
-function Comment({title, ago, comment}) {
+function Comment({author, ago, comment}) {
     return (
         <div className="flex flex-col gap-[10px] bg-white p-[20px]">
             <div className="flex gap-[10px] items-center pb-[10px] border-b">
                 <div className="w-[40px] aspect-square border rounded-full"/>
                 <div className="flex flex-col grow">
-                    <p>{title === undefined ? "Dr. Hla": title}</p>
+                    <p>{author === undefined ? "Dr. Hla": author}</p>
                     <p className="text-sm">{ago === undefined ? "5 hours ago" : ago}</p>
                 </div>
             </div>

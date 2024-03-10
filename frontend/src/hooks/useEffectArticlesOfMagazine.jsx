@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../contexts/AuthContext"
 
-function useEffectArticlesOfCurrentMagazine({magazineId = "", status = ""}) {
+function useEffectArticlesOfMagazine({magazineId = "", facultyId = ""}) {
     let accessToken = useContext(AuthContext)
     let [articles, setArticles] = useState([])
     console.log("useEffectArticlesOfCurrentMagazine")
@@ -49,4 +49,4 @@ function useEffectArticlesOfCurrentMagazine({magazineId = "", status = ""}) {
     return articles
 }
 
-export default useEffectArticlesOfCurrentMagazine;
+export default useEffectArticlesOfMagazine;

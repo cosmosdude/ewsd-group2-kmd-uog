@@ -11,8 +11,8 @@ export default {
         /**
          * Route for uploading article/contributions.
         */
-        upload() {
-            return `/article/upload/:magazineId`
+        upload(magazineId = ":magazineId") {
+            return `/article/upload/${magazineId}`
         },
 
         /**

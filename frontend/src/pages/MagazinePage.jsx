@@ -37,12 +37,6 @@ const MagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
-                { isStudent && <Link 
-                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
-                    to={routesConfig.contribution.upload()}
-                >
-                    Add Submissions
-                </Link>}
             </div>
             <div className="flex flex-col items-center gap-2">
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>

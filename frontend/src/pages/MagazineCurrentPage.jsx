@@ -48,7 +48,7 @@ const MagazineCurrentPage = () => {
                     className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
                     to='new'
                 >
-                    New Forum
+                    New Magazine
                 </Link>}
             </div>
             <div className="block w-full h-full overflow-scroll">
