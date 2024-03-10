@@ -78,6 +78,9 @@ function UploadPage() {
     let imageInput = useRef()
     let [imageFiles, setImageFiles] = useState([])
 
+    let [error, setError] = useState()
+    let [loading, setLoading] = useState(false)
+
     function updateDocSrcState() {
         let input = fileInput.current
         console.log(input.files)
@@ -108,6 +111,7 @@ function UploadPage() {
     }
 
     async function uploadArticle() {
+        setError(null)
         try {
             let res = await fetch('http://127.0.0.1:8000/api/contributions', {
                 method: "POST",
@@ -123,16 +127,19 @@ function UploadPage() {
             if (res.status >= 200 && res.status < 300) {
                 // goto previous page
                 navigate(-1)
+            } else {
+                setError(`Unable to upload submission(${res.status})`)
             }
             let text = await res.text()
             console.log("res", text)
         } catch (error) {
             console.log(error)
+            setError(`Unable to upload submission(${error})`)
         }
     }
 
     return (
-    <div className="fixed left-0 top-0 flex w-screen h-screen bg-slate-100 p-[25px] md:px-[150px] md:py-[50px] overflow-hidden">
+    <div className="fixed left-0 top-0 flex w-screen h-screen bg-black/90 p-[25px] md:px-[150px] md:py-[50px] overflow-hidden">
         {/* Content View */}
         <form 
             className="
@@ -264,7 +271,10 @@ function UploadPage() {
                         
                     </div>
                 </div>
-
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
+                    <p className="md:max-w-[400px]">By clicking Submit button, you agree to the Terms and Conditions of Large University.</p>
+                    {error && <p className="text-red md:max-w-[400px]">{error}</p>}
+                </div> 
                 {/* Input Row */}
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
                     <button

@@ -3,7 +3,7 @@ import Breadcrumb from "../components/Breadcrumb"
 import SearchIcon from "../assets/search.png"
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router"
-import AuthContext from "../contexts/AuthContext"
+import AuthContext, { useAuthContext } from "../contexts/AuthContext"
 import ContributionCard from "../components/ContributionCard"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail"
@@ -14,6 +14,7 @@ import useEffectSelectedArticlesOfMagazine from "../hooks/useEffectSelectedArtic
 import apiConfig from "../configs/api.config"
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
 import extractContributionFileSrc from "../util/extractContributionFileSrc"
+import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 
 const MagazinePage = () => {
 
@@ -24,11 +25,39 @@ const MagazinePage = () => {
     // current closure value
     let [magazine] = useEffectMagazineDetail(magazineId)
 
+    let [faculties] = useEffectAllFaculties()
+    let [faculty, setFaculty] = useState({name: "All", id: null})
+
     let user = useEffectUserDetail()
-    let isStudent = 'student' === user.role_name
+    let isMM = 'm_manager' === user.role_name
     console.log("user detail is", user)
 
-    let articles = useEffectSelectedArticlesOfMagazine({magazineId, facultyId: "5"})
+    let articles = useEffectSelectedArticlesOfMagazine({
+        magazineId, facultyId: faculty.id
+    })
+
+
+    let accessToken = useAuthContext()
+    async function downloadAllArticles() {
+        try {
+            let res = await fetch(
+                'http://127.0.0.1:8000/api/closures/4/download', {
+                    method: "POST",
+                    headers: {
+                        'accepts': 'application/json',
+                        'authorization': `Bearer ${accessToken}`
+                    }
+                }
+            )
+
+            if (res.status == 200) {
+                let json = await res.json()
+                window.open(json.download_link, '_block')
+            } else {
+                console.log("Unable to download all articles")
+            }
+        } catch (error) { console.log(error) }
+    }
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-[10px] overflow-y-hidden">
@@ -43,15 +72,34 @@ const MagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
+                { isMM && <button 
+                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                    onClick={downloadAllArticles}
+                    // to={
+                    //     // routesConfig.contribution.upload(magazineId)
+                    // }
+                >
+                    Download Magazine
+                </button>}
             </div>
             <div className="flex flex-col items-center gap-2">
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
                 <h1>Selected Contributions</h1>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col z-[1001]">
                 <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
                     <label>Filter:</label>
-                    <Dropdown title="Select faculty"/>
+                    <Dropdown 
+                        className="min-w-[200px]" 
+                        title={faculty?.name ?? "Select faculty"} 
+                        options={
+                            ['All', ...faculties.map(x => x.name)]
+                        }
+                        onChange={(name, index) => {
+                            if (index === 0) setFaculty({name: "All", id:null})
+                            else setFaculty(faculties[index - 1])
+                        }}
+                    />
                 </div>
             </div>
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
@@ -59,7 +107,6 @@ const MagazinePage = () => {
                 <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
                 {articles.map((item, index) => {
                         let status = item.contribution_status
-                        let isUpload = status !== 'approve' && status !== 'reject'
                         return (
                             <ContributionCard 
                                 key={index}
@@ -70,9 +117,6 @@ const MagazinePage = () => {
                                 title={item.contribution_name} 
                                 description={item.contribution_description}
                                 onView={() => {
-                                    // let filename = item.files?.split('public')[1]
-                                    // if (filename) console.log(apiConfig.host + filename)
-                                    // if (filename) window.open(apiConfig.host + filename, "_blank")
                                     window.open(
                                         extractContributionFileSrc(item.files),
                                         '_blank'

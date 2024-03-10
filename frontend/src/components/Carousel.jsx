@@ -18,18 +18,25 @@ function Carousel({images = []}) {
         }
     }
 
+    // images = [...images, ...images, ...images]
+
     return (
-        <div className="aspect-[1/0.75] rounded w-full">
+        <div className="aspect-[1/0.75] rounded w-full" onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+        }}>
             <ResponsiveCarousel 
                 className="h-full rounded border" 
                 responsive={responsive} 
-                infinite={true}
+                infinite={images.length > 1}
                 autoPlay={images.length > 1}
                 autoPlaySpeed={3000}
-                arrows={false}
+                arrows={images.length > 1}
                 showDots={images.length > 1}
                 dotListClass='
                 gap-[3px]
+                [&>li>button]:duration-1000
+                [&>li>button]:transition-all
                 [&>li>button]:border-[2px]
                 [&>li>button]:border-neutral-200
                 [&>li.react-multi-carousel-dot--active>button]:border-purple-500

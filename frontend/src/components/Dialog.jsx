@@ -1,6 +1,6 @@
 function Dialog({title, message, confirmCTA, onConfirm, dismissCTA, onDismiss}) {
     return (
-        <div className={`fixed z-50 flex items-center justify-center w-screen h-screen bg-[rgba(0,0,0,0.25)]`}>
+        <div className={`fixed z-[2000] flex items-center justify-center w-screen h-screen bg-[rgba(0,0,0,0.25)]`}>
             <div className="flex flex-col gap-3 items-center justify-center bg-white p-4 min-w-[300px] max-w-[300px] rounded">
                 <h2>{title}</h2>
                 <p>{message}</p>

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../contexts/AuthContext"
 
-function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId = "null"}) {
+function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId}) {
     let accessToken = useContext(AuthContext)
     let [articles, setArticles] = useState([])
     console.log("useEffectSelectedArticlesOfMagazine")
@@ -9,8 +9,8 @@ function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId = "null
         // To handle abortion
         let aborter = new AbortController()
         let f = new FormData()
-        f.append('closure_id', magazineId)
-        f.append('faculty_id', facultyId)
+        f.set('closure_id', magazineId)
+        if (facultyId) f.set('faculty_id', facultyId)
         console.log("Form", f)
         async function fetchData() {
             try {
