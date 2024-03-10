@@ -36,8 +36,8 @@ const MagazinePage = () => {
         magazineId, facultyId: faculty.id
     })
 
-
     let accessToken = useAuthContext()
+    
     async function downloadAllArticles() {
         try {
             let res = await fetch(

@@ -1,6 +1,7 @@
 import { forwardRef, useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router";
+import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail";
 
 let InlineTextField = forwardRef(function ({required}, ref) {
     return (
@@ -69,6 +70,9 @@ function UploadPage() {
     let auth = useContext(AuthContext)
     let navigate = useNavigate()
 
+    let [magazine] = useEffectMagazineDetail(magazineId)
+    
+    console.log("Magazine", magazine)
     let nameField = useRef()
     let descField = useRef()
 
@@ -99,12 +103,12 @@ function UploadPage() {
 
     function getFormData() {
         let f = new FormData()
-        f.append('name', nameField.current.value)
-        f.append('description', descField.current.value)
-        f.append('closure_id', magazineId)
-        f.append('files', docFile)
+        f.set('name', nameField.current.value)
+        f.set('description', descField.current.value)
+        f.set('closure_id', magazineId)
+        f.set('files', docFile)
         imageFiles.forEach((x, i) => {
-            f.append(`images[${i}]`, x)
+            f.set(`images[${i}]`, x)
         })
         
         return f
@@ -116,7 +120,7 @@ function UploadPage() {
             let res = await fetch('http://127.0.0.1:8000/api/contributions', {
                 method: "POST",
                 headers: {
-                    'accepts': 'application/json',
+                    'accept': 'application/json',
                     'authorization': `Bearer ${auth}`
                 },
                 body: getFormData()
@@ -158,7 +162,7 @@ function UploadPage() {
             {/* Center View */}
             <div className="flex flex-col gap-[30px] max-w-full md:max-w-[600px]">
                 <div>
-                    <h1 className="text-center text-xl font-bold">Mother Day</h1>
+                    <h1 className="text-center text-xl font-bold">{magazine?.name}</h1>
                     <p className="text-center text-lg font-normal">New Submission</p>
                 </div>
                 <div/>
@@ -271,9 +275,9 @@ function UploadPage() {
                         
                     </div>
                 </div>
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <p className="md:max-w-[400px]">By clicking Submit button, you agree to the Terms and Conditions of Large University.</p>
-                    {error && <p className="text-red md:max-w-[400px]">{error}</p>}
+                <div className="flex flex-col items-start md:items-center gap-[5px] md:gap-[25px]">
+                    <p className="md:max-w-[400px] text-center">By clicking Submit button, you agree to the Terms and Conditions of Large University.</p>
+                    {error && <p className="text-red-500 md:max-w-[400px] text-center">{error}</p>}
                 </div> 
                 {/* Input Row */}
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
