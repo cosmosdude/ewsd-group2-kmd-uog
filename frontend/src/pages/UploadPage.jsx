@@ -158,10 +158,6 @@ function UploadPage() {
             bg-white 
             overflow-scroll
             "
-            // onClick={e => {
-            //     e.preventDefault()
-            //     e.stopPropagation()
-            // }}
             onSubmit={e => {
                 e.preventDefault()
                 uploadArticle()

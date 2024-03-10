@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb";
 import ContributionCard from "../components/ContributionCard";
 import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
@@ -7,8 +7,11 @@ import useEffectUserDetail from "../hooks/useEffectUserDetail";
 import { useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import extractContributionFileSrc from "../util/extractContributionFileSrc";
+import routesConfig from "../configs/routes.config";
 
 function ArticleDetailPage() {
+
+    let navigate = useNavigate()
     let {id} = useParams()
     let accessToken = useContext(AuthContext)
 
@@ -108,6 +111,12 @@ function ArticleDetailPage() {
                             }
                             title={detail.contribution?.name} 
                             description={detail.contribution?.description}
+                            allowsUpdate={isStudent && isUpload}
+                            onUpdate={() => {
+                                navigate(
+                                    routesConfig.contribution.update(detail.contribution.id)
+                                )
+                            }}
                             onView={() => {
                                 window.open(
                                     extractContributionFileSrc(detail.contribution.files),
@@ -140,7 +149,7 @@ function ArticleDetailPage() {
             </div>
             <div className="
             flex flex-col gap-[20px]
-            md:w-[400px] md:overflow-y-scroll
+            md:w-[550px] md:overflow-y-scroll
             p-[20px]
             bg-slate-200 
             ">
@@ -167,8 +176,8 @@ function Comment({author, ago, comment}) {
             <div className="flex gap-[10px] items-center pb-[10px] border-b">
                 <div className="w-[40px] aspect-square border rounded-full"/>
                 <div className="flex flex-col grow">
-                    <p>{author === undefined ? "Dr. Hla": author}</p>
-                    <p className="text-sm">{ago === undefined ? "5 hours ago" : ago}</p>
+                    <p className="font-bold">{author === undefined ? "Dr. Hla": author}</p>
+                    <p className="text-sm font-light">{ago === undefined ? "5 hours ago" : ago}</p>
                 </div>
             </div>
             <p>

@@ -117,7 +117,7 @@ const SignUpPage = () => {
                             value={email}
                             onChange={setEmail}
                         />
-                        <Dropdown className="w-full" 
+                        <Dropdown className="w-full z-[1001]" 
                         title={faculty ? faculty.name : "Select faculty"} 
                         options={faculties.map(x => x.name)} 
                         onChange={(option, index) => {
