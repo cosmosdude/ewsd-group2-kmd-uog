@@ -28,6 +28,10 @@ const MagazineNewPage = () => {
     let [error, setError] = useState(null);
     let [isLoading, setIsLoading] = useState(false);
 
+    function getData() {
+        return {...magazine}
+    }
+
     function getFormData() {
         let f = new FormData();
         /*
@@ -40,30 +44,45 @@ const MagazineNewPage = () => {
        // if magazine's id exists, include it
         magazine.id && f.set('id', magazine.id)
 
+        let data = getData()
+        console.log(Object.entries(data))
+        for (const [k, v] of Object.entries(getData())) f.set(k, v)
+        console.log(f)
+
         f.set('name', magazine.name)
         f.set('start_date', magazine.start_date)
         f.set('closure_date', magazine.closure_date)
         f.set('final_closure_date', magazine.final_closure_date)
         f.set('academic_id', magazine.academic_id ? magazine.academic_id : '1')
-
+        console.log(f)
         return f
     }
 
     async function upsertMagazine() {
+        console.log("magazine id:", magazine.id)
         // if magazine has id, meaning it is a update
         // don't do anything for now
         // TODO: Implement Update function
-        if (magazine.id) return
+        // if (!magazine.id) return
 
         setError(null)
-
+        console.log("Before test")
         if (!magazine.name) { setError('Title must not be empty'); return }
         if (!magazine.start_date) { setError('Start date must not be empty'); return}
         if (!magazine.closure_date) { setError('Closure date must not be empty'); return}
         if (!magazine.final_closure_date) { setError('Final closure date must not be empty'); return}
-
+        console.log("After test")
         setIsLoading(() => true)
-        
+        if (isUpdate) await updateMagazine()
+        else await createMagazine()
+        setIsLoading(() => false)
+    }
+
+    async function createMagazine() {
+        let form = getFormData()
+        console.log(Array.from(form.keys()))
+        console.log(Array.from(form.values()))
+        // return;
         try {
             let response = await fetch('http://127.0.0.1:8000/api/closures', {
                 method: "POST",
@@ -89,8 +108,39 @@ const MagazineNewPage = () => {
         } catch (error) {
             setError("Unable to create magazine closure. (Internal Error)")
         }
+    }
 
-        setIsLoading(() => false)
+    async function updateMagazine() {
+        let data = getData()
+        let urlencoded = Object.entries(data)
+            .map(x => x.join('=')).join("&")
+        console.log("Urlencoded:", urlencoded)
+        try {
+            let response = await fetch('http://127.0.0.1:8000/api/closures/' + id, {
+                method: "PUT",
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: urlencoded
+            })
+
+            try {
+                if (response.status >= 200 && response.status < 300) {
+                    let json = await response.json()
+                    console.log(json)
+                    navigate(`/magazine/current/${json.data.id}`)
+                } else {
+                    setError(`Unable to create magazine closure. (${response.status})`)
+                }
+                
+            } catch (error) {
+                setError("Unable to create magazine closure. (Parse Error)")
+            }
+        } catch (error) {
+            setError("Unable to create magazine closure. (Internal Error)")
+        }
     }
 
     useEffect(() => {
@@ -141,13 +191,14 @@ const MagazineNewPage = () => {
             </div>
             <form className="flex flex-col gap-4 md:gap-8 overflow-y-scroll" onSubmit={(e) => { 
                 e.preventDefault() 
+                console.log("Form submitted")
                 upsertMagazine()
             }}
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
                     <InputField 
                         className="grow" 
-                        disabled={isUpdate}
+                        // disabled={isUpdate}
                         placeholder="Title*" 
                         value={magazine.name} 
                         onChange={
@@ -162,7 +213,7 @@ const MagazineNewPage = () => {
                     <legend className="px-2">Set closure date</legend>
                     <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
                         <InputField 
-                            disabled={isUpdate}
+                            // disabled={isUpdate}
                             type="date" placeholder="start date" value={magazine.start_date} 
                             onChange={
                                 (v) => {
@@ -173,7 +224,7 @@ const MagazineNewPage = () => {
                             } 
                         />
                         <InputField 
-                            disabled={isUpdate}
+                            // disabled={isUpdate}
                             type="date" placeholder="closure date"
                             value={magazine.closure_date} 
                             onChange={
@@ -190,7 +241,7 @@ const MagazineNewPage = () => {
                     <legend className="px-2">Set final closure date</legend>
                     <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
                         <InputField 
-                            disabled={isUpdate}
+                            // disabled={isUpdate}
                             type="date" placeholder="final closure date" 
                             value={magazine.final_closure_date} 
                             onChange={
@@ -209,12 +260,11 @@ const MagazineNewPage = () => {
                 <div className={`flex w-full gap-4 md:grap-8 ${isUpdate ? 'md:w-[150px]' : 'md:w-[300px]'} md:mx-auto`}>
                     {!isUpdate && <button 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
-                        onClick={null}
+                        // onClick={null}
                     >Save</button>}
                     {isUpdate && <button 
-                        disabled
-                        className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-100 text-white hover:opacity-50 transition-all`} 
-                        onClick={null}
+                        className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
+                        // onClick={null}
                     >Update</button>}
                     {!isUpdate && <Link 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-gray-400 text-white text-center hover:opacity-50 transition-all`} 

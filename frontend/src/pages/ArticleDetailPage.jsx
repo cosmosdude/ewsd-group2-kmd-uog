@@ -6,6 +6,7 @@ import apiConfig from "../configs/api.config";
 import useEffectUserDetail from "../hooks/useEffectUserDetail";
 import { useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import extractContributionFileSrc from "../util/extractContributionFileSrc";
 
 function ArticleDetailPage() {
     let {id} = useParams()
@@ -106,8 +107,13 @@ function ArticleDetailPage() {
                                 // }) ?? []
                             }
                             title={detail.contribution?.name} 
-                            // subtitle={"gg"}
                             description={detail.contribution?.description}
+                            onView={() => {
+                                window.open(
+                                    extractContributionFileSrc(detail.contribution.files),
+                                    '_blank'
+                                )
+                            }} 
                             status={detail.contribution?.status}
                             commentCount={detail.comments?.length}
                         />

@@ -10,6 +10,10 @@ import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail"
 import Dropdown from "../components/Dropdown"
 import routesConfig from "../configs/routes.config"
 import { Link } from "react-router-dom"
+import useEffectSelectedArticlesOfMagazine from "../hooks/useEffectSelectedArticlesOfMagazine"
+import apiConfig from "../configs/api.config"
+import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
+import extractContributionFileSrc from "../util/extractContributionFileSrc"
 
 const MagazinePage = () => {
 
@@ -23,6 +27,8 @@ const MagazinePage = () => {
     let user = useEffectUserDetail()
     let isStudent = 'student' === user.role_name
     console.log("user detail is", user)
+
+    let articles = useEffectSelectedArticlesOfMagazine({magazineId, facultyId: "5"})
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-[10px] overflow-y-hidden">
@@ -51,12 +57,33 @@ const MagazinePage = () => {
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
                 {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
                 <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
-                    <ContributionCard onCardClick={() => {
-                        navigate(routesConfig.contribution.detail())
-                    }}/>
-                    <ContributionCard />
-                    <ContributionCard />
-                    <ContributionCard />
+                {articles.map((item, index) => {
+                        let status = item.contribution_status
+                        let isUpload = status !== 'approve' && status !== 'reject'
+                        return (
+                            <ContributionCard 
+                                key={index}
+                                author={item.user_name}
+                                srcs={
+                                    extractContributionImageSrcs(item.images)
+                                }
+                                title={item.contribution_name} 
+                                description={item.contribution_description}
+                                onView={() => {
+                                    // let filename = item.files?.split('public')[1]
+                                    // if (filename) console.log(apiConfig.host + filename)
+                                    // if (filename) window.open(apiConfig.host + filename, "_blank")
+                                    window.open(
+                                        extractContributionFileSrc(item.files),
+                                        '_blank'
+                                    )
+                                }}
+                                onCardClick={() => {
+                                    navigate(routesConfig.contribution.detail(item.contribution_id))
+                                }}
+                            />
+                        )
+                    })}
                 </div>
             </div>
         </div>

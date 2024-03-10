@@ -125,7 +125,10 @@ export default function BaseNavigation() {
                                     onClick={() => {navigate('/faculty')}}
                                 />}
                                 <SideNavItem 
-                                    selected={path.startsWith('/contribution')}
+                                    selected={
+                                        path.startsWith('/contribution') ||
+                                        path.startsWith('/magazine')
+                                    }
                                     src={ContributionIcon}
                                     cta="Magazines" 
                                     onClick={() => {navigate('/contribution')}}

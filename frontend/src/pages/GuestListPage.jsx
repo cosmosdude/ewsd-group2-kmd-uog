@@ -27,7 +27,7 @@ const GuestListPage = () => {
         setFilteredUsers(
             searchText 
             // if search text is not empty, filter it
-            ? users.filter(user => user.user_name.toLowerCase().includes(searchText.toLowerCase()))
+            ? users.filter(user => user.guest_name.toLowerCase().includes(searchText.toLowerCase()))
             // otherwise, take all users
             : [...users]
         )

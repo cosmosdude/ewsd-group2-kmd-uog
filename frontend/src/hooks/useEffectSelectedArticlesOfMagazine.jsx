@@ -1,20 +1,20 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../contexts/AuthContext"
 
-function useEffectArticlesOfMagazine({magazineId = "", facultyId = ""}) {
+function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId = "null"}) {
     let accessToken = useContext(AuthContext)
     let [articles, setArticles] = useState([])
-    console.log("useEffectArticlesOfCurrentMagazine")
+    console.log("useEffectSelectedArticlesOfMagazine")
     useEffect(() => {
         // To handle abortion
         let aborter = new AbortController()
         let f = new FormData()
         f.append('closure_id', magazineId)
-        f.append('status', status)
+        f.append('faculty_id', facultyId)
         console.log("Form", f)
         async function fetchData() {
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/contributions/all', {
+                let response = await fetch('http://127.0.0.1:8000/api/selected-contributions', {
                     signal: aborter.signal,
                     method: 'POST',
                     headers: {
@@ -44,9 +44,9 @@ function useEffectArticlesOfMagazine({magazineId = "", facultyId = ""}) {
         fetchData()
         // clean up by aborting the request
         return () => { aborter.abort() }
-    }, [magazineId, status]) // [] is required to ensure single call
+    }, [magazineId, facultyId]) // [] is required to ensure single call
 
     return articles
 }
 
-export default useEffectArticlesOfMagazine;
+export default useEffectSelectedArticlesOfMagazine;

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 // guest user register
 Route::post('/guest-register', [AuthController::class, 'guestRegister']);
-
+Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
@@ -68,8 +68,6 @@ Route::middleware('auth:api')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
-
-        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
         // Route::post('/faculties', [FalcultyController::class, 'store']);

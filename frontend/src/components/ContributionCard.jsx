@@ -17,11 +17,12 @@ export default function ContributionCard({
     srcs = [],
     title, subtitle,
     description, facultyName,
-    showUpdate,
+    onView,
+    allowsUpdate, onUpdate,
     status = undefined, commentCount = undefined,
-    onCardClick
+     onCardClick
 }) {
-
+    console.log(srcs)
     let showBottom = status || commentCount
 
     return (
@@ -61,11 +62,12 @@ export default function ContributionCard({
                         onClick={e => {
                             e.preventDefault()
                             e.stopPropagation()
+                            onView?.()
                         }}
                     >
                         Read Contribution
                     </button>
-                    {showUpdate && <button 
+                    {allowsUpdate && <button 
                         className="
                         bg-white border border-indigo-600 rounded px-[10px] py-[5px] text-indog-600
                         hover:opacity-50
@@ -74,6 +76,7 @@ export default function ContributionCard({
                         onClick={e => {
                             e.preventDefault()
                             e.stopPropagation()
+                            onUpdate?.()
                         }}
                     >
                         Update

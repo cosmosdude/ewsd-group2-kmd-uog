@@ -12,6 +12,8 @@ import routesConfig from "../configs/routes.config"
 import { Link } from "react-router-dom"
 import useEffectArticlesOfCurrentMagazine from "../hooks/useEffectArticlesOfCurrentMagazine"
 import apiConfig from "../configs/api.config"
+import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
+import extractContributionFileSrc from "../util/extractContributionFileSrc"
 
 const filter = {
     
@@ -105,20 +107,28 @@ const LiveMagazinePage = () => {
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
                 <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
                     {articles.map((item, index) => {
+                        let status = item.contribution_status
+                        let isUpload = status !== 'approve' && status !== 'reject'
                         return (
                             <ContributionCard 
                                 key={index}
                                 author={item.user_name}
                                 srcs={
-                                    item.images.map(x => {
-                                        return apiConfig.host + x.split('public')[1]
-                                    })
+                                    extractContributionImageSrcs(item?.images)
+                                    // item.images.map(x => {
+                                    //     return apiConfig.host + x.split('public')[1]
+                                    // })
                                 }
                                 title={item.contribution_name} 
-                                // subtitle={"gg"}
                                 description={item.contribution_description}
                                 status={item.contribution_status}
-                                // status={undefined}
+                                onView={() => {
+                                    window.open(
+                                        extractContributionFileSrc(item.files),
+                                        '_blank'
+                                    )
+                                }}   
+                                allowsUpdate={isStudent && isUpload}
                                 commentCount={item.comment_count}
                                 onCardClick={() => {
                                     navigate(routesConfig.contribution.detail(item.contribution_id))
