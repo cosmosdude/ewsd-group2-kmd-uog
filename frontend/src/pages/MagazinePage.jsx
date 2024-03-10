@@ -37,7 +37,7 @@ const MagazinePage = () => {
     })
 
     let accessToken = useAuthContext()
-    
+
     async function downloadAllArticles() {
         try {
             let res = await fetch(
@@ -122,9 +122,9 @@ const MagazinePage = () => {
                                         '_blank'
                                     )
                                 }}
-                                onCardClick={() => {
-                                    navigate(routesConfig.contribution.detail(item.contribution_id))
-                                }}
+                                // onCardClick={() => {
+                                //     navigate(routesConfig.contribution.detail(item.contribution_id))
+                                // }}
                             />
                         )
                     })}

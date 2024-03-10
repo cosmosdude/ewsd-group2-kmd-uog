@@ -60,7 +60,7 @@ const MagazineCurrentPage = () => {
                         <th className="p-5">Start Date</th>
                         <th className="p-5">Closure Date</th>
                         <th className="p-5">Final Closure Date</th>
-                        <th className="p-5">Action</th>
+                        {isAdmin && <th className="p-5">Action</th>}
                     </tr>
                     </thead>
                     <tbody>
@@ -74,7 +74,7 @@ const MagazineCurrentPage = () => {
                                 <td className="p-3">{magazine.start_date}</td>
                                 <td className="p-3">{magazine.closure_date}</td>
                                 <td className="p-3">{magazine.final_closure_date}</td>
-                                <td className="p-3">
+                                {isAdmin && <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">
                                             <img className="m-1" src={ThreeDotIcon}/>
@@ -95,8 +95,7 @@ const MagazineCurrentPage = () => {
                                             </li> 
                                         </ul>
                                     </div>
-                                    
-                                </td>
+                                </td>}
                             </tr>
                         )
                     }) }

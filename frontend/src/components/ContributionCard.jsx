@@ -20,7 +20,7 @@ export default function ContributionCard({
     onView,
     allowsUpdate, onUpdate,
     status = undefined, commentCount = undefined,
-     onCardClick
+    onCardClick
 }) {
     console.log(srcs)
     let showBottom = status || commentCount
@@ -28,7 +28,7 @@ export default function ContributionCard({
     return (
         // Outer
         <div 
-            className="text-left rounded border hover:border-purple-500 transition-all cursor-pointer"
+            className={`text-left rounded border transition-all ${onCardClick ? 'cursor-pointer hover:border-purple-500' : ''}`}
             onClick={e => {
                 e.preventDefault()
                 e.stopPropagation()

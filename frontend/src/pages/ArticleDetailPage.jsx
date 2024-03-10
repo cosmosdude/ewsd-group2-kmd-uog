@@ -8,6 +8,7 @@ import { useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import extractContributionFileSrc from "../util/extractContributionFileSrc";
 import routesConfig from "../configs/routes.config";
+import extractContributionImageSrcs from "../util/extractContributionImageSrcs";
 
 function ArticleDetailPage() {
 
@@ -102,12 +103,8 @@ function ArticleDetailPage() {
                         <ContributionCard
                             author={detail.contribution?.user_name}
                             srcs={
-                                [apiConfig.host + "/images/" + detail.contribution?.images]
-                                // detail.contribution?.images?.map(x => {
-                                //     return apiConfig.host + x.split('public')[1]
-                                //     // console.log()
-                                //     // return x
-                                // }) ?? []
+                                extractContributionImageSrcs(detail.contribution?.images)
+                                // [apiConfig.host + "/images/" + detail.contribution?.images]
                             }
                             title={detail.contribution?.name} 
                             description={detail.contribution?.description}
