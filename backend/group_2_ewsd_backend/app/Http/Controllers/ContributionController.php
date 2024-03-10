@@ -10,6 +10,7 @@ use App\Mail\ArticleUploaded;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Falculty;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -193,7 +194,7 @@ class ContributionController extends Controller
                 $contributions = DB::table('contributions')
                     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
                     ->join('users', 'users.id', '=', 'contributions.user_id')
-                    ->join('faculty_users','faculty_users.user_id','=','users.id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('closures.id', $request->closure_id)
                     ->where('contributions.user_id', Auth::user()->id)
@@ -229,7 +230,7 @@ class ContributionController extends Controller
                 $contributions = DB::table('contributions')
                     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
                     ->join('users', 'users.id', '=', 'contributions.user_id')
-                    ->join('faculty_users','faculty_users.user_id','=','users.id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('closures.id', $request->closure_id)
                     ->where('contributions.user_id', Auth::user()->id)
@@ -266,7 +267,7 @@ class ContributionController extends Controller
                 $contributions = DB::table('contributions')
                     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
                     ->join('users', 'users.id', '=', 'contributions.user_id')
-                    ->join('faculty_users','faculty_users.user_id','=','users.id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('closures.id', $request->closure_id)
                     ->where('contributions.user_id', Auth::user()->id)
@@ -306,13 +307,15 @@ class ContributionController extends Controller
     {
         $request->validate([
             'closure_id' => 'required',
-            'faculty_id' => 'required',
+            'faculty_id' => 'nullable',
         ]);
         if (Auth::user()->hasRole('guest')) {
-            if ($request->faculty_id == "" || $request->faculty_id == null) {
+            $registered_faculties = [];
+            if ($request->faculty_id) {
                 $registered_faculties = DB::table('users')
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->where('users.id', Auth::user()->id)
+                    ->where('faculty_users.faculty_id', $request->faculty_id)
                     ->get([
                         'faculty_users.faculty_id'
                     ]);
@@ -320,7 +323,6 @@ class ContributionController extends Controller
                 $registered_faculties = DB::table('users')
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->where('users.id', Auth::user()->id)
-                    ->where('faculty_users.faculty_id', $request->faculty_id)
                     ->get([
                         'faculty_users.faculty_id'
                     ]);
@@ -359,9 +361,85 @@ class ContributionController extends Controller
                     $contribution->images = $images;
                 }
                 $selectedContributions[] = $contributions;
-                return $this->sendResponse($selectedContributions, "Selected Contribution for Guest", 200);
             }
+
+            return $this->sendResponse($selectedContributions, "Selected Contribution for Guest", 200);
         } elseif (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('m_manager') || Auth::user()->hasRole('m_coordinator') || Auth::user()->hasRole('student')) {
+            if ($request->faculty_id) {
+                // dd($request->faculty_id);
+                $contributions = DB::table('contributions')
+                    ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+                    ->join('users', 'contributions.user_id', '=', 'users.id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                    ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+                    ->where('contributions.status', 'approve')
+                    ->where('faculty_users.faculty_id', $request->faculty_id)
+                    ->where('contributions.closure_id', $request->closure_id)
+                    ->get([
+                        'falculties.id as faculty_id',
+                        'falculties.name as faculty_name',
+                        'users.id as user_id',
+                        'users.name as user_name',
+                        'users.email as user_email',
+                        'contributions.id as contribution_id',
+                        'contributions.name as contribution_name',
+                        'contributions.description as contribution_description',
+                        'contributions.images',
+                        'contributions.files',
+                        'contributions.submitted_date as contribution_submitted_date',
+                        'contributions.attempt_number as contribution_attempt_number',
+                        'contributions.status as contribution_status'
+                    ]);
+                foreach ($contributions as $contribution) {
+                    $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $image) {
+                        $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    }
+                    $contribution->images = $images;
+                }
+                return $this->sendResponse($contributions, "Selected Contributions for System Users Retrieved Successfully", 200);
+            } else {
+                $faculties = Falculty::all();
+
+                $selectedContributions = [];
+                foreach ($faculties as $faculty) {
+                    $contributions = DB::table('contributions')
+                        ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+                        ->join('users', 'contributions.user_id', '=', 'users.id')
+                        ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                        ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+                        ->where('contributions.status', 'approve')
+                        ->where('faculty_users.faculty_id', $faculty->id)
+                        ->where('contributions.closure_id', $request->closure_id)
+                        ->get([
+                            'falculties.id as faculty_id',
+                            'falculties.name as faculty_name',
+                            'users.id as user_id',
+                            'users.name as user_name',
+                            'users.email as user_email',
+                            'contributions.id as contribution_id',
+                            'contributions.name as contribution_name',
+                            'contributions.description as contribution_description',
+                            'contributions.images',
+                            'contributions.files',
+                            'contributions.submitted_date as contribution_submitted_date',
+                            'contributions.attempt_number as contribution_attempt_number',
+                            'contributions.status as contribution_status'
+                        ]);
+
+                    foreach ($contributions as $contribution) {
+                        $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                        $images = explode(",", $contribution->images);
+                        $contribution->images = array_map(function ($image) {
+                            return public_path('images') . DIRECTORY_SEPARATOR . $image;
+                        }, $images);
+                        $selectedContributions[] = $contribution;
+                    }
+                }
+
+                return $this->sendResponse($selectedContributions, "Selected Contributions for System Users Retrieved", 200);
+            }
         }
     }
 

@@ -17,6 +17,8 @@ Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
+
     Route::get('/contributions', [ContributionController::class, 'index']);
     Route::get('/contributions/{id}', [ContributionController::class, 'show']);
 
@@ -38,6 +40,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:guest')->group(function () {
         Route::post('/guest/faculty-register', [UserController::class, 'registerFacultyByGuest']);
+        Route::get('/guest/unregistered-faculty/{id}', [UserController::class, 'getUnregisteredFacultyOfGuest']);
     });
 
     Route::middleware('role:student')->group(function () {
