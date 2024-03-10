@@ -2,7 +2,7 @@ import { Fragment } from "react"
 import { Link } from "react-router-dom"
 
 
-const Breadcrumb = ({links, className}) => {
+const Breadcrumb = ({links = [], className = ""}) => {
     return (
         <ul className={`flex gap-2 items-center ${className}`}>
             {links.map((item, index) => {

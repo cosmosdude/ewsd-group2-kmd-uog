@@ -1,6 +1,6 @@
 import "./style/tailwind.css"
 
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
