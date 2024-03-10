@@ -299,6 +299,42 @@ class ContributionController extends Controller
                     $contribution->comment_count = $comment_count;
                 }
                 return $this->sendResponse($contributions, "Rejected Contributions Retrieved Successfully", 200);
+            } elseif ($request->status == 'pending') {
+                $contributions = DB::table('contributions')
+                    ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+                    ->join('users', 'users.id', '=', 'contributions.user_id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                    ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+                    ->where('closures.id', $request->closure_id)
+                    ->where('contributions.user_id', Auth::user()->id)
+                    ->where('contributions.status', 'upload')
+                    ->get([
+                        'falculties.id as faculty_id',
+                        'falculties.name as faculty_name',
+                        'users.id as user_id',
+                        'users.name as user_name',
+                        'users.email as user_email',
+                        'contributions.id as contribution_id',
+                        'contributions.name as contribution_name',
+                        'contributions.description as contribution_description',
+                        'contributions.images',
+                        'contributions.files',
+                        'contributions.submitted_date as contribution_submitted_date',
+                        'contributions.attempt_number as contribution_attempt_number',
+                        'contributions.status as contribution_status'
+                    ]);
+                // $images = [];
+                foreach ($contributions as $contribution) {
+                    $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    }
+                    $contribution->images = $images;
+                    $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
+                    $contribution->comment_count = $comment_count;
+                }
+                return $this->sendResponse($contributions, "Rejected Contributions Retrieved Successfully", 200);
             }
         }
     }

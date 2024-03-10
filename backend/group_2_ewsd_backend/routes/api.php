@@ -79,4 +79,3 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
-
