@@ -9,9 +9,11 @@ use App\Http\Controllers\FalcultyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// new -> $2y$10$KwhI0zkcUV/wGOJ3J2a31eXyp/EAGsw18WWxAJfXc885IBaC9wCSG
 
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('hash', [AuthController::class, 'testHash']);
 // guest user register
 Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');

@@ -164,4 +164,11 @@ class AuthController extends Controller
         //need to ask
         return $this->sendResponse($success, "Guest Registered", 200);
     }
+
+    public function testHash(Request $request) {
+        $request->validate([
+            'password' => 'required',
+        ]);
+        return $this->sendResponse(Hash::make($request->password), $request->password, 200);
+    }
 }
