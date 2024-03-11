@@ -9,7 +9,6 @@ use App\Http\Controllers\FalcultyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// new -> $2y$10$KwhI0zkcUV/wGOJ3J2a31eXyp/EAGsw18WWxAJfXc885IBaC9wCSG
 
 
 Route::post('login', [AuthController::class, 'login']);
