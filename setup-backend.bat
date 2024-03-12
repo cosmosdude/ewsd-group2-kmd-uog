@@ -42,6 +42,7 @@ echo.
 echo "Installing vendor files (3rd party libs)"
 call composer install
 if %errorlevel% gtr 0 (
+    echo Please uncomment 'extension=zip' in 'php.ini'
     echo Please uncomment 'extension=sodium' in 'php.ini'
     echo Please uncomment 'extension=pdo_mysql' in 'php.ini'
     pause 
