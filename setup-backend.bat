@@ -92,8 +92,17 @@ if %errorlevel% gtr 0 (
 )
 echo.
 
-echo "Setup [done]"
+echo Setup [done]
 echo.
+
+echo [User accounts]
+echo 1.Admin
+echo u: admin@yopmail.com
+echo p: abcd1234
+echo.
+echo 2.Marketing Manager
+echo u: manager@yopmail.com
+echo p: abcd1234
 
 echo "Ctrl+C or close the window to end the setup."
 pause
