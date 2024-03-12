@@ -133,10 +133,41 @@ As an admin, I want to create closure within selected academic year. [later]
 
 >>>>>>>>>>>>>>>>>>>> Exception Report
 As a MC, I want to see Exception Report
+
+(
+- Contributions without a comment.
+- Contributions without a comment after 14 days
+)
+As a MC, I want to see a count of all contributions in a magazine
+As a MC, I want to see a count of commented contributions in a magazine
+As a MC, I want to see a count of uncommented contributions in a magazine
+As a MC, I want to see a count of comment overdue contributions in a magazine
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Statistical Report
 As an Admin, I want to see Statistical Report
+
+(
+- Number of contributions within each Faculty for each academic year.
+- Percentage of contributions by each Faculty for any academic year.
+- Number of contributors within each Faculty for each academic year.
+)
+As an admin, I want to see the percentage of contribution by each faculties in a pie chart filtered by academic year.
+As an admin, I want to see a list of faculties filtered by academic year along with their faculty name, number of contributions, number of contributers.
+
+(- pages are most viewed)
+As an admin, I want to see a list of 3-5 most viewed magazines.
+As an admin, I want to see a list of 3-5 most viewed articles.
+
+(- which users are most active)
+As an admin, I want to see a list of 3-5 students with most uploaded contributions.
+As an admin, I want to see a list of 3-5 most active users (student & guest only).
+
+(- which browsers are being used)
+As an admin, I want to see a list of 5 most used web browsers.
+
+(- etc)
+As an admin, I want to see the number of students and guests of faculties respectively in a bar graph (etc)
 <<<<<<<<<<<<<<<<<<<<
 
 >>>>>>>>>>>>>>>>>>>> Lowest Priority Others
