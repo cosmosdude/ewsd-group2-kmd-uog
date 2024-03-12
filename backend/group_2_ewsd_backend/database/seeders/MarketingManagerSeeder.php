@@ -24,7 +24,7 @@ class MarketingManagerSeeder extends Seeder
         $usersTable = DB::table('users');
 
         // get admin
-        $admin = $usersTable->where('name', 'manager')->first();
+        $admin = $usersTable->where('email', 'manager@yopmail.com')->first();
 
         // if it does not exist
         if ($admin == null) {

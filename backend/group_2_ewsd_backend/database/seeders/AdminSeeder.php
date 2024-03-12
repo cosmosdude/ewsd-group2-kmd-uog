@@ -24,7 +24,7 @@ class AdminSeeder extends Seeder
         $usersTable = DB::table('users');
 
         // get admin
-        $admin = $usersTable->where('name', 'admin')->first();
+        $admin = $usersTable->where('email', 'admin@yopmail.com')->first();
 
         // if it does not exist
         if ($admin == null) {
