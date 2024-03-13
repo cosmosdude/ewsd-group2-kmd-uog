@@ -42,7 +42,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|max:100',
-            'email' => 'required|unique:users|max:255',
+            'email' => 'required|unique:users|max:255|email',
             'password' => 'required|min:8',
             'phone' => 'required',
             //'role_id' => 'required',
@@ -144,7 +144,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required|min:8',
             'faculties' => 'required|array'
         ]);
