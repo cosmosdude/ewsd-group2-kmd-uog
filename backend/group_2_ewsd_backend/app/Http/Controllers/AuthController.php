@@ -18,7 +18,6 @@ class AuthController extends Controller
     public function me()
     {
         $user_id = Auth::user()->id;
-        //dd($user_id);
         $auth_user_info = DB::table('users')
             ->select(
                 'users.id as user_id',

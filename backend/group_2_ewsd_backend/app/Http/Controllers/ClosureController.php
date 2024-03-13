@@ -75,10 +75,40 @@ class ClosureController extends Controller
     //get previous closures list
     public function getPreviousClosures()
     {
-        $previousclosure = Closure::where('final_closure_date', '<', now())
-            ->orderBy('final_closure_date', 'DESC')
-            ->get();
-        return $this->sendResponse($previousclosure, "Previous Closures List", 200);
+        if(Auth::user()->hasRole('administrator')){
+            $previousClosure = Closure::where('final_closure_date', '<', now())
+                ->select(
+                    'id as No',
+                    'name as Title',
+                    'start_date as start_date',
+                    'final_closure_date as end_date'
+                )
+                ->orderBy('final_closure_date', 'desc')
+                ->get();
+
+        } else if(Auth::user()->hasRole('m_coordinator')){
+            $coordinator_faculty_id = DB::table('users')
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->where('users.id', Auth::user()->id)
+                ->value('faculty_users.faculty_id');
+
+            $previousClosure = DB::table('closures')
+                ->join('contributions', 'contributions.closure_id', '=', 'closures.id')
+                ->join('users', 'users.id', '=', 'contributions.user_id')
+                ->join('faculty_users', 'faculty_users.faculty_id', '=', 'faculties.id')
+                ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
+                ->where('faculties.id', $coordinator_faculty_id)
+                ->where('closures.final_closure_date', '<', now())
+                ->select(
+                    'closures.id as No',
+                    'closures.name as Title',
+                    'closures.start_date as start_date',
+                    'closures.final_closure_date as end_date'
+                )
+                ->distinct()
+                ->get();
+        }
+        return $this->sendResponse($previousClosure, "Previous Closures List", 200);
     }
 
     public function getCurrentClosures()

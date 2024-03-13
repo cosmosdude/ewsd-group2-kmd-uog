@@ -678,4 +678,29 @@ class ContributionController extends Controller
         $uploadedcontributions = Contribution::where('user_id', $user->id)->get();
         return $this->sendResponse($uploadedcontributions, 'Uploaded Contribution list', 200);
     }
+    //contribution list of current closure
+    public function getCurrentClosureContributionList(){
+
+        $closure = new ClosureController();
+        $currentclosure = $closure->getCurrentClosures();
+
+        $contributions = Contribution::select(
+            'contributions.name as Title',
+            'closures.start_date',
+            'closures.closure_date',
+            'closures.final_closure_date',
+        )
+        ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+        ->join('users', 'users.id', '=', 'contributions.user_id')
+        ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+        ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
+        ->where('faculty_users.faculty_id', '=', $coordinator->faculty_id)
+        ->where('closures.id', $currentclosure->id)
+        ->get();
+
+        return $this->sendResponse($contributions, "Current Closure of Contribution List", 200);
+
+
+    }
+
 }
