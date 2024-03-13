@@ -35,7 +35,7 @@ class CommentController extends Controller
         $comment = Comment::create([
             'content' => $request->content,
             'commented_time' => Carbon::now(),
-            'contribution_id' => $request->contribution_id, 
+            'contribution_id' => $request->contribution_id,
             'user_id' => Auth::user()->id,
         ]);
         if (Auth::user()->hasRole('m_coordinator')) {
