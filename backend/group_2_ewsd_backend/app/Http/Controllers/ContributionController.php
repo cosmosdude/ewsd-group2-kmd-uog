@@ -700,7 +700,7 @@ class ContributionController extends Controller
 
         return $this->sendResponse($contributions, "Current Closure of Contribution List", 200);
 
-
     }
+    // previous closure of contribution list
 
 }

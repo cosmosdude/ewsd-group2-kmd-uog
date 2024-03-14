@@ -44,7 +44,17 @@ class CommentController extends Controller
             ]);
 
             //send email to student when m_coordinator commented
-            $student = $contribution->user;
+            //Please make changes in your .env file
+            // MAIL_MAILER=smtp
+            // MAIL_HOST=smtp.yomail.com
+            // MAIL_PORT=587
+            // MAIL_USERNAME=null
+            // MAIL_PASSWORD=null
+            // MAIL_ENCRYPTION=tls
+            // MAIL_FROM_ADDRESS=null
+            // MAIL_FROM_NAME="${APP_NAME}"
+            // $student = $contribution->user;
+
             Mail::to($student->email)->send(new CommentedEmail($student->name, $request->content, $contribution));
         } else {
             //send email to coordinator when student commented

@@ -75,8 +75,10 @@ class ClosureController extends Controller
     //get previous closures list
     public function getPreviousClosures()
     {
+        // $previousClosures = Closure::where('final_closure_date', '<', Carbon::now());
+
         if(Auth::user()->hasRole('administrator')){
-            $previousClosure = Closure::where('final_closure_date', '<', now())
+            $previousClosures = Closure::where('final_closure_date', '<', Carbon::now())
                 ->select(
                     'id as No',
                     'name as Title',
@@ -91,24 +93,21 @@ class ClosureController extends Controller
                 ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
                 ->where('users.id', Auth::user()->id)
                 ->value('faculty_users.faculty_id');
-
-            $previousClosure = DB::table('closures')
-                ->join('contributions', 'contributions.closure_id', '=', 'closures.id')
-                ->join('users', 'users.id', '=', 'contributions.user_id')
-                ->join('faculty_users', 'faculty_users.faculty_id', '=', 'faculties.id')
-                ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
-                ->where('faculties.id', $coordinator_faculty_id)
-                ->where('closures.final_closure_date', '<', now())
+            if($coordinator_faculty_id){
+                $previousClosures = Closure::where('final_closure_date', '<', Carbon::now())
+                ->where('academic_id', $coordinator_faculty_id)
                 ->select(
-                    'closures.id as No',
-                    'closures.name as Title',
-                    'closures.start_date as start_date',
-                    'closures.final_closure_date as end_date'
+                    'id as No',
+                    'name as Title',
+                    'start_date as start_date',
+                    'final_closure_date as end_date'
                 )
-                ->distinct()
+                ->orderBy('final_closure_date', 'desc')
                 ->get();
+            }
+
         }
-        return $this->sendResponse($previousClosure, "Previous Closures List", 200);
+        return $this->sendResponse($previousClosures, "Previous Closures List", 200);
     }
 
     public function getCurrentClosures()
