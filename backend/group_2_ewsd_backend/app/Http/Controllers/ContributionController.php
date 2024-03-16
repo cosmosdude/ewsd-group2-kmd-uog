@@ -701,6 +701,17 @@ class ContributionController extends Controller
         return $this->sendResponse($contributions, "Current Closure of Contribution List", 200);
 
     }
-    // previous closure of contribution list
+    //most uploaded student list
+    public function getMostlyUploadContribution(){
+        $contributions = DB::table('contributions')
+            ->join('users', 'contributions.user_id', 'users.id')
+            ->select('users.id', 'users.name', DB::raw('count(*) as mostly_uploaded'))
+            ->groupBy('users.id',  'users.name')
+            ->orderBy('mostly_uploaded', 'ASC')
+            ->limit(3)
+            ->get();
+
+        return $this->sendResponse($contributions, "Mostly uploaded Student", 200);
+    }
 
 }

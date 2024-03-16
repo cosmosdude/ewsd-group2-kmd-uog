@@ -88,7 +88,8 @@ class ClosureController extends Controller
                 ->orderBy('final_closure_date', 'desc')
                 ->get();
 
-        } else if(Auth::user()->hasRole('m_coordinator')){
+        }
+        else if(Auth::user()->hasRole('m_coordinator')){
             $coordinator_faculty_id = DB::table('users')
                 ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
                 ->where('users.id', Auth::user()->id)
@@ -106,7 +107,10 @@ class ClosureController extends Controller
                 ->get();
             }
 
-        }
+          }
+        //else {
+        //     return $this->sendError('You are not allowed to view Previous Closures List', 403);
+        // }
         return $this->sendResponse($previousClosures, "Previous Closures List", 200);
     }
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 // new -> $2y$10$KwhI0zkcUV/wGOJ3J2a31eXyp/EAGsw18WWxAJfXc885IBaC9wCSG
 
+Route::get('studentlist', [ContributionController::class, 'getMostlyUploadContribution']);
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('hash', [AuthController::class, 'testHash']);
@@ -29,6 +30,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/closures/current', [ClosureController::class, 'getCurrentClosures']);
     Route::apiResource('/closures', ClosureController::class)->except('destroy');
     Route::get('/previous-closures', [ClosureController::class, 'getPreviousClosures']); //previous closure list
+
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::get('/contributions/download/{id}', [ContributionController::class, 'downloadContribution']);
@@ -40,6 +42,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/closures/{id}/submit', [ClosureController::class, 'getSubmittedContributionsWithinFaculty']);
         //get current closure of contribution list
         Route::get('/contributionlist', [ContributionController::class, 'getCurrentClosureContributionList']);
+
     });
 
     Route::middleware('role:student')->group(function () {
@@ -94,6 +97,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::middleware(['role:administrator,m_coordinator,student,m_manager'])->group(function () {
         Route::get('/faculties/{id}', [FalcultyController::class, 'show']);
+
     });
     Route::middleware('role:administrator')->group(function () {
         //in most of the LMS, update student information only done by the admin
@@ -114,7 +118,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
-
 
 
 
