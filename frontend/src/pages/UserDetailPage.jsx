@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
 
 import MailIcon from "../assets/mail.svg"
-import FacultyIcon from "../assets/sidenav/departments.png"
+import FacultyIcon from "../assets/sidenav/departments.svg"
 import PhoneIcon from "../assets/phone.png"
 import HistoryIcon from "../assets/history.png"
 import { useNavigate, useParams } from "react-router"
