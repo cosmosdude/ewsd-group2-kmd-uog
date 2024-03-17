@@ -702,8 +702,28 @@ class ContributionController extends Controller
     }
     public function addReadCount($id)
     {
-        $contribution = Contribution::findOrFail($id);
-        $contribution->update(['read_count' => ++$contribution->read_count]);
-        return $this->sendResponse($contribution, "Contribution Read Count Updated Successfully!", 200);
+        if (Auth::user()->hasRole('student') || Auth::user()->hadRole('guest')) {
+            $contribution = Contribution::findOrFail($id);
+            $contribution->update(['read_count' => ++$contribution->read_count]);
+            return $this->sendResponse($contribution, "Contribution Read Count Updated Successfully!", 200);
+        }
+        return $this->sendError("Nothing will change since you are not student or guest role", 403);
+    }
+    public function getCommentCount()
+    {
+        $success['comment'] = Contribution::where('is_commented', 1)->get()->count();
+        $success['uncomment'] = Contribution::where('is_commented', 0)->get()->count();
+        $uncommented =   Contribution::where('is_commented', 0)->get();
+
+        $overdue_count = 0;
+        foreach ($uncommented as $u) {
+            $submitted_date = Carbon::parse($u->submitted_date);
+            $day_diff = Carbon::now()->diffInDays($submitted_date);
+            if ($day_diff > 14) {
+                $overdue_count += 1;
+            }
+        }
+        $success['overdue'] = $overdue_count;
+        return $this->sendResponse($success, "Comment Counts for Admin Dashboard", 200);
     }
 }

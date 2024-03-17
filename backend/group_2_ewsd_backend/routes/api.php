@@ -112,6 +112,9 @@ Route::middleware('auth:api')->group(function () {
 
 
         Route::get('upcoming-closures', [ClosureController::class, 'upcomingClosure']);
+        Route::get('/comment-counts',[ContributionController::class,'getCommentCount']);
+        Route::get('/guest-student-counts',[FalcultyController::class,'getStudentAndGuestCount']);
+
     });
 
     Route::middleware('role:m_manager')->group(function () {

@@ -149,4 +149,19 @@ class FalcultyController extends Controller
 
         return $this->sendResponse($guests, "Guests List", 200);
     }
+    public function getStudentAndGuestCount(){
+        $counts = DB::table('users')
+        ->select(
+            'falculties.id as id',
+            'falculties.name as name',
+            DB::raw('COUNT(CASE WHEN users.role_id = 4 THEN users.id END) as student_count'),
+            DB::raw('COUNT(CASE WHEN users.role_id = 5 THEN users.id END) as guest_count')
+        )
+        ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+        ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+        ->whereIn('users.role_id', [4, 5])
+        ->groupBy('falculties.id', 'falculties.name')
+        ->get();
+        return $this->sendResponse($counts, "Student and Guest Count", 200);
+    }
 }
