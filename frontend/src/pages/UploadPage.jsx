@@ -118,6 +118,8 @@ function UploadPage() {
             if (res.status >= 200 && res.status < 300) {
                 // goto previous page
                 navigate(-1)
+            } else if (res.status === 413) {
+                setError("Total file size exceeds limit of 8 MB.")
             } else {
                 setError(`Unable to upload submission(${res.status})`)
             }

@@ -11,6 +11,8 @@ import routesConfig from "../configs/routes.config";
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs";
 
 import UploadIcon from "../assets/upload.png"
+import FilledButton from "../components/FilledButton";
+import Dialog from "../components/Dialog";
 
 function ArticleDetailPage() {
 
@@ -90,11 +92,26 @@ function ArticleDetailPage() {
         }
     }
 
+    let [showDialog, setShowDialog] = useState(false)
     return (
         // Full container
         // if not on small device, it will be 2 panels.
         // will become vertical mode on mobile view.
         <div className="flex flex-col md:flex-row w-full h-full overflow-scroll">
+            {showDialog && <Dialog 
+                title="Reject contribution" 
+                message="Are you sure that you want to reject this contribution?"
+                confirmCTA="Reject"
+                onConfirm={() => {
+                    setShowDialog(false)
+                    updateStatus('reject')
+                    console.log("Confirmed")
+                }}
+                dismissCTA="Cancel"
+                onDismiss={ () => {
+                    setShowDialog(false)
+                }}
+            />}
             <div className="
                 grow flex flex-col gap-8 w-full h-auto md:h-full p-4 px-8
             ">
@@ -137,22 +154,24 @@ function ArticleDetailPage() {
                             commentCount={detail.comments?.length}
                         />
                         {(isUpload && !isStudent) && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
-                            <button 
+                            <FilledButton title="Approve" onClick={() => updateStatus('approve')}/>
+                            {/* <button 
                                 className="
                                 rounded bg-blue-400 text-white py-[5px]
                                 hover:opacity-50
                                 transition-all
                                 "
                                 onClick={() => updateStatus('approve')}
-                            >Approve</button>
-                            <button 
+                            >Approve</button> */}
+                            <FilledButton style="danger" title="Reject" onClick={() => setShowDialog(true)}/>
+                            {/* <button 
                                 className="
                                 rounded bg-red-500 text-white py-[5px]
                                 hover:opacity-50
                                 transition-all
                                 "
                                 onClick={() => updateStatus('reject')}
-                            >Reject</button>
+                            >Reject</button> */}
                         </div>}
                     </div>
                 </div>
