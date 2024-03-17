@@ -7,7 +7,7 @@ const SideNav = ({showForSM, children}) => {
         absolute md:static
         ${showForSM ? 'block opacity-100': 'hidden opacity-0'} 
         md:opacity-100 md:pointer-events-auto 
-        z-50 md:z-[50] md:block min-w-[250px] bg-primary-300 h-full overflow-scroll transition-all
+        z-50 md:z-[50] md:block min-w-[250px] bg-primary-300 h-full overflow-visible transition-all
         `}>
             {/* <header className="block p-4 text-center text-xl font-bold">Large University</header> */}
             <nav className="mt-[16px]">

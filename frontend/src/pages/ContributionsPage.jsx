@@ -31,30 +31,12 @@ const ContributionsPage = () => {
                     ]}/>
                 <span className="grow"/>
             </div>
-            <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll">
-                <div className="grid grid-cols-3 gap-3 w-full flex-wrap">
-                    <Link 
-                        className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
-                        to='/magazine/history'
-                    >
-                        <p className="inline-block m-auto">Previous Magazines</p>
-                    </Link>
-                    {shouldShowCurrent && <Link 
-                        className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
-                        to='/magazine/current'
-                    >
-                        <p className="inline-block m-auto">Current Magazines</p>
-                    </Link>}
-                    {/* { isStudent && <Link 
-                        className="flex font-bold justify-between text-center h-[150px] bg-purple-100 hover:opacity-50 transition-all"
-                        // to='/magazine/current'
-                    >
-                        <p className="inline-block m-auto">Add Submission</p>
-                    </Link>} */}
-                    
-                    {/* <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/>
-                    <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/>
-                    <div className="inline-block basis-1/3 h-[150px] bg-slate-300"/> */}
+            <div className="flex flex-col gap-4 md:gap-8 overflow-visible">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full flex-wrap transition-all">
+                    <MagazineCard to='/magazine/history'>
+                        Previous<br/>Magazines
+                    </MagazineCard>
+                    {shouldShowCurrent && <MagazineCard to='/magazine/current'>Current<br/>Magazines</MagazineCard>}
                 </div>
             </div>
         </div>
@@ -62,3 +44,22 @@ const ContributionsPage = () => {
 }
 
 export default ContributionsPage
+
+function MagazineCard({to, children}) {
+    return(
+        <Link 
+            className="
+            flex 
+            font-bold justify-between 
+            text-center h-[150px] bg-secondary-200 hover:opacity-50 
+            rounded-[6px]
+            shadow-xl
+            transition-all"
+            to={to}
+        >
+            <p className="inline-block m-auto">
+                {children}
+            </p>
+        </Link>
+    )
+}

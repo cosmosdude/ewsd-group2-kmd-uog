@@ -6,6 +6,7 @@ import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
+import FilledButton from "../components/FilledButton"
 
 const StudentRegistrationPage = () => {
     
@@ -116,18 +117,12 @@ const StudentRegistrationPage = () => {
             {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">
                     {error}
                 </p>}
-                <div className="flex w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
-                    <button 
-                        className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
-                        onClick={createAccount}
-                    >Save</button>
-                    <Link 
-                        className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-gray-400 text-white text-center hover:opacity-50 transition-all`} 
-                        to="/users">
-                        Cancel
-                    </Link>
-                    {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
+                {isLoading && <div className="w-full flex items-center justify-center"><LoadingIndicator/></div>}
+                <div className="grid grid-cols-2 w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
+                    <FilledButton title="Save" onClick={createAccount}/>
+                    <FilledButton title="Cancel" gray to={-1} />
                 </div>
+                
         </div>
     )
 }
