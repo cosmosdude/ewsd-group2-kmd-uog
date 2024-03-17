@@ -1,4 +1,6 @@
+import BorderedButton from "./BorderedButton"
 import Carousel from "./Carousel"
+import FilledButton from "./FilledButton"
 // import { Carousel } from 'react-responsive-carousel'
 
 function getStatusDisplay(status) {
@@ -28,7 +30,11 @@ export default function ContributionCard({
     return (
         // Outer
         <div 
-            className={`text-left rounded border transition-all ${onCardClick ? 'cursor-pointer hover:border-purple-500' : ''}`}
+            className={`
+            text-left rounded border 
+            transition-all 
+            ${onCardClick ? 'cursor-pointer hover:border-secondary-500' : ''}
+            `}
             onClick={e => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -37,56 +43,41 @@ export default function ContributionCard({
             }}
         >
             <div className="flex flex-col w-[300px] p-[10px] gap-[10px]">
-                <div className="flex gap-[5px] items-center py-[10px] border-b border-b-slate-200">
+                <div className="flex gap-[5px] items-center py-[10px] border-b-[0.5px] border-b-secondary-200">
                     <div className="w-[30px] h-[30px] bg-slate-200 rounded-full"/>
-                    <p className="grow">{author}</p>
-                    <p className="shrink-0">{facultyName}</p>
+                    <p className="grow text-xs font-bold">{author}</p>
+                    <p className="shrink-0 text-xs font-bold">{facultyName}</p>
                 </div>
                 {/* Carousel container */}
                 <Carousel images={srcs}/>
                 {/* Name and Academic Year */}
                 <div className="flex flex-col">
-                    <p className="font-bold">{title}</p>
-                    {subtitle && <p>{subtitle}</p>}
+                    <p className="text-md font-bold">{title}</p>
+                    {subtitle && <p className="text-sm">{subtitle}</p>}
                 </div>
                 {/* Description */}
-                <div className="flex flex-col">
+                <div className="flex flex-col text-sm">
                     <p>{description}</p>
                 </div>
-                <div className="flex gap-[5px]">
-                    <button 
-                        className="
-                        grow bg-indigo-600 rounded px-[10px] py-[5px] text-white
-                        hover:opacity-50
-                        transition-all
-                        "
-                        onClick={e => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            onView?.()
-                        }}
-                    >
-                        Read Contribution
-                    </button>
-                    {allowsUpdate && <button 
-                        className="
-                        bg-white border border-indigo-600 rounded px-[10px] py-[5px] text-indog-600
-                        hover:opacity-50
-                        transition-all
-                        "
+                <div className="flex gap-[5px] max-h-[55px]">
+                    <FilledButton className="grow shadow" title="Read Contribution" onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        onView?.()
+                    }}/>
+                    {allowsUpdate && <BorderedButton 
+                        title='Update'
                         onClick={e => {
                             e.preventDefault()
                             e.stopPropagation()
                             onUpdate?.()
                         }}
-                    >
-                        Update
-                    </button>}
+                    />}
                 </div>
-                {showBottom ? <div className="flex border-b border-b-bg-slate-500"/> : false}
-                {showBottom ? <div className="flex">
+                {showBottom ? <div className="mt-[10px] flex border-b-[0.5px] border-b-secondary-200"/> : false}
+                {showBottom ? <div className="flex items-center">
                     {/* Status */}
-                    {status && <p>{getStatusDisplay(status)}</p>}
+                    {status && <p className="text-xs font-bold">{getStatusDisplay(status)}</p>}
                     {/* Spacer */}
                     <div className="grow"/> 
                     {/* Comment */}

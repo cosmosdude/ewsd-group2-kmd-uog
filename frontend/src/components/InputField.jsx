@@ -33,7 +33,7 @@ const InputField = ({className, disabled, id, src, placeholder, type, value, onC
                 {isDateOrDateTime && !value && <p 
                     className="
                     peer-focus:invisible absolute 
-                    inline-block py-2 left-4 right-10 
+                    inline-block py-2 left-4 right-[50px] 
                     grow bg-white 
                     pointer-events-none 
                     font-serif text-sm text-gray-400
