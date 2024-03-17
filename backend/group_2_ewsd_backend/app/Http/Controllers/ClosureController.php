@@ -77,7 +77,7 @@ class ClosureController extends Controller
     {
         // $previousClosures = Closure::where('final_closure_date', '<', Carbon::now());
 
-        if(Auth::user()->hasRole('administrator')){
+        if (Auth::user()->hasRole('administrator')) {
             $previousClosures = Closure::where('final_closure_date', '<', Carbon::now())
                 ->select(
                     'id as No',
@@ -87,25 +87,23 @@ class ClosureController extends Controller
                 )
                 ->orderBy('final_closure_date', 'desc')
                 ->get();
-
-        } else if(Auth::user()->hasRole('m_coordinator')){
+        } else if (Auth::user()->hasRole('m_coordinator')) {
             $coordinator_faculty_id = DB::table('users')
                 ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
                 ->where('users.id', Auth::user()->id)
                 ->value('faculty_users.faculty_id');
-            if($coordinator_faculty_id){
+            if ($coordinator_faculty_id) {
                 $previousClosures = Closure::where('final_closure_date', '<', Carbon::now())
-                ->where('academic_id', $coordinator_faculty_id)
-                ->select(
-                    'id as No',
-                    'name as Title',
-                    'start_date as start_date',
-                    'final_closure_date as end_date'
-                )
-                ->orderBy('final_closure_date', 'desc')
-                ->get();
+                    ->where('academic_id', $coordinator_faculty_id)
+                    ->select(
+                        'id as No',
+                        'name as Title',
+                        'start_date as start_date',
+                        'final_closure_date as end_date'
+                    )
+                    ->orderBy('final_closure_date', 'desc')
+                    ->get();
             }
-
         }
         return $this->sendResponse($previousClosures, "Previous Closures List", 200);
     }
@@ -223,5 +221,16 @@ class ClosureController extends Controller
             }
         }
         return $this->sendResponse($upcoming, "Upcoming Magazines", 200);
+    }
+    public function getMostViewClosures()
+    {
+        $closures = DB::table('closures')
+        ->select('closures.id', 'closures.name', DB::raw('SUM(contributions.read_count) AS total_read_count'))
+        ->join('contributions', 'closures.id', '=', 'contributions.closure_id')
+        ->groupBy('closures.id', 'closures.name')
+        ->orderByDesc('total_read_count')
+        ->get()
+        ->toArray();
+        return $this->sendResponse($closures, "Most Viewed Magazine List", 200);
     }
 }

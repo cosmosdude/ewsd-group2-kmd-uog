@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrowserController;
 use App\Http\Controllers\ClosureController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContributionController;
@@ -19,6 +20,7 @@ Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
 
 Route::middleware('auth:api')->group(function () {
+    Route::get('/contributions/{id}/read-count',[ContributionController::class,'addReadCount']);
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
 
     Route::get('/contributions', [ContributionController::class, 'index']);
@@ -75,6 +77,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:administrator')->group(function () {
         //in most of the LMS, update student information only done by the admin
+        Route::get('/browsers',[BrowserController::class,'index']);
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
         Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
@@ -96,6 +99,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/faculties/{id}', [FalcultyController::class, 'show']);
     });
     Route::middleware('role:administrator')->group(function () {
+        Route::get('/most-view/magazines',[ClosureController::class,'getMostViewClosures']);
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);

@@ -539,11 +539,11 @@ class ContributionController extends Controller
 
         //if student of faculty_id and coordinator of faculty_id are the same send email
         $user = auth()->user();
-        if ($user->role_id === 4){
-            $coordinator = User::join('faculty_users', 'users.id', '=' , 'faculty_users.user_id')
-                                ->where('faculty_users.faculty_id', $user->faculty_id)
-                                ->where('users.role_id', 3)
-                                ->first();
+        if ($user->role_id === 4) {
+            $coordinator = User::join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->where('faculty_users.faculty_id', $user->faculty_id)
+                ->where('users.role_id', 3)
+                ->first();
         }
         if ($coordinator) {
             //if there has a problem display with dd first
@@ -551,7 +551,6 @@ class ContributionController extends Controller
             Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
-
     }
 
     public function update(Request $request, $id)
@@ -679,7 +678,8 @@ class ContributionController extends Controller
         return $this->sendResponse($uploadedcontributions, 'Uploaded Contribution list', 200);
     }
     //contribution list of current closure
-    public function getCurrentClosureContributionList(){
+    public function getCurrentClosureContributionList()
+    {
 
         $closure = new ClosureController();
         $currentclosure = $closure->getCurrentClosures();
@@ -690,17 +690,20 @@ class ContributionController extends Controller
             'closures.closure_date',
             'closures.final_closure_date',
         )
-        ->join('closures', 'closures.id', '=', 'contributions.closure_id')
-        ->join('users', 'users.id', '=', 'contributions.user_id')
-        ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
-        ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
-        ->where('faculty_users.faculty_id', '=', $coordinator->faculty_id)
-        ->where('closures.id', $currentclosure->id)
-        ->get();
+            ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+            ->join('users', 'users.id', '=', 'contributions.user_id')
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
+            ->where('faculty_users.faculty_id', '=', $coordinator->faculty_id)
+            ->where('closures.id', $currentclosure->id)
+            ->get();
 
         return $this->sendResponse($contributions, "Current Closure of Contribution List", 200);
-
     }
-    // previous closure of contribution list
-
+    public function addReadCount($id)
+    {
+        $contribution = Contribution::findOrFail($id);
+        $contribution->update(['read_count' => ++$contribution->read_count]);
+        return $this->sendResponse($contribution, "Contribution Read Count Updated Successfully!", 200);
+    }
 }
