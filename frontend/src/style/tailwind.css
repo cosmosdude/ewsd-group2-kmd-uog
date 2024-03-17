@@ -734,6 +734,10 @@ html {
   z-index: 2;
 }
 
+.z-\[1000\] {
+  z-index: 1000;
+}
+
 .col-auto {
   grid-column: auto;
 }
@@ -851,6 +855,10 @@ html {
 
 .mt-\[10px\] {
   margin-top: 10px;
+}
+
+.mb-auto {
+  margin-bottom: auto;
 }
 
 .block {
@@ -979,6 +987,10 @@ html {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[100px\] {
+  height: 100px;
 }
 
 .max-h-\[200px\] {
@@ -1428,6 +1440,14 @@ html {
   gap: 5px;
 }
 
+.gap-\[25px\] {
+  gap: 25px;
+}
+
+.gap-\[16px\] {
+  gap: 16px;
+}
+
 .place-self-end {
   place-self: end;
 }
@@ -1510,6 +1530,14 @@ html {
 
 .rounded-\[6px\] {
   border-radius: 6px;
+}
+
+.rounded-\[14px\] {
+  border-radius: 14px;
+}
+
+.rounded-\[12px\] {
+  border-radius: 12px;
 }
 
 .rounded-br-\[4px\] {
@@ -1670,6 +1698,11 @@ html {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+
+.border-dark-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(230 230 230 / var(--tw-border-opacity));
 }
 
 .border-b-slate-100 {
@@ -1953,6 +1986,11 @@ html {
   background-color: rgb(154 154 154 / var(--tw-bg-opacity));
 }
 
+.bg-dark-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(230 230 230 / var(--tw-bg-opacity));
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -2016,6 +2054,10 @@ html {
 
 .p-\[5px\] {
   padding: 5px;
+}
+
+.p-\[6px\] {
+  padding: 6px;
 }
 
 .px-1 {
@@ -2186,6 +2228,26 @@ html {
 .px-\[22px\] {
   padding-left: 22px;
   padding-right: 22px;
+}
+
+.py-\[25px\] {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.py-\[12px\] {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.px-\[75px\] {
+  padding-left: 75px;
+  padding-right: 75px;
+}
+
+.py-\[2px\] {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .pb-3 {
@@ -2693,6 +2755,11 @@ html {
   border-color: rgb(99 102 241 / var(--tw-border-opacity));
 }
 
+.focus-within\:border-secondary-500:focus-within {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 119 182 / var(--tw-border-opacity));
+}
+
 .hover\:border-indigo-500:hover {
   --tw-border-opacity: 1;
   border-color: rgb(99 102 241 / var(--tw-border-opacity));
@@ -2820,6 +2887,10 @@ html {
     max-width: 600px;
   }
 
+  .md\:max-w-\[500px\] {
+    max-width: 500px;
+  }
+
   .md\:grow-0 {
     flex-grow: 0;
   }
@@ -2838,6 +2909,10 @@ html {
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:items-start {
+    align-items: flex-start;
   }
 
   .md\:items-center {

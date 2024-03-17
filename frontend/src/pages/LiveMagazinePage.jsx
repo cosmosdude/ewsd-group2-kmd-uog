@@ -14,6 +14,7 @@ import useEffectArticlesOfCurrentMagazine from "../hooks/useEffectArticlesOfCurr
 import apiConfig from "../configs/api.config"
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
 import extractContributionFileSrc from "../util/extractContributionFileSrc"
+import BorderedButton from "../components/BorderedButton"
 
 const filter = {
     
@@ -72,12 +73,11 @@ const LiveMagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
-                { isStudent && <Link 
-                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                { isStudent && <BorderedButton 
+                    // className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                    title="New Contribution"
                     to={routesConfig.contribution.upload(magazineId)}
-                >
-                    Add Submissions
-                </Link>}
+                />}
             </div>
             {/* <div className="flex flex-col items-center gap-2">
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>

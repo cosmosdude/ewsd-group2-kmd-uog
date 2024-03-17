@@ -145,21 +145,31 @@ function UploadPage() {
     return (
     <div 
         className="
-        fixed left-0 top-0 flex w-screen h-screen bg-black/90 p-[25px] md:px-[150px] md:py-[50px] overflow-hidden
+        fixed 
+        left-0 top-0 
+        z-[1000]
+        flex w-screen h-screen bg-black/90 p-[25px] md:px-[150px] md:py-[50px] overflow-hidden
         "
+        onClick={e => {
+            e.stopPropagation()
+            e.preventDefault()
+            navigate(-1)
+        }}
     >
         {/* Content View */}
         <form 
             className="
             w-full min-h-[500px] max-h-full
-            my-auto 
+            mb-auto 
             p-[25px]
             flex flex-col items-center
             bg-white 
             overflow-scroll
             "
+            onClick={e => { e.stopPropagation() }}
             onSubmit={e => {
                 e.preventDefault()
+                e.stopPropagation
                 uploadArticle()
             }}
         >
