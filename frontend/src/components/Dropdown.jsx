@@ -12,9 +12,9 @@ const Dropdown = ({className, title, index, onChange, options, disabled}) => {
 
     return (
         <div className={`${!disabled && 'group'} flex relative justify-between ${className}`}>
-            <div className={`${disabled && 'pointer-events-none'} inline-flex items-center w-full min-h-[44px] border-1 border rounded pl-4 pr-4 hover:opacity-75 transition-all`}>
+            <div className={`${disabled && 'pointer-events-none'} inline-flex items-center w-full min-h-[44px] border-1 border rounded-[4px] px-[27.5px] py-[10px] hover:opacity-75 transition-all`}>
                 <p className="font-serif text-sm grow text-left">{title && title}</p>
-                <img className="w-[24px] h-[24px]" src={DownArrowSVG}/>
+                <img className="w-[22px] h-[22px]" src={DownArrowSVG}/>
             </div>
 
             <ul className="absolute px-[4px] py-[4px] top-full inline-block w-full max-h-[200px] overflow-y-scroll invisible group-hover:visible bg-white border rounded shadow-xl">

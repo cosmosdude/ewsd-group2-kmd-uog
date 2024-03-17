@@ -139,7 +139,7 @@ const SignUpPage = () => {
                         {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">{error}</p>}
                         <div className=" mt-[25px] pb-[50px]">
                             <button 
-                                className={`${isLoading && 'hidden'} text-xs font-serif font-bold py-3 px-16 bg-[#0077B6] text-white rounded-full hover:opacity-75 transition-all`}
+                                className={`${isLoading && 'hidden'} text-xs font-serif font-bold py-[10px] px-[46px] bg-[#0077B6] text-white rounded-full hover:opacity-75 transition-all`}
                                 onClick={signup}
                             >Sign Up</button>
                             {isLoading && <LoadingIndicator/>}

@@ -1,10 +1,10 @@
 export default function TopNav({onNav, onProfile, onLogout}) {
     return (
-        <div className="shrink-0 flex gap-1 items-center w-full p-2 pr-8">
+        <div className="shrink-0 flex gap-1 items-center w-full px-[12.5px] py-[12.5px] bg-secondary-700">
             <button className="block md:hidden" onClick={onNav}>
                 <img className="w-[38px] h-[38px] bg-slate-100"/>
             </button>
-            <header className="inline-block md:w-[250px] text-center text-xl font-bold">Large University</header>
+            <header className="inline-block md:w-[250px] text-center font-serif text-md font-bold text-white">Large University</header>
             <div className="grow"/>
             <div className="group relative gap-1 flex items-center ">
                 <div className="bg-slate-100 w-[44px] h-[44px] rounded-full cursor-pointer"/>

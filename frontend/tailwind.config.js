@@ -22,6 +22,50 @@ export default {
       animation: {
         fadein: 'fadein 0.25s ease-in-out',
         fadeout: 'fadeout 0.25s ease-in-out',
+      },
+      
+      fontFamily: {
+        serif: ['Georgia']
+      },
+
+      fontSize: {
+        s: ['6.5px', { lineHeight: '10.5px'}],
+        m: ['8px', { lineHeight: '13px'}],
+        xs: ['10px', { lineHeight: '16px'}],
+        sm: ['12.5px', { lineHeight: '20.5px'}],
+        md: ['15.5px', { lineHeight: '25px'}],
+        lg: ['19.5px', { lineHeight: '31.5px'}],
+        xl: ['24.5px', { lineHeight: '39.5px'}],
+        '2xl': ['30.5px', { lineHeight: '49.5px'}],
+      },
+
+      colors: {
+        primary: {
+          200: '#f8f8f8',
+          300: '#f5f5f5',
+          400: '#f1f1f1',
+          500: '#eeeeee',
+          600: '#bebebe',
+          700: '#8f8f8f',
+          800: '#5f5f5f',
+        },
+        secondary: {
+          200: '#99c9e2',
+          300: '#66add3',
+          400: '#3392c5',
+          500: '#0077B6',
+          600: '#005f92',
+          700: '#00476d',
+          800: '#003049',
+        },
+        dark: {
+          100: '#e6e6e6',
+          150: '#e6e6e6',
+          200: '#9a9a9a',
+          300: '#686868',
+          400: '#353535',
+          500: '#030303',
+        }
       }
     },
   },

@@ -99,7 +99,7 @@ const SignInPage = () => {
                 <form className="flex pt-16" onSubmit={login}>
                     <div className="w-[325px] mx-auto inline-flex flex-col items-center gap-2">
                         <div className="flex flex-col items-center gap-2 pb-6">
-                            <h1 className="text-xl font-bold font-serif">Sign In</h1>
+                            <h1 className="text-lg font-bold font-serif">Sign In</h1>
                             <p className="text-sm font-serif">Sign in to your account.</p>
                         </div>
                         {/* <input value={username} onChange={(e) => {setUsername(e.target.value)}}/> */}
@@ -132,7 +132,7 @@ const SignInPage = () => {
                             }}/>
                             <span className="grow"></span>
                             <button 
-                                className="text-sm font-serif text-[#0077B6] hover:opacity-75 transition-all"
+                                className="text-sm font-serif text-secondary-500 hover:opacity-75 transition-all"
                                 onClick={(e) => {
                                     e.preventDefault()
                                 }}
@@ -140,7 +140,7 @@ const SignInPage = () => {
                         </div>
                         <div className="mt-[25px] pb-[25px]">
                             <button 
-                                className={`${isLoading && "hidden"} text-xs font-serif font-bold py-3 px-16 bg-[#0077B6] text-white rounded-full hover:opacity-75 transition-all`}
+                                className={`${isLoading && "hidden"} text-xs font-serif font-bold py-[10px] px-[46px] bg-secondary-500 text-white rounded-full hover:opacity-75 transition-all`}
                                 onClick={login}
                             >Sign In</button>
                             {isLoading && <LoadingIndicator/>}
