@@ -1,6 +1,8 @@
 import BorderedButton from "./BorderedButton"
 import Carousel from "./Carousel"
 import FilledButton from "./FilledButton"
+
+import MessageIcon from "../assets/message.svg"
 // import { Carousel } from 'react-responsive-carousel'
 
 function getStatusDisplay(status) {
@@ -11,7 +13,6 @@ function getStatusDisplay(status) {
     default:
         return undefined    
     }
-    
 }
 
 export default function ContributionCard({
@@ -83,6 +84,7 @@ export default function ContributionCard({
                     {/* Comment */}
                     {(commentCount === 0 || commentCount) ? <button 
                         className="
+                        relative
                         flex items-center gap-[5px]
                         hover:opacity-50
                         transition-all
@@ -92,8 +94,8 @@ export default function ContributionCard({
                             e.stopPropagation()
                         }}
                     >
-                        <img className="w-[24px] h-[24px]"/>
-                        {commentCount}
+                        <img src={MessageIcon} className="w-[24px] h-[24px]"/>
+                        <p className="absolute -top-[4px] -right-[4px] block text-m text-white bg-red-700 rounded-full min-w-[14px] min-h-[14px] px-[4px]">{commentCount}</p>
                     </button> : false}
                 </div> : false}
             </div>

@@ -2,24 +2,12 @@ import { forwardRef, useContext, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail";
+import BorderedButton from "../components/BorderedButton";
 
-let InlineTextField = forwardRef(function ({required}, ref) {
-    return (
-        <div 
-            className="
-            outline-none 
-            flex items-center 
-            p-[10px]
-            w-[250px] h-[38px] 
-            border-2 border-slate-200 focus-within:border-indigo-500
-            rounded
-            transition-all
-            "
-        >
-            <input ref={ref} className="outline-none" required={required}/>
-        </div>
-    )
-})
+import UploadIcon from "../assets/imageupload.png"
+import CrossIcon from "../assets/cross.png"
+import FilledButton from "../components/FilledButton";
+
 
 function ImageFile({src, onDelete}) {
     return (
@@ -34,8 +22,7 @@ function ImageFile({src, onDelete}) {
         <button 
             className="
             absolute
-            w-[18px] h-[18px]
-            -top-[6px] right-0
+            top-[2px] right-[2px]
             hover:opacity-25
             transition-all
             "
@@ -45,7 +32,7 @@ function ImageFile({src, onDelete}) {
                 onDelete && onDelete()
             }}
         >
-            x
+            <img className="w-[15px] h-[15px]" src={CrossIcon}/>
         </button>
     </div>
     )
@@ -55,11 +42,11 @@ function ClickToUploadLabel() {
     return <div 
         className="
         absolute w-full h-full
-        flex flex-col items-center justify-center
+        flex flex-col gap-[10px] items-center justify-center
         "
     >
-        <img src={null} className="w-[24px] h-[24px]"/>
-        <p>Click to upload</p>
+        <img src={UploadIcon} className="w-[24px] h-[24px]"/>
+        <p className="text-sm text-dark-200">Click to upload image</p>
     </div>
 }
 
@@ -161,10 +148,10 @@ function UploadPage() {
             className="
             w-full min-h-[500px] max-h-full
             mb-auto 
-            p-[25px]
             flex flex-col items-center
             bg-white 
             overflow-scroll
+            rounded-[14px]
             "
             onClick={e => { e.stopPropagation() }}
             onSubmit={e => {
@@ -174,136 +161,162 @@ function UploadPage() {
             }}
         >
             {/* Center View */}
-            <div className="flex flex-col gap-[30px] max-w-full md:max-w-[600px]">
-                <div>
-                    <h1 className="text-center text-xl font-bold">{magazine?.name}</h1>
-                    <p className="text-center text-lg font-normal">New Submission</p>
+            <div className="flex flex-col items-center gap-[30px] max-w-full w-full">
+                <div className="w-full bg-secondary-200 py-[12px] sticky top-0 z-[10]">
+                    <h1 className="text-center text-lg font-bold">{magazine?.name}</h1>
+                    <p className="text-center text-sm font-normal">New Submission</p>
                 </div>
                 <div/>
                 {/* Input Row */}
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <label className="grow text-left">Title*</label>
-                    <InlineTextField ref={nameField} required/>
-                </div>
-                {/* Input Row */}
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <label className="grow text-left">Description*</label>
-                    <InlineTextField ref={descField} required/>
-                </div>
-
-                {/* File Row */}
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <label className="grow text-left">File*</label>
-                    
-                    <div 
-                        className="
-                        relative flex items-center 
-                        w-[250px]
-                        transition-all
-                        "
-                    >
-                        <input 
-                            ref={fileInput} className="absolute w-[1px] h-full opacity-0 outline-none" type="file" 
-                            // word file only
-                            accept=".doc,.docx"
-                            required
-                            onChange={e => {
-                                updateDocSrcState()
-                            }}
-                        />
-                        <button
+                <div className="max-w-full md:max-w-[500px] flex flex-col items-center md:items-stretch gap-[30px] mb-[25px]">
+                    <div className="flex flex-col md:flex-row items-start gap-[5px] md:gap-[25px]">
+                        <label className="grow text-left">Title*</label>
+                        {/* <InlineTextField ref={nameField} required/> */}
+                        <div 
                             className="
-                            px-[14px] py-[10px] 
-                            max-w-[250px]
-                            text-white text-sm font-bold
-                            bg-gray-600 rounded
-                            " 
-                            onClick={e => {
-                                e.preventDefault()
-                                fileInput.current.showPicker()
-                            }}>
-                            {docFile ? docFile.name : "Browse"}
-                        </button>
-                    </div>
-                </div>
-
-                
-                {/* Images */}
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <label className="grow text-left">Images*</label>
-                    
-                    <div 
-                        className="
-                        relative
-                        flex items-center 
-                        w-[250px]
-                        transition-all
-                        "
-                    >
-                        <input 
-                            ref={imageInput} 
-                            className="absolute w-[1px] opacity-0 h-full outline-none" type="file" 
-                            // word file only
-                            accept="image/*"
-                            onChange={e => {
-                                setImageFiles(getSelectedImageFiles())
-                            }}
-                            multiple
-                        />
-                        <div
-                            className="
-                            relative
-                            grid grid-cols-3
-                            gap-[5px]
-                            p-[10px]
-                            w-[250px] min-h-[125px] 
-                            items-start
-                            border-2 border-slate-200
-                            hover:border-indigo-500
-                            cursor-pointer
+                            outline-none 
+                            flex items-center 
+                            px-[10px] py-[4px]
+                            w-[250px] h-[38px] 
+                            border border-dark-100 focus-within:border-secondary-500
                             rounded
                             transition-all
-                            " 
-                            onClick={e => {
-                                e.preventDefault()
-                                imageInput.current.showPicker()
-                            }}>
-                            { imageFiles.length === 0 && <ClickToUploadLabel/> }
-                            {/* <ImageFile/>
-                            <ImageFile/> */}
-                            {imageFiles.map(x => URL.createObjectURL(x)).map((src, i) => {
-                                return <ImageFile 
-                                    key={i} src={src}
-                                    onDelete={() => {
-                                        // let newFiles = getSelectedImageFiles()
-                                        //     .filter((_, index) => i !== index)
-                                        // imageInput.current.files = new FileList(newFiles)
-                                        // updateImageSrcsState()
-                                        setImageFiles(
-                                            imageFiles.filter((v, index) => index !== i)
-                                        )
-                                    }}
-                                />
-                            })}
+                            "
+                        >
+                            <input ref={nameField} className="outline-none" required/>
                         </div>
-                        
                     </div>
-                </div>
-                <div className="flex flex-col items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <p className="md:max-w-[400px] text-center">By clicking Submit button, you agree to the Terms and Conditions of Large University.</p>
-                    {error && <p className="text-red-500 md:max-w-[400px] text-center">{error}</p>}
-                </div> 
-                {/* Input Row */}
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
-                    <button
-                        className="
-                        grow px-[14px] py-[8px] 
-                        text-white text-sm font-bold
-                        bg-indigo-600 rounded
-                        " 
-                        onClick={e => {}}>
-                        Submit
-                    </button>
+                    {/* Input Row */}
+                    <div className="flex flex-col md:flex-row items-start gap-[5px] md:gap-[25px]">
+                        <label className="grow text-left">Description*</label>
+                        {/* <InlineTextField ref={descField} required/> */}
+                        <div 
+                            className="
+                            outline-none 
+                            flex items-center 
+                            px-[10px] py-[4px]
+                            w-[250px] h-[100px] 
+                            border border-dark-100 focus-within:border-secondary-500
+                            rounded
+                            transition-all
+                            "
+                        >
+                            <textarea 
+                            ref={descField} 
+                            className="
+                            outline-none w-full h-full resize-none
+                            text-sm
+                            " 
+                            required
+                            />
+                        </div>
+                    </div>
+
+                    {/* File Row */}
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
+                        <label className="grow text-left">File*</label>
+                        
+                        <div 
+                            className="
+                            relative flex items-center 
+                            w-[250px]
+                            gap-[10px]
+                            transition-all
+                            "
+                        >
+                            <input 
+                                ref={fileInput} className="absolute w-[1px] h-full opacity-0 outline-none" type="file" 
+                                // word file only
+                                accept=".doc,.docx"
+                                required
+                                onChange={e => {
+                                    updateDocSrcState()
+                                }}
+                            />
+                            {!docFile && <BorderedButton title="Browse" onClick={e => {
+                                e.preventDefault()
+                                fileInput.current?.showPicker()
+                            }}/>}
+                            {!docFile && <p className="text-sm text-dark-200">.docx</p>}
+                            {docFile && (
+                                <button 
+                                className="border bg-dark-100 p-[6px] rounded text-xs"
+                                onClick={e => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    fileInput.current?.showPicker()
+                                }}>
+                                    {docFile?.name ?? ""}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                    
+                    {/* Images */}
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-[5px] md:gap-[25px]">
+                        <label className="grow text-left">Images*</label>
+                        
+                        <div 
+                            className="
+                            relative
+                            flex items-center 
+                            w-[250px]
+                            transition-all
+                            "
+                        >
+                            <input 
+                                ref={imageInput} 
+                                className="absolute w-[1px] opacity-0 h-full outline-none" type="file" 
+                                // word file only
+                                accept="image/*"
+                                onChange={e => {
+                                    setImageFiles(getSelectedImageFiles())
+                                }}
+                                multiple
+                            />
+                            <div
+                                className="
+                                relative
+                                grid grid-cols-3
+                                gap-[5px]
+                                p-[10px]
+                                w-[250px] min-h-[125px] 
+                                items-start
+                                border border-dark-1 rounded
+                                bg-[#f8f8f8]
+                                hover:border-secondary-500
+                                cursor-pointer
+                                transition-all
+                                " 
+                                onClick={e => {
+                                    e.preventDefault()
+                                    imageInput.current.showPicker()
+                                }}>
+                                { imageFiles.length === 0 && <ClickToUploadLabel/> }
+                                {imageFiles.map(x => URL.createObjectURL(x)).map((src, i) => {
+                                    return <ImageFile 
+                                        key={i} src={src}
+                                        onDelete={() => {
+                                            setImageFiles(
+                                                imageFiles.filter((v, index) => index !== i)
+                                            )
+                                        }}
+                                    />
+                                })}
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-start md:items-center gap-[5px] md:gap-[25px]">
+                        <p className="md:max-w-[400px] text-left text-sm text-dark-200">
+                            By clicking Submit button, you agree to the <a className="text-secondary-500" href="#"><u>Terms and Conditions</u></a> of Large University.
+                        </p>
+                        {error && <p className="text-red-500 md:max-w-[400px] text-center text-sm">{error}</p>}
+                    </div> 
+                    {/* Input Row */}
+                    <div className="flex w-full justify-center gap-[5px] md:gap-[25px]">
+                        <FilledButton className="px-[75px] shadow" title="Submit"/>
+                    </div>
                 </div>
             </div>
         </form>
