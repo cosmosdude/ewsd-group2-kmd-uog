@@ -494,7 +494,8 @@ class ContributionController extends Controller
 
         $request['user_id'] = Auth::user()->id;
         $closure = Closure::find($request->closure_id);
-        if (Carbon::parse($closure->closure_date)->isPast()) {
+
+        if (Carbon::parse($closure->closure_date)->addDay()->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
         if ($request->hasFile('files')) {
@@ -519,7 +520,7 @@ class ContributionController extends Controller
             }
         }
 
-        return response()->json(Auth::user());
+        // return response()->json(Auth::user());
         $contributionData = [
             'name' => $request->name,
             'description' => $request->description,
