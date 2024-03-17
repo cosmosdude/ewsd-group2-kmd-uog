@@ -8,6 +8,7 @@ import AuthContext from "../contexts/AuthContext"
 import SearchIcon from "../assets/search.png"
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import TableHeaderRow from "../components/TableHeaderRow"
 
 const GuestListPage = () => {
     let navigate = useNavigate()
@@ -76,10 +77,10 @@ const GuestListPage = () => {
                 <span className="grow"/>
             </div>
             <div className="flex">
-                <div className="inline-flex items-center gap-2 p-1 border-2 mx-auto w-full md:w-auto rounded">
+                <div className="inline-flex items-center gap-2 px-[18px] py-[7px] mx-auto w-full md:w-auto rounded-[8px] bg-primary-400">
                     <img src={SearchIcon} className="inline-block w-[18px] h-[18px]"/>
                     <input 
-                        className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent" 
+                        className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent font-serif font-sm" 
                         type="text" 
                         placeholder="Search by username, role or faculty"
                         value={searchText}
@@ -93,13 +94,13 @@ const GuestListPage = () => {
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
-                    <tr className="sticky bg-slate-100">
-                        <th className="p-5">No</th>
-                        <th className="p-5">Name</th>
-                        <th className="p-5">Email</th>
-                        <th className="p-5">Last Access</th>
-                        <th></th>
-                    </tr>
+                        <TableHeaderRow>
+                            <th className="p-5">No</th>
+                            <th className="p-5">Name</th>
+                            <th className="p-5">Email</th>
+                            <th className="p-5">Last Access</th>
+                            <th></th>
+                        </TableHeaderRow>
                     </thead>
                     <tbody>
                     {filteredUsers.map((user, index) => {

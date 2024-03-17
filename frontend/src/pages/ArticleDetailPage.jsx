@@ -4,11 +4,13 @@ import ContributionCard from "../components/ContributionCard";
 import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 import apiConfig from "../configs/api.config";
 import useEffectUserDetail from "../hooks/useEffectUserDetail";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import extractContributionFileSrc from "../util/extractContributionFileSrc";
 import routesConfig from "../configs/routes.config";
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs";
+
+import UploadIcon from "../assets/upload.png"
 
 function ArticleDetailPage() {
 
@@ -26,6 +28,17 @@ function ArticleDetailPage() {
     let isUpload = status !== 'approve' && status !== 'reject'
     console.log(detail, isUpload)
 
+    let commentSection = useRef()
+
+    useEffect(() => {
+        console.log("ScrollHeight", commentSection.current?.scrollHeight)
+        commentSection.current?.scrollTo({
+            left: 0, 
+            top: commentSection.current?.scrollHeight,
+            behaviour:'smooth'
+        })
+    }, [detail])
+
     async function updateStatus(status) {
         let data = `closure_id=${detail?.contribution?.closure_id}&status=${status}`
         try {
@@ -37,20 +50,20 @@ function ArticleDetailPage() {
                     'content-type': 'application/x-www-form-urlencoded'
                 }, body: data
             })
-            console.log('FUCK', response.status)
+            console.log('F', response.status)
             // console.log(await response.text())
             let json = await response.json()
-            console.log('FUCK json', json)
+            console.log('F json', json)
             if (response.status === 200) {
                 let results = json?.data 
-                console.log("FUCK", results)
+                console.log("F", results)
             } else {
-                console.log('FUCK json', json)
+                console.log('F json', json)
             }
 
             setCommentUUID(Math.random())
         } catch (e) { 
-            console.log("FUCK Error", e)
+            console.log("F Error", e)
         }
     }
 
@@ -144,12 +157,15 @@ function ArticleDetailPage() {
                     </div>
                 </div>
             </div>
-            <div className="
-            flex flex-col gap-[20px]
-            md:w-[550px] md:overflow-y-scroll
-            p-[20px]
-            bg-slate-200 
-            ">
+            <div 
+                className="
+                flex flex-col gap-[25px]
+                md:w-[550px] md:overflow-y-scroll
+                pt-[25px]
+                bg-primary-200 
+                "
+                ref={commentSection}
+            >
                 {detail?.comments?.map((x, i) => {
                     return <Comment 
                         key={i}
@@ -169,17 +185,19 @@ export default ArticleDetailPage;
 
 function Comment({author, ago, comment}) {
     return (
-        <div className="flex flex-col gap-[10px] bg-white p-[20px]">
-            <div className="flex gap-[10px] items-center pb-[10px] border-b">
-                <div className="w-[40px] aspect-square border rounded-full"/>
-                <div className="flex flex-col grow">
-                    <p className="font-bold">{author === undefined ? "Dr. Hla": author}</p>
-                    <p className="text-sm font-light">{ago === undefined ? "5 hours ago" : ago}</p>
+        <div className="px-[25px]">
+            <div className="flex flex-col gap-[10px] bg-white p-[20px] rounded-[4px] shadow-md">
+                <div className="flex gap-[10px] items-center pb-[10px] border-b border-b-secondary-200">
+                    <div className="w-[40px] aspect-square border rounded-full"/>
+                    <div className="flex flex-col grow">
+                        <p className="font-bold text-sm">{author === undefined ? "Dr. Hla": author}</p>
+                        <p className="text-xs text-dark-300 font-light">{ago === undefined ? "5 hours ago" : ago}</p>
+                    </div>
                 </div>
+                <p className="text-sm">
+                {comment !== undefined ? comment : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sodales, augue commodo rhoncus dapibus, est risus auctor tellus, eu lobortis metus est nec lacus."}
+                </p>
             </div>
-            <p>
-            {comment !== undefined ? comment : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sodales, augue commodo rhoncus dapibus, est risus auctor tellus, eu lobortis metus est nec lacus."}
-            </p>
         </div>
     );
 }
@@ -187,15 +205,27 @@ function Comment({author, ago, comment}) {
 function CommentBox({onComment}) {
     let textArea = useRef()
     return (
-        <div className="flex gap-[10px] items-start bg-white p-[20px]">
+        <div className="sticky bottom-0 bg-primary-200 py-[25px] px-[25px] flex gap-[10px] items-start">
             <div className="block w-[40px] aspect-square border rounded-full"/>
-            <div className="grow flex flex-col items-end gap-[10px]">
-                <textarea ref={textArea} className="p-[5px] w-full h-[75px] resize-none border"/>
+            <div className="
+                grow 
+                flex flex-col items-end gap-[10px]
+                p-[10px]
+                bg-white rounded shadow 
+                focus-within:shadow-lg
+                transition-all
+            ">
+                <textarea 
+                    ref={textArea}
+                    className="outline-none p-[10px] w-full h-[75px] resize-none"
+                    placeholder="Add a comment"
+                />
                 <button 
                     className="
-                    flex w-[30px] aspect-square 
-                    border-[2px] border-slate-200 rounded-full
-                    bg-slate-50 hover:bg-slate-200
+                    flex w-[36px] aspect-square 
+                    rounded-full
+                    bg-white hover:opacity-25
+                    transition-all
                     "
                     onClick={e => {
                         e.preventDefault()
@@ -204,7 +234,7 @@ function CommentBox({onComment}) {
                         onComment?.(textArea.current.value)
                         textArea.current.value = ""
                     }}
-                />
+                ><img src={UploadIcon} className="w-full h-full"/></button>
             </div>
         </div>
     )

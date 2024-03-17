@@ -11,7 +11,7 @@ const Checkbox = ({icon, label, checked, onChange}) => {
         <div className="flex items-center gap-2">
             <input  
                 checked={checked}
-                className={"w-[18px] h-[18px] transition-all rounded-[2px] border-4 border-slate-900 appearance-none checked:border-secondary-500 checked:bg-secondary-500"}
+                className={"w-[18px] h-[18px] transition-all rounded-[2px] border-2 border-slate-900 appearance-none checked:border-secondary-500 checked:bg-secondary-500"}
                 type="checkbox"
                 onChange={(e) => { 
                     console.log("Target.checked", e.target.checked)
