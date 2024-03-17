@@ -7,6 +7,8 @@ import AuthContext from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectAllAcademicYears from "../hooks/useEffectAllAcademicYears"
+import TableHeaderRow from "../components/TableHeaderRow"
+import BorderedButton from "../components/BorderedButton"
 
 export default function AcademicYearPage() {
 
@@ -27,25 +29,18 @@ export default function AcademicYearPage() {
                     ]}
                 />
                 <span className="grow"/>
-                <button 
-                    className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
-                    onClick={()=>{
-                        navigate('new')
-                    }}
-                >
-                    New Academic Year
-                </button>
+                <BorderedButton title="New Academic Year" to="new"/>
             </div>
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
-                    <tr className="sticky bg-slate-100">
+                    <TableHeaderRow>
                         <th className="p-5">No</th>
                         <th className="p-5">Academic Year</th>
                         <th className="p-5">Start Date</th>
                         <th className="p-5">End Date</th>
                         <th></th>
-                    </tr>
+                    </TableHeaderRow>
                     </thead>
                     <tbody>
                     {academicYears.map((year, index) => {

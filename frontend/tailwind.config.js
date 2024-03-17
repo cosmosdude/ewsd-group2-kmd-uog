@@ -31,12 +31,12 @@ export default {
       fontSize: {
         s: ['6.5px', { lineHeight: '10.5px'}],
         m: ['8px', { lineHeight: '13px'}],
-        xs: ['10px', { lineHeight: '16px'}],
-        sm: ['12.5px', { lineHeight: '20.5px'}],
-        md: ['15.5px', { lineHeight: '25px'}],
-        lg: ['19.5px', { lineHeight: '31.5px'}],
-        xl: ['24.5px', { lineHeight: '39.5px'}],
-        '2xl': ['30.5px', { lineHeight: '49.5px'}],
+        xs: ['11px', { lineHeight: '16px'}],
+        sm: ['14px', { lineHeight: '20.5px'}],
+        md: ['16px', { lineHeight: '25px'}],
+        lg: ['20px', { lineHeight: '31.5px'}],
+        xl: ['26px', { lineHeight: '39.5px'}],
+        '2xl': ['32px', { lineHeight: '49.5px'}],
       },
 
       colors: {

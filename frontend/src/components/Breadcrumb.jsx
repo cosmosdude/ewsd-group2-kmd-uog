@@ -8,14 +8,19 @@ const Breadcrumb = ({links = [], className = ""}) => {
             {links.map((item, index) => {
                 let isLast = index == (links.length - 1)
                 return (
-                    <Fragment key={`${index}`}>
+                    <Fragment key={`${index}`} >
                         <li>
                             <Link 
-                                className={`${item.current && 'text-blue-400'} hover:opacity-50 transition-all`} 
+                                className={`
+                                
+                                font-serif text-sm
+                                ${item.current && 'text-blue-400'} 
+                                hover:opacity-50 transition-all
+                                `} 
                                 to={item.link}
                             >{item.name}</Link>
                         </li>
-                        {!isLast && (<li>/</li>)}
+                        {!isLast && (<li className="font-serif text-sm">/</li>)}
                     </Fragment>
                 )
             })}

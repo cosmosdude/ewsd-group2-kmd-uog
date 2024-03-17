@@ -7,6 +7,8 @@ import AuthContext from "../contexts/AuthContext"
 
 import SearchIcon from "../assets/search.png"
 import ThreeDotIcon from "../assets/threedots.png"
+import TableHeaderRow from "../components/TableHeaderRow"
+import BorderedButton from "../components/BorderedButton"
 
 const UsersPage = () => {
     let navigate = useNavigate()
@@ -69,20 +71,13 @@ const UsersPage = () => {
                     ]}
                 />
                 <span className="grow"/>
-                <button 
-                    className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
-                    onClick={()=>{
-                        navigate('new')
-                    }}
-                >
-                    New Registration
-                </button>
+                <BorderedButton title="New Registration" to="new"/>
             </div>
             <div className="flex">
-                <div className="inline-flex items-center gap-2 p-1 border-2 mx-auto w-full md:w-auto rounded">
+                <div className="inline-flex items-center gap-2 px-[18px] py-[7px] mx-auto w-full md:w-auto rounded-[8px] bg-primary-400">
                     <img src={SearchIcon} className="inline-block w-[18px] h-[18px]"/>
                     <input 
-                        className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent" 
+                        className="outline-none grow md:grow-0 w-auto md:w-[300px] bg-transparent font-serif font-sm" 
                         type="text" 
                         placeholder="Search by username, role or faculty"
                         value={searchText}
@@ -95,19 +90,19 @@ const UsersPage = () => {
             </div>
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
-                    <thead>
-                    <tr className="sticky bg-slate-100">
-                        <th className="p-5">No</th>
-                        <th className="p-5">ID</th>
-                        <th className="p-5">Name</th>
-                        <th className="p-5">Email</th>
-                        <th className="p-5">Faculty</th>
-                        <th className="p-5">Role</th>
-                        <th className="p-5">Status</th>
-                        <th></th>
-                    </tr>
+                    <thead className="sticky top-0 z-[1]">
+                        <TableHeaderRow>
+                            <th className="p-5">No</th>
+                            <th className="p-5">ID</th>
+                            <th className="p-5">Name</th>
+                            <th className="p-5">Email</th>
+                            <th className="p-5">Faculty</th>
+                            {/* <th className="p-5">Role</th> */}
+                            <th className="p-5">Last Access</th>
+                            <th></th>
+                        </TableHeaderRow>
                     </thead>
-                    <tbody>
+                    <tbody className="font-serif text-sm">
                     {filteredUsers.map((user, index) => {
                         return (
                             <tr key={index} className="text-center hover:bg-slate-100">
@@ -116,7 +111,7 @@ const UsersPage = () => {
                                 <td className="p-3">{user.user_name}</td>
                                 <td className="p-3">{user.user_email}</td>
                                 <td className="p-3">{user.faculty_names.join(',')}</td>
-                                <td className="p-3">{user.role_name}</td>
+                                {/* <td className="p-3">{user.role_name}</td> */}
                                 <td className="p-3">N/A</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">

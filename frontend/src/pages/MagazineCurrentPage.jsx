@@ -9,6 +9,8 @@ import AuthContext from "../contexts/AuthContext"
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import useEffectCurrentMagazines from "../hooks/useEffectCurrentMagazines"
+import TableHeaderRow from "../components/TableHeaderRow"
+import BorderedButton from "../components/BorderedButton"
 
 /**
  * # Used for
@@ -37,36 +39,25 @@ const MagazineCurrentPage = () => {
                         {name: "current", current: true},
                     ]}/>
                 <span className="grow"/>
-                { isStudent && <Link 
-                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
-                    to='history'
-                >
-                    History
-                </Link>}
-
-                { isAdmin && <Link 
-                    className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
-                    to='new'
-                >
-                    New Magazine
-                </Link>}
+                { isStudent && <BorderedButton title="History" to="history"/>}
+                { isAdmin && <BorderedButton title="New Magazine" to="new"/>}
             </div>
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
-                    <tr className="sticky bg-slate-100">
+                    <TableHeaderRow>
                         <th className="p-5">No</th>
                         <th className="p-5">Closure Name</th>
                         <th className="p-5">Start Date</th>
                         <th className="p-5">Closure Date</th>
                         <th className="p-5">Final Closure Date</th>
                         {isAdmin && <th className="p-5">Action</th>}
-                    </tr>
+                    </TableHeaderRow>
                     </thead>
                     <tbody>
                     {magazines.map((magazine, index) => {
                         return (
-                            <tr key={index} className="text-center hover:bg-slate-100">
+                            <tr key={index} className="text-center hover:bg-slate-100 font-serif text-sm">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">
                                     <Link to ={`${magazine.id}/view`}>{magazine.name}</Link>

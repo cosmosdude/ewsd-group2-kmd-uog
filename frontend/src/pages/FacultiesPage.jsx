@@ -7,6 +7,8 @@ import AuthContext from "../contexts/AuthContext"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 
 import ThreeDotIcon from "../assets/threedots.png"
+import TableHeaderRow from "../components/TableHeaderRow"
+import BorderedButton from "../components/BorderedButton"
 
 const FacultiesPage = () => {
     let navigate = useNavigate()
@@ -25,29 +27,39 @@ const FacultiesPage = () => {
                     ]}
                 />
                 <span className="grow"/>
-                <button 
-                    className="p-2 pl-8 pr-8 bg-purple-600 text-white rounded"
+                <BorderedButton
+                    title="New Faculty"
+                    to="new"
+                />
+                {/* <button 
+                    className="
+                    text-sm font-bold
+                    px-[12px] py-[10px] 
+                    border border-secondary-500
+                    bg-white
+                    rounded-full
+                    "
                     onClick={()=>{
                         navigate('new')
                     }}
                 >
                     New Faculty
-                </button>
+                </button> */}
             </div>
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
-                    <tr className="sticky bg-slate-100">
-                        <th className="p-5">No</th>
-                        <th className="p-5">Faculty</th>
-                        <th className="p-5">Marketing Coordinator</th>
-                        <th className="p-5">Actions</th>
-                    </tr>
+                        <TableHeaderRow>
+                            <th className="p-5">No</th>
+                            <th className="p-5">Faculty</th>
+                            <th className="p-5">Marketing Coordinator</th>
+                            <th className="p-5">Actions</th>
+                        </TableHeaderRow>
                     </thead>
                     <tbody>
                     {faculties.map((faculty, index) => {
                         return (
-                            <tr key={index} className="text-center hover:bg-slate-100">
+                            <tr key={index} className="text-center font-serif text-sm hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">{faculty.name}</td>
                                 <td className="p-3">{faculty.email}</td>

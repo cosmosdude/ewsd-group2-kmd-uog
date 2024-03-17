@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
 import useEffectMagazines from "../hooks/useEffectMagazines"
+import TableHeaderRow from "../components/TableHeaderRow"
 
 const MagazineHistoryPage = () => {
     
@@ -28,19 +29,19 @@ const MagazineHistoryPage = () => {
             <div className="block w-full h-full overflow-scroll">
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
-                    <tr className="sticky bg-slate-100">
+                    <TableHeaderRow>
                         <th className="p-5">No</th>
                         <th className="p-5">Closure Name</th>
                         <th className="p-5">Start Date</th>
                         <th className="p-5">End Date</th>
-                    </tr>
+                    </TableHeaderRow>
                     </thead>
                     <tbody>
                     {magazines.map((magazine, index) => {
                         return (
-                            <tr key={index} className="text-center hover:bg-slate-100">
+                            <tr key={index} className="text-center hover:bg-slate-100 font-serif text-sm">
                                 <td className="p-3">{index + 1}</td>
-                                <td className="p-3 underline text-violet-500 font-semibold decoration-3 decoration-gray-400">
+                                <td className="p-3 underline font-semibold decoration-3 decoration-gray-400">
                                     <Link to={`${magazine.id}`}>{magazine.name}</Link>
                                 </td>
                                 <td className="p-3">{magazine.start_date}</td>
