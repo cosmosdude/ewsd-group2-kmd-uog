@@ -97,7 +97,7 @@ export default function BaseNavigation() {
                             onProfile={gotoProfile}
                             onLogout={() => { setShowLogoutDialog(true) }}
                         />
-                        <div className="relative flex grow bg-slate-50 overflow-hidden">
+                        <div className="relative flex grow bg-white overflow-hidden">
                             {/* left side */}
                             <SideNav showForSM={showNav}>
                                 {isAdmin && <SideNavItem 

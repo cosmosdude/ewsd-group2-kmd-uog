@@ -14,7 +14,6 @@ export default function TopNav({onNav, onProfile, onLogout}) {
                     {/* <div className="bg-slate-100 w-[18px] h-[18px] rounded-full"/> */}
                     <img src={DownArrowIcon} className="w-[24px] h-[24px] rounded-full"/>
                 </div>
-                
 
                 <div className="invisible group-hover:visible absolute right-0 top-full bg-transparent py-2 z-40 rounded">
                     <ul className="flex flex-col gap-2 px-4 py-2 bg-white border rounded">
