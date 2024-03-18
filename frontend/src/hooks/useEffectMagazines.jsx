@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../contexts/AuthContext"
+import apiConfig from "../configs/api.config"
 
 function useEffectMagazines() {
     let accessToken = useContext(AuthContext)
@@ -11,7 +12,7 @@ function useEffectMagazines() {
 
         async function fetchData() {
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/closures', {
+                let response = await fetch(apiConfig.path.magazines(), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,

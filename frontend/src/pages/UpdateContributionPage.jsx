@@ -5,6 +5,7 @@ import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail";
 import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 import FilledButton from "../components/FilledButton";
 import BorderedButton from "../components/BorderedButton";
+import apiConfig from "../configs/api.config";
 
 let InlineTextField = forwardRef(function ({required}, ref) {
     return (
@@ -84,7 +85,8 @@ function UpdateContributionPage() {
     async function updateArticle() {
         setError(null)
         try {
-            let res = await fetch(`http://127.0.0.1:8000/api/contributions/update/${id}`, {
+            let res = await fetch(
+                apiConfig.path.articleUpdate(id), {
                 method: "POST",
                 headers: {
                     'accept': 'application/json',
@@ -171,26 +173,26 @@ function UpdateContributionPage() {
                     <div className="flex flex-col md:flex-row items-start gap-[5px] md:gap-[25px]">
                         <label className="grow text-left">Description*</label>
                         {/* <InlineTextField ref={descField} required/> */}
-                            <div 
-                                className="
-                                outline-none 
-                                flex items-center 
-                                px-[10px] py-[4px]
-                                w-[250px] h-[100px] 
-                                border border-dark-100 focus-within:border-secondary-500
-                                rounded
-                                transition-all
-                                "
-                            >
-                                <textarea 
-                                ref={descField} 
-                                className="
-                                outline-none w-full h-full resize-none
-                                text-sm
-                                " 
-                                required
-                                />
-                            </div>
+                        <div 
+                            className="
+                            outline-none 
+                            flex items-center 
+                            px-[10px] py-[4px]
+                            w-[250px] h-[100px] 
+                            border border-dark-100 focus-within:border-secondary-500
+                            rounded
+                            transition-all
+                            "
+                        >
+                            <textarea 
+                            ref={descField} 
+                            className="
+                            outline-none w-full h-full resize-none
+                            text-sm
+                            " 
+                            required
+                            />
+                        </div>
                     </div>
 
                     {/* File Row */}

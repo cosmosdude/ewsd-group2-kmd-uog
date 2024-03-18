@@ -41,7 +41,7 @@ const MagazinePage = () => {
     async function downloadAllArticles() {
         try {
             let res = await fetch(
-                'http://127.0.0.1:8000/api/closures/4/download', {
+                apiConfig.path.magazineDownload(magazineId), {
                     method: "POST",
                     headers: {
                         'accepts': 'application/json',

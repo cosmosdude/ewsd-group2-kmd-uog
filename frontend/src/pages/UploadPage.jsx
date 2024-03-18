@@ -7,6 +7,7 @@ import BorderedButton from "../components/BorderedButton";
 import UploadIcon from "../assets/imageupload.png"
 import CrossIcon from "../assets/cross.png"
 import FilledButton from "../components/FilledButton";
+import apiConfig from "../configs/api.config";
 
 
 function ImageFile({src, onDelete}) {
@@ -104,7 +105,8 @@ function UploadPage() {
     async function uploadArticle() {
         setError(null)
         try {
-            let res = await fetch('http://127.0.0.1:8000/api/contributions', {
+            let res = await fetch(
+                apiConfig.path.articleUpload(), {
                 method: "POST",
                 headers: {
                     'accept': 'application/json',

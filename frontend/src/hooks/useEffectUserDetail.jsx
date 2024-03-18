@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import apiConfig from "../configs/api.config";
 
 export default function useEffectUserDetail(accessToken = undefined) {
 
@@ -14,7 +15,7 @@ export default function useEffectUserDetail(accessToken = undefined) {
 
         async function getData() {
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/me', {
+                let response = await fetch(apiConfig.path.me(), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`

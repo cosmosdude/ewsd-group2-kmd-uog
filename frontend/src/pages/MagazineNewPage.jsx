@@ -7,6 +7,7 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
+import apiConfig from "../configs/api.config"
 
 const MagazineNewPage = () => {
     
@@ -84,7 +85,8 @@ const MagazineNewPage = () => {
         console.log(Array.from(form.values()))
         // return;
         try {
-            let response = await fetch('http://127.0.0.1:8000/api/closures', {
+            let response = await fetch(
+                apiConfig.path.magazines(), {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
@@ -116,7 +118,8 @@ const MagazineNewPage = () => {
             .map(x => x.join('=')).join("&")
         console.log("Urlencoded:", urlencoded)
         try {
-            let response = await fetch('http://127.0.0.1:8000/api/closures/' + id, {
+            let response = await fetch(
+                apiConfig.path.magazines(id), {
                 method: "PUT",
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
@@ -152,7 +155,8 @@ const MagazineNewPage = () => {
         let aborter = new AbortController()
         async function fetchData() {
             try {
-                let response = await fetch(`http://127.0.0.1:8000/api/closures/${id}`, {
+                let response = await fetch(
+                    apiConfig.path.magazines(id), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,

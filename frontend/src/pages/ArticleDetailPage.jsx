@@ -44,7 +44,7 @@ function ArticleDetailPage() {
     async function updateStatus(status) {
         let data = `closure_id=${detail?.contribution?.closure_id}&status=${status}`
         try {
-            let response = await fetch('http://127.0.0.1:8000/api/contributions/status/'+id, {
+            let response = await fetch(apiConfig.path.updateArticleStatus(id), {
                 method: 'PUT',
                 headers: {
                     'authorization': `Bearer ${accessToken}`,
@@ -77,7 +77,7 @@ function ArticleDetailPage() {
             f.append('contribution_id', id)
             f.append('content', text)
             
-            let res = await fetch('http://127.0.0.1:8000/api/comments', {
+            let res = await fetch(apiConfig.path.comment(), {
                 method: "POST",
                 headers: {
                     'accepts': 'application/json',

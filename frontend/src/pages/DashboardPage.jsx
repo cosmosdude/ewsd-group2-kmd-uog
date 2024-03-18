@@ -10,11 +10,15 @@ import Dropdown from "../components/Dropdown"
 const DashboardPage = () => {
     return (
         <div className=" h-full flex flex-col gap-[10px] p-[20px] overflow-scroll bg-white">
-            <div className="w-full grid grid-cols-3 items-start gap-[10px]">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-[10px]">
                 <div className="border h-[400px] flex flex-col">
-                    <h1 className="p-[10px] text-md font-bold">
-                        Contributions
-                    </h1>
+                    <div className="flex p-[10px] items-center justify-start">
+                        <h1 className="px-[10px] text-md font-bold">
+                            Contributions
+                        </h1>
+                        <div className="grow"/>
+                        <Dropdown className="grow" title="Magazine Name" modified/>
+                    </div>
                     <div className="w-full p-[10px] grow flex flex-col">
                         <EWSDChart 
                             type='bar' 
@@ -41,12 +45,12 @@ const DashboardPage = () => {
                     </div>  
                 </div>
                 <div className="border flex flex-col h-[400px]">
-                    <div className="flex flex-col p-[10px] items-start justify-start">
-                        <h1 className="p-[10px] text-md font-bold">
-                        Contributions By Faculty
+                    <div className="flex p-[10px] items-start justify-start">
+                        <h1 className="text-md font-bold">
+                        Contributions{<br/>}By Faculty
                         </h1>
                         <div className="grow"/>
-                        <Dropdown className="grow" title="Academic Year"/>
+                        <Dropdown className="grow" title="Academic Year" modified/>
                     </div>
                     
                     <div className="w-full p-[10px] grow flex flex-col ">
@@ -119,17 +123,17 @@ const DashboardPage = () => {
                         </ul>
                     </div>
                 </div>
-            </div>
+            {/* </div> */}
 
             {/* Bottom Row */}
-            <div className="w-full grid grid-cols-3 items-start gap-[10px]">
+            {/* <div className="w-full grid grid-cols-1 md:grid-cols-3 items-start gap-[10px]"> */}
                 <div className="border h-[400px] flex flex-col">
                     <div className="flex p-[10px]">
                         <h1 className="p-[10px] text-md font-bold">
                             List of Faculty
                         </h1>
                         <div className="grow"/>
-                        <Dropdown className="grow" title="Academic Year"/>
+                        <Dropdown className="grow" title="Academic Year" modified/>
                     </div>
                     
                     <div className="w-full p-[10px] grow flex flex-col">

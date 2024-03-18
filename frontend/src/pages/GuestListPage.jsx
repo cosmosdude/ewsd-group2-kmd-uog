@@ -9,6 +9,7 @@ import SearchIcon from "../assets/search.png"
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import TableHeaderRow from "../components/TableHeaderRow"
+import apiConfig from "../configs/api.config"
 
 const GuestListPage = () => {
     let navigate = useNavigate()
@@ -39,7 +40,7 @@ const GuestListPage = () => {
         let aborter = new AbortController()
         async function fetchUsers() {
             try {
-                let response = await fetch(`http://127.0.0.1:8000/api/faculties/${user.faculty_id}/guest-user`, {
+                let response = await fetch( apiConfig.path.guestUsers(user.faculty_id), {
                     signal: aborter.signal,
                     method: 'POST',
                     headers: {

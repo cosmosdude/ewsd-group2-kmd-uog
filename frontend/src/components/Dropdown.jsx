@@ -4,7 +4,10 @@ import DownArrowSVG from "../assets/downarrow.svg"
 import TickSVG from "../assets/tick.svg"
 import { useState } from "react"
 
-const Dropdown = ({className, title, index, onChange, options, disabled}) => {
+const Dropdown = ({
+    className, title, index, onChange, options, disabled,
+    modified
+}) => {
 
     let [selected, setSelected] = useState(index);
 
@@ -12,7 +15,13 @@ const Dropdown = ({className, title, index, onChange, options, disabled}) => {
 
     return (
         <div className={`${!disabled && 'group'} flex relative justify-between ${className}`}>
-            <div className={`${disabled && 'pointer-events-none'} inline-flex items-center w-full min-h-[44px] border-1 border rounded-[4px] px-[27.5px] py-[10px] hover:opacity-75 transition-all`}>
+            <div className={`
+            ${disabled && 'pointer-events-none'} 
+            inline-flex items-center w-full min-h-[44px] 
+            border-1 border rounded-[4px] 
+            ${modified ? 'px-[10px] py-[10px]' : 'px-[27.5px] py-[10px]'}
+            hover:opacity-75 transition-all
+            `}>
                 <p className="font-serif text-sm grow text-left">{title && title}</p>
                 <img className="w-[22px] h-[22px]" src={DownArrowSVG}/>
             </div>

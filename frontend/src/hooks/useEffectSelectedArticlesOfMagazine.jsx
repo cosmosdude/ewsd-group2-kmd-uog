@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../contexts/AuthContext"
+import apiConfig from "../configs/api.config"
 
 function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId}) {
     let accessToken = useContext(AuthContext)
@@ -14,7 +15,7 @@ function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId}) {
         console.log("Form", f)
         async function fetchData() {
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/selected-contributions', {
+                let response = await fetch(apiConfig.path.selectedArticles(), {
                     signal: aborter.signal,
                     method: 'POST',
                     headers: {

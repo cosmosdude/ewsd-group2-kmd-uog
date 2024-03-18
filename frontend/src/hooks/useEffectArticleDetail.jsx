@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import apiConfig from "../configs/api.config";
 
 export default function useEffectArticleDetail(id, dependencies = []) {
 
@@ -12,7 +13,7 @@ export default function useEffectArticleDetail(id, dependencies = []) {
 
         async function getData() {
             try {
-                let response = await fetch(`http://127.0.0.1:8000/api/contributions/${id}`, {
+                let response = await fetch(apiConfig.path.articleDetail(id), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${token}`

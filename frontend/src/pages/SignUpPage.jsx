@@ -14,6 +14,7 @@ import Dropdown from "../components/Dropdown"
 import { useEffect, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
+import apiConfig from "../configs/api.config"
 
 const SignUpPage = () => {
     let navigate = useNavigate();
@@ -65,7 +66,7 @@ const SignUpPage = () => {
             let form = getFormData()
             console.log(form)
             let response = await fetch(
-                "http://127.0.0.1:8000/api/guest-register",
+                apiConfig.path.guestRegister(),
                 {
                     method: "POST",
                     headers: {

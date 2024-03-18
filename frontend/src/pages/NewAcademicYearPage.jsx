@@ -9,6 +9,7 @@ import AuthContext from "../contexts/AuthContext"
 import ThreeDotIcon from "../assets/threedots.png"
 import LoadingIndicator from "../components/LoadingIndicator"
 import FilledButton from "../components/FilledButton"
+import apiConfig from "../configs/api.config"
 
 const NewAcademicYearPage = () => {
 
@@ -38,7 +39,7 @@ const NewAcademicYearPage = () => {
         async function fetchData() {
             try {
                 let res = await fetch(
-                    `http://127.0.0.1:8000/api/academic-years/${id}`,
+                    apiConfig.path.academicYearDetail(id),
                     {
                         signal: aborter.signal,
                         headers: commonHeaders
@@ -83,7 +84,7 @@ const NewAcademicYearPage = () => {
 
         setIsLoading(() => true)
 
-        let response = await fetch('http://127.0.0.1:8000/api/academicyear', {
+        let response = await fetch(apiConfig.path.createAcademicYear(), {
             method: "POST",
             headers: commonHeaders,
             body: getFormData()
@@ -122,7 +123,7 @@ const NewAcademicYearPage = () => {
         let jsonString = JSON.stringify(json)
         console.log(jsonString)
 
-        let response = await fetch(`http://127.0.0.1:8000/api/academicyearupdate/${id}`, {
+        let response = await fetch(apiConfig.path.updateAcademicYear(id), {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',

@@ -7,6 +7,7 @@ import PhoneIcon from "../assets/phone.png"
 import HistoryIcon from "../assets/history.png"
 import { useNavigate, useParams } from "react-router"
 import AuthContext from "../contexts/AuthContext"
+import apiConfig from "../configs/api.config"
 
 const UserDetailPage = () => {
     let navigate = useNavigate()
@@ -28,7 +29,7 @@ const UserDetailPage = () => {
 
     async function fetchDetail() {
         console.log("Called: http://127.0.0.1:8000/api/users/${id}")
-        let response = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+        let response = await fetch(apiConfig.path.userDetail(id), {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
