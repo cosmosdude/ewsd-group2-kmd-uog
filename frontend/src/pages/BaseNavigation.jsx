@@ -98,6 +98,14 @@ export default function BaseNavigation() {
                             onLogout={() => { setShowLogoutDialog(true) }}
                         />
                         <div className="relative flex grow bg-white overflow-hidden">
+                            {/* Nav Overlay */}
+                            <div className={`
+                            absolute ${showNav ? 'block opacity-100': 'hidden opacity-0'}
+                            md:hidden
+                            z-[10000]
+                            w-full h-full bg-[rgba(0,0,0,0.5)] transition-100
+                            `}>
+                            </div>
                             {/* left side */}
                             <SideNav showForSM={showNav}>
                                 {isAdmin && <SideNavItem 
@@ -140,20 +148,13 @@ export default function BaseNavigation() {
                                     onClick={() => {navigate('/academicyear')}}
                                 />}
                             </SideNav>
+                            
 
                             {/* right side */}
                             <div className="block grow h-full overflow-y-hidden">
                                 <Outlet/>
                             </div>
 
-                            {/* Nav Overlay */}
-                            <div className={`
-                            absolute ${showNav ? 'block opacity-100': 'hidden opacity-0'}
-                            md:hidden
-                            z-[2]
-                            w-full h-full bg-[rgba(0,0,0,0.5)] transition-100
-                            `}>
-                            </div>
                             {/* <h1>Welcome to Dashboard!</h1> */}
                             {/* <button onClick={logout}>Logout</button> */}
                         </div>

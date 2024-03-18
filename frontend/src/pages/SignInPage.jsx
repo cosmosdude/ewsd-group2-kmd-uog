@@ -11,6 +11,7 @@ import Checkbox from "../components/Checkbox"
 import { useEffect, useRef, useState } from "react"
 import SignInNavBar from "../components/SignInNavBar"
 import LoadingIndicator from "../components/LoadingIndicator"
+import apiConfig from "../configs/api.config"
 
 const SignInPage = () => {
     let navigate = useNavigate()
@@ -60,7 +61,7 @@ const SignInPage = () => {
         
         try {
             let response = await fetch(
-                "http://127.0.0.1:8000/api/login",
+                apiConfig.path.login(),
                 {
                     method: "POST",
                     body: getSignInFormData()

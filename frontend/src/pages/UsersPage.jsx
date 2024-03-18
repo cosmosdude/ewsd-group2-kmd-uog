@@ -9,6 +9,7 @@ import SearchIcon from "../assets/search.png"
 import ThreeDotIcon from "../assets/threedots.png"
 import TableHeaderRow from "../components/TableHeaderRow"
 import BorderedButton from "../components/BorderedButton"
+import apiConfig from "../configs/api.config"
 
 const UsersPage = () => {
     let navigate = useNavigate()
@@ -36,7 +37,8 @@ const UsersPage = () => {
         let aborter = new AbortController()
         async function fetchUsers() {
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/users', {
+                let response = await fetch(
+                    apiConfig.path.users(), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,

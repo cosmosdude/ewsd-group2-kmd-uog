@@ -7,6 +7,7 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import AuthContext from "../contexts/AuthContext"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import FilledButton from "../components/FilledButton"
+import apiConfig from "../configs/api.config"
 
 const StudentRegistrationPage = () => {
     
@@ -53,7 +54,7 @@ const StudentRegistrationPage = () => {
 
         setIsLoading(() => true)
 
-        let response = await fetch('http://127.0.0.1:8000/api/register', {
+        let response = await fetch(apiConfig.path.studentRegister(), {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -122,7 +123,6 @@ const StudentRegistrationPage = () => {
                     <FilledButton title="Save" onClick={createAccount}/>
                     <FilledButton title="Cancel" gray to={-1} />
                 </div>
-                
         </div>
     )
 }

@@ -2,7 +2,7 @@ import DownArrowIcon from "../assets/downarrow.png"
 
 export default function TopNav({onNav, onProfile, onLogout}) {
     return (
-        <div className="shrink-0 flex gap-1 items-center w-full pl-[12.5px] pr-[25px] py-[12.5px] bg-secondary-700">
+        <div className="z-[10005] shrink-0 flex gap-1 items-center w-full pl-[12.5px] pr-[25px] py-[12.5px] bg-secondary-700">
             <button className="block md:hidden" onClick={onNav}>
                 <img className="w-[38px] h-[38px] bg-slate-100"/>
             </button>
