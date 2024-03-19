@@ -709,9 +709,86 @@ class ContributionController extends Controller
             ->groupBy('users.id',  'users.name')
             ->orderBy('mostly_uploaded', 'ASC')
             ->limit(3)
-            ->get();
+            ->get('users.name as student_name',
+                    'mostly_uploaded');
 
         return $this->sendResponse($contributions, "Mostly uploaded Student", 200);
     }
+
+    //most active user list
+   public function getMostActiveUserList(){
+       if (Auth::user()->hasRole('student') || Auth::user()->hasRole('guest')){
+            $faculty = DB::table('users')
+                ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                ->where('users.id', Auth::user()->id)
+                ->get(['faculty_users.faculty_id']);
+
+                $contributions = DB::table('contributions')
+                    ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+                    ->join('users', 'contributions.user_id', '=', 'users.id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                    ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
+                    ->join('contributions.status', 'approve')
+                    ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
+                    ->get([
+                        'faculties.id as faculty_id',
+                        'faculties.name as faculty_name',
+                        'users.id as user_id',
+                        'users.name as user_name',
+                        'users.email as user_email',
+                        'contributions.id as contribution_id',
+                        'contributionsname as contribution_name',
+                        'contributions.images',
+                        'contributions.files',
+                        'contributions.submitted_date as contribution_submitted_date',
+                        'contributions.status as contribution_status'
+                    ]);
+                    foreach ($contributions as $contribution) {
+                        $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                        $images = explode(",", $contribution->images);
+                        foreach ($images as $image) {
+                            $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                        }
+                        $contribution->images = $images;
+                    }
+                    $userReadCounts = [];
+                        foreach ($contributions as $contribution) {
+                            if ($contribution->read_count > 0) {
+                                if (!isset($userReadCounts[$contribution->user_id])) {
+                                        $userReadCounts[$contribution->user_id] = 0;
+                                }
+                    $userReadCounts[$contribution->user_id] += $contribution->read_count;
+                            }
+                        }
+                    arsort($userReadCounts);
+
+        $topThreeUsers = array_slice($userReadCounts, 0, 3, true);
+        $mostActiveUsers = User::whereIn('id', array_keys($topThreeUsers))->get(['name']);
+        foreach ($mostActiveUsers as $user) {
+            $user->total_read_count = $userReadCounts[$user->id];
+        }
+
+        return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
+    }
+
+    return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
+
+}
+
+    // public function filter(Request $request)
+    // {
+    //     $academic_year = $request->query('academic_id');
+
+    //         $contribution = DB::table('contributions')
+    //             ->join('faculty_users', 'faculty_users')
+    //         $contribution= DB::table('contributions')
+    //         ->join('academicyears', 'users.academicyear_id', '=', 'academicyears.id')
+    //         ->join('users', 'users.id', '=', 'contributions.user_id')
+    //         ->where('academic_id',$academic_year)
+    //         ->get();
+
+    //     return response()->json(['filtered' => $contribution], 200);
+    // }
+
 
 }

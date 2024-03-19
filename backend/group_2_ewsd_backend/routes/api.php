@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 
 // new -> $2y$10$KwhI0zkcUV/wGOJ3J2a31eXyp/EAGsw18WWxAJfXc885IBaC9wCSG
 
-Route::get('studentlist', [ContributionController::class, 'getMostlyUploadContribution']);
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('hash', [AuthController::class, 'testHash']);
@@ -20,7 +19,10 @@ Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
 
 Route::middleware('auth:api')->group(function () {
+    Route::get('userlist', [ContributionController::class, 'getMostActiveUserList']);
+    Route::get('studentlist', [ContributionController::class, 'getMostlyUploadContribution']);
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
+    Route::post('contributionlist', [ContributionController::class, 'filter']);
 
     Route::get('/contributions', [ContributionController::class, 'index']);
     Route::get('/contributions/{id}', [ContributionController::class, 'show']);
