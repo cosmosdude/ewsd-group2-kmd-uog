@@ -149,4 +149,5 @@ class FalcultyController extends Controller
 
         return $this->sendResponse($guests, "Guests List", 200);
     }
+    
 }

@@ -21,6 +21,8 @@ Route::apiResource('faculties', FalcultyController::class)->except('show', 'dest
 Route::middleware('auth:api')->group(function () {
     Route::get('userlist', [ContributionController::class, 'getMostActiveUserList']);
     Route::get('studentlist', [ContributionController::class, 'getMostlyUploadContribution']);
+    Route::post('contributionsbyfaculty', [ContributionController::class, 'getPieChartforAdmin']);
+
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
     Route::post('contributionlist', [ContributionController::class, 'filter']);
 
