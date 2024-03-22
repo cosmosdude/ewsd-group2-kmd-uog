@@ -21,7 +21,12 @@ Route::apiResource('faculties', FalcultyController::class)->except('show', 'dest
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/contributions/{id}/read-count',[ContributionController::class,'addReadCount']);
+    Route::get('userlist', [ContributionController::class, 'getMostActiveUserList']);
+    Route::get('studentlist', [ContributionController::class, 'getMostlyUploadContribution']);
+    Route::post('contributionsbyfaculty', [ContributionController::class, 'getPieChartforAdmin']);
+
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
+    Route::post('contributionlist', [ContributionController::class, 'filter']);
 
     Route::get('/contributions', [ContributionController::class, 'index']);
     Route::get('/contributions/{id}', [ContributionController::class, 'show']);
@@ -31,6 +36,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/closures/current', [ClosureController::class, 'getCurrentClosures']);
     Route::apiResource('/closures', ClosureController::class)->except('destroy');
     Route::get('/previous-closures', [ClosureController::class, 'getPreviousClosures']); //previous closure list
+
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('users/{id}', [UserController::class, 'show']);
     Route::get('/contributions/download/{id}', [ContributionController::class, 'downloadContribution']);
@@ -42,6 +48,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/closures/{id}/submit', [ClosureController::class, 'getSubmittedContributionsWithinFaculty']);
         //get current closure of contribution list
         Route::get('/contributionlist', [ContributionController::class, 'getCurrentClosureContributionList']);
+
     });
 
     Route::middleware('role:student')->group(function () {
@@ -97,6 +104,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::middleware(['role:administrator,m_coordinator,student,m_manager'])->group(function () {
         Route::get('/faculties/{id}', [FalcultyController::class, 'show']);
+
     });
     Route::middleware('role:administrator')->group(function () {
         Route::get('/most-view/magazines',[ClosureController::class,'getMostViewClosures']);
@@ -121,7 +129,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
-
 
 
 

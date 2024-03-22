@@ -164,4 +164,5 @@ class FalcultyController extends Controller
         ->get();
         return $this->sendResponse($counts, "Student and Guest Count", 200);
     }
+
 }
