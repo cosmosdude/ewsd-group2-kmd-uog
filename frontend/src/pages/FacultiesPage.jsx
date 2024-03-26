@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 
 import ThreeDotIcon from "../assets/threedots.png"
@@ -14,7 +14,7 @@ import { usePushNoti } from "../components/Noti/NotiSystem"
 const FacultiesPage = () => {
     let pushNoti = usePushNoti()
     let navigate = useNavigate()
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
 
     let [faculties, error] = useEffectAllFaculties()
     // useEffect(() => {

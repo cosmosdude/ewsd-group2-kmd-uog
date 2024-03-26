@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../contexts/AuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 import apiConfig from "../configs/api.config";
 
-export default function useEffectUserDetail(accessToken = undefined) {
+export default function useEffectUserDetail() {
 
-    let token = useContext(AuthContext)
-
-    if (!accessToken) accessToken = token
+    let token = useAuthContext()
+    console.log("[User Detail]", token)
+    // if (!accessToken) accessToken = token
+    let accessToken = token
 
     let [user, setUser] = useState({})
 
@@ -18,7 +19,8 @@ export default function useEffectUserDetail(accessToken = undefined) {
                 let response = await fetch(apiConfig.path.me(), {
                     signal: aborter.signal,
                     headers: {
-                        'Authorization': `Bearer ${accessToken}`
+                        'Authorization': `Bearer ${accessToken}`,
+                        accept: 'application/json'
                     }
                 })
 

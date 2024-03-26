@@ -3,20 +3,20 @@ import {Link, useNavigate} from "react-router-dom"
 import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
-import AuthContext from "../contexts/AuthContext"
 
 import SearchIcon from "../assets/search.png"
 import ThreeDotIcon from "../assets/threedots.png"
 import TableHeaderRow from "../components/TableHeaderRow"
 import BorderedButton from "../components/BorderedButton"
 import apiConfig from "../configs/api.config"
+import { useAuthContext } from "../contexts/AuthContext"
 
 const UsersPage = () => {
     let navigate = useNavigate()
 
     let [searchText, setSearchText] = useState("");
 
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
     let [page, setPage] = useState(0);
 
     let [users, setUsers] = useState([])

@@ -4,7 +4,7 @@ import {Link, useNavigate, useParams} from "react-router-dom"
 import { useContext, useEffect, useRef, useState } from "react"
 import InputField from "../components/InputField"
 import Breadcrumb from "../components/Breadcrumb"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
 import LoadingIndicator from "../components/LoadingIndicator"
@@ -13,7 +13,7 @@ import apiConfig from "../configs/api.config"
 
 const NewAcademicYearPage = () => {
 
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
     let navigate = useNavigate()
 
     let {id} = useParams()

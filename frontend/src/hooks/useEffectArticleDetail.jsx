@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../contexts/AuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 import apiConfig from "../configs/api.config";
 
 export default function useEffectArticleDetail(id, dependencies = []) {
 
-    let token = useContext(AuthContext)
+    let token = useAuthContext()
 
     let [data, setData] = useState({})
 

@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react"
-import AuthContext, { useAuthContext } from "../contexts/AuthContext"
+
 import apiConfig from "../configs/api.config"
 import { usePushNoti } from "../components/Noti/NotiSystem"
+import { useAuthContext } from "../contexts/AuthContext"
 
 
 // Fetch faculties for once.

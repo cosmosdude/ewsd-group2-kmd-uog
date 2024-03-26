@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import apiConfig from "../configs/api.config"
 
 
@@ -12,7 +12,7 @@ function useEffectAllAcademicYears() {
     
     let [academicYears, setAcademicYears] = useState([])
     let [error, setError] = useState(null)
-    let accessToken = useContext(AuthContext)
+    let accessToken = useAuthContext()
 
     useEffect(() => {
         // abortion controller

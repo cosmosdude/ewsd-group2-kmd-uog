@@ -3,7 +3,7 @@ import {Link, useNavigate, useParams} from "react-router-dom"
 import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
 import LoadingIndicator from "../components/LoadingIndicator"
@@ -16,7 +16,7 @@ const NewFacultyPage = () => {
     let { id } = useParams()
 
     let navigate = useNavigate()
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
 
     let [allFaculties] = useEffectAllFaculties()
 

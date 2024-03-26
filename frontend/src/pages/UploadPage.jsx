@@ -1,5 +1,5 @@
 import { forwardRef, useContext, useRef, useState } from "react";
-import AuthContext from "../contexts/AuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import useEffectMagazineDetail from "../hooks/useEffectMagazineDetail";
 import BorderedButton from "../components/BorderedButton";
@@ -55,7 +55,7 @@ function ClickToUploadLabel() {
 function UploadPage() {
     
     let { magazineId } = useParams()
-    let auth = useContext(AuthContext)
+    let auth = useAuthContext()
     let navigate = useNavigate()
 
     let [magazine] = useEffectMagazineDetail(magazineId)

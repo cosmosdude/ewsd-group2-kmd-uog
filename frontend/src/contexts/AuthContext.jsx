@@ -1,9 +1,14 @@
 import { createContext, useContext } from "react";
+import { useAuthState } from "../hooks/AuthToken/AuthToken";
 
-const AuthContext = createContext(null)
+// const AuthContext = createContext(null)
 
-export default AuthContext
+// export default AuthContext
+
+// export function useAuthContext() {
+//     return useAuthContext()
+// }
 
 export function useAuthContext() {
-    return useContext(AuthContext)
+    return useAuthState()[0]
 }

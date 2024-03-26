@@ -31,52 +31,59 @@ import LiveMagazinePage from "./pages/LiveMagazinePage"
 import GuestListPage from "./pages/GuestListPage"
 import UpdateContributionPage from "./pages/UpdateContributionPage"
 import NotiSystem from "./components/Noti/NotiSystem"
+import UserData from "./hooks/UserData/UserData"
+import AuthToken from "./hooks/AuthToken/AuthToken"
 
 function App() {
   return (
     <>
       <NotiSystem>
-        <Routes>
-          <Route path="/" element={<BaseNavigation/>}>
-            <Route path="home" element={<DashboardPage/>}/>
+        <AuthToken>
+          <UserData>
+            <Routes>
+                <Route path="/" element={<BaseNavigation/>}>
+					<Route path="home" element={<DashboardPage/>}/>
 
-            <Route path="users" element={<UsersPage/>}/>
-            <Route path="users/new" element={<StudentRegistrationPage/>}/>
-            <Route path="users/:id" element={<UserDetailPage/>}/>
+					<Route path="users" element={<UsersPage/>}/>
+					<Route path="users/new" element={<StudentRegistrationPage/>}/>
+					<Route path="users/:id" element={<UserDetailPage/>}/>
 
-            <Route path="guests" element={<GuestListPage/>}/>
+					<Route path="guests" element={<GuestListPage/>}/>
 
-            <Route path="faculty" element={<FacultiesPage/>}/>
-            <Route path="faculty/:id" element={<NewFacultyPage/>}/>
+					<Route path="faculty" element={<FacultiesPage/>}/>
+					<Route path="faculty/:id" element={<NewFacultyPage/>}/>
 
-            <Route path="contribution" element={<ContributionsPage/>}/>
-            <Route path="magazine/history" element={<MagazineHistoryPage/>}/>
-            <Route path="magazine/history/:magazineId" element={<MagazinePage/>}/>
-            <Route path="magazine/current" element={<MagazineCurrentPage/>}/>
-            <Route path="magazine/current/:magazineId/view" element={<LiveMagazinePage/>}/>
-            <Route path="magazine/current/history" element={<StudentContributionHistoryPage/>}/>
-            {/* Create and Update  */}
-            <Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
+					<Route path="contribution" element={<ContributionsPage/>}/>
+					<Route path="magazine/history" element={<MagazineHistoryPage/>}/>
+					<Route path="magazine/history/:magazineId" element={<MagazinePage/>}/>
+					<Route path="magazine/current" element={<MagazineCurrentPage/>}/>
+					<Route path="magazine/current/:magazineId/view" element={<LiveMagazinePage/>}/>
+					<Route path="magazine/current/history" element={<StudentContributionHistoryPage/>}/>
+					{/* Create and Update  */}
+					<Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
 
-            <Route path="academicyear" element={<AcademicYearPage/>}/>
-            <Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
+					<Route path="academicyear" element={<AcademicYearPage/>}/>
+					<Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>
 
-            <Route path={routesConfig.contribution.upload()} element={<UploadPage/>}/>
-            <Route path={routesConfig.contribution.update()} element={<UpdateContributionPage/>}/>
-            <Route 
-              path={routesConfig.contribution.detail()} 
-              element={<ArticleDetailPage/>}
-            />
+					<Route path={routesConfig.contribution.upload()} element={<UploadPage/>}/>
+					<Route path={routesConfig.contribution.update()} element={<UpdateContributionPage/>}/>
+					<Route 
+						path={routesConfig.contribution.detail()} 
+						element={<ArticleDetailPage/>}
+					/>
 
-            
-          </Route>
-          
-          <Route path="/signin" element={<SignInPage/>}/>
-          <Route path="/signup" element={<SignUpPage/>}/>
+                  
+                </Route>
+              
+              
+            	<Route path="/signin" element={<SignInPage/>}/>
+            	<Route path="/signup" element={<SignUpPage/>}/>
 
-          {/*Any route not specified above will be treated as 404*/}
-          <Route path="*" element={<NotFoundPage/>}/>
-        </Routes>
+				{/*Any route not specified above will be treated as 404*/}
+				<Route path="*" element={<NotFoundPage/>}/>
+            </Routes>
+          </UserData>
+        </AuthToken>
       </NotiSystem>
     </>
   )

@@ -4,13 +4,13 @@ import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
 import { useContext, useEffect, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import useEffectMagazines from "../hooks/useEffectMagazines"
 import TableHeaderRow from "../components/TableHeaderRow"
 
 const MagazineHistoryPage = () => {
     
-    // let accessToken = useContext(AuthContext);
+    // let accessToken = useAuthContext();
     let navigate = useNavigate()
     let magazines = useEffectMagazines()
 

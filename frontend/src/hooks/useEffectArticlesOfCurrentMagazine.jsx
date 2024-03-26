@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import apiConfig from "../configs/api.config"
 
 function useEffectArticlesOfCurrentMagazine({magazineId = "", status = ""}) {
-    let accessToken = useContext(AuthContext)
+    let accessToken = useAuthContext()
     let [articles, setArticles] = useState([])
     console.log("useEffectArticlesOfCurrentMagazine")
     useEffect(() => {

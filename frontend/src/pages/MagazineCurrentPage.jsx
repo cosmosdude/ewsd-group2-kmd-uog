@@ -4,7 +4,7 @@ import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
 import { useContext, useEffect, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
@@ -20,7 +20,7 @@ import BorderedButton from "../components/BorderedButton"
 
 const MagazineCurrentPage = () => {
     
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
     let navigate = useNavigate()
 
     let user = useEffectUserDetail()

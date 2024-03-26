@@ -4,14 +4,14 @@ import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
 import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import FilledButton from "../components/FilledButton"
 import apiConfig from "../configs/api.config"
 
 const StudentRegistrationPage = () => {
     
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
     let navigate = useNavigate()
 
     let [username, setUsername] = useState("");

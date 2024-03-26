@@ -5,7 +5,7 @@ import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 import apiConfig from "../configs/api.config";
 import useEffectUserDetail from "../hooks/useEffectUserDetail";
 import { useContext, useEffect, useRef, useState } from "react";
-import AuthContext from "../contexts/AuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 import extractContributionFileSrc from "../util/extractContributionFileSrc";
 import routesConfig from "../configs/routes.config";
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs";
@@ -18,7 +18,7 @@ function ArticleDetailPage() {
 
     let navigate = useNavigate()
     let {id} = useParams()
-    let accessToken = useContext(AuthContext)
+    let accessToken = useAuthContext()
 
     let user = useEffectUserDetail()
     let isStudent = user.role_name === 'student'

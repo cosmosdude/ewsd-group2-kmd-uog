@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 import apiConfig from "../configs/api.config"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 
 function useEffectUploadedContributions() {
-    let accessToken = useContext(AuthContext)
+    let accessToken = useAuthContext()
     let [contributions, setContributions] = useState([])
 
     useEffect(() => {

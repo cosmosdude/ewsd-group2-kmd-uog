@@ -6,13 +6,13 @@ import FacultyIcon from "../assets/sidenav/departments.svg"
 import PhoneIcon from "../assets/phone.png"
 import HistoryIcon from "../assets/history.png"
 import { useNavigate, useParams } from "react-router"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import apiConfig from "../configs/api.config"
 
 const UserDetailPage = () => {
     let navigate = useNavigate()
     let { id } = useParams()
-    let accessToken = useContext(AuthContext)
+    let accessToken = useAuthContext()
 
     let [details, setUserDetails] = useState({
         "user_id": 24,

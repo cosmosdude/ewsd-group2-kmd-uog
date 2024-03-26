@@ -4,12 +4,12 @@ import InputField from "../components/InputField"
 import Dropdown from "../components/Dropdown"
 import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
 const ContributionsPage = () => {
     
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
     let navigate = useNavigate()
 
     let user = useEffectUserDetail()

@@ -16,19 +16,22 @@ import { usePushNoti } from "../components/Noti/NotiSystem"
 
 import { browserName, detect } from "detect-browser"
 import { capitalized } from "../util/capitalized"
+import { useAuthState } from "../hooks/AuthToken/AuthToken"
 
 const SignInPage = () => {
     let pushNoti = usePushNoti()
     let navigate = useNavigate()
+    let [auth, setAuth] = useAuthState()
 
     function gotoHome() {
         navigate("/")
     }
 
     function gotoHomeIfAlreadyLoggedIn() {
-        if (window.localStorage.getItem("accessToken")) {
-            gotoHome()
-        }
+        if (auth) gotoHome()
+        // if (window.localStorage.getItem("accessToken")) {
+        //     gotoHome()
+        // }
     }
 
     let [isChecked, setIsChecked] = useState(false);
@@ -86,7 +89,8 @@ const SignInPage = () => {
             console.log(json)
 
             if (response.status === 200) {
-                window.localStorage.setItem("accessToken", json.data.token)
+                // window.localStorage.setItem("accessToken", json.data.token)
+                setAuth(json.data.token)
                 gotoHome()
             } else if (response.status >= 500) {
                 pushNoti({

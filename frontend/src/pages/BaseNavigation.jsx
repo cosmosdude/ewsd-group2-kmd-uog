@@ -3,7 +3,7 @@ import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
 import { useEffect, useState } from "react"
 import Dialog from "../components/Dialog"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 
 import HomeIcon from "../assets/sidenav/home.svg"
 import ContributionIcon from "../assets/sidenav/contributions.svg"
@@ -15,6 +15,7 @@ import UserContext from "../contexts/UserContext"
 import TopNav from "../components/TopNav"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import NotiSystem, { usePushNoti } from "../components/Noti/NotiSystem"
+import { useAuthState } from "../hooks/AuthToken/AuthToken"
 
 /**
  * Base navigation handler. 
@@ -26,7 +27,8 @@ export default function BaseNavigation() {
     let navigate = useNavigate()
     let {pathname: path} = useLocation();
 
-    let [accessToken, setAccessToken] = useState(window.localStorage.getItem("accessToken"))
+    // let [accessToken, setAccessToken] = useState(window.localStorage.getItem("accessToken"))
+    let [accessToken, setAccessToken] = useAuthState()
     // fetch user detail upon accessToken change
     let user = useEffectUserDetail(accessToken)
 
@@ -58,8 +60,9 @@ export default function BaseNavigation() {
 
     function logout() {
         console.log("Logout called")
-        window.localStorage.removeItem("accessToken", null)
-        gotoSignIn()
+        // window.localStorage.removeItem("accessToken", null)
+        setAccessToken(null)
+        // gotoSignIn()
     }
 
     // useEffect(redirectIfRouteIsIndex)
@@ -75,12 +78,10 @@ export default function BaseNavigation() {
         redirectIfRouteIsIndex()
     }, [location])
 
-    console.log('Base Navigation Called')
-
     let [showLogoutDialog, setShowLogoutDialog] = useState(false)
     return (
         <>
-            <AuthContext.Provider value={accessToken}>
+            {/* <AuthContext.Provider value={accessToken}> */}
                 <UserContext.Provider value={user}>
                     {showLogoutDialog && <Dialog
                         title="Logout"
@@ -163,7 +164,7 @@ export default function BaseNavigation() {
                         </div>
                     </div>
                 </UserContext.Provider>
-            </AuthContext.Provider>
+            {/* </AuthContext.Provider> */}
         </>
     )
 }

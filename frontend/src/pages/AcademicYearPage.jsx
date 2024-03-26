@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 // import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import Breadcrumb from "../components/Breadcrumb"
-import AuthContext from "../contexts/AuthContext"
+import { useAuthContext } from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
 import useEffectAllAcademicYears from "../hooks/useEffectAllAcademicYears"
@@ -14,7 +14,7 @@ export default function AcademicYearPage() {
 
     let navigate = useNavigate()
 
-    let accessToken = useContext(AuthContext);
+    let accessToken = useAuthContext();
 
     let [academicYears] = useEffectAllAcademicYears()
 
