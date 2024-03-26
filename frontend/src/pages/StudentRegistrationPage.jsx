@@ -8,6 +8,8 @@ import { useAuthContext } from "../contexts/AuthContext"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import FilledButton from "../components/FilledButton"
 import apiConfig from "../configs/api.config"
+import { z } from "zod"
+import { isPhone } from "../util/isPhone"
 
 const StudentRegistrationPage = () => {
     
@@ -46,11 +48,28 @@ const StudentRegistrationPage = () => {
 
     async function createAccount() {
         setError(null)
-        if (!username) { setError("Username must not be empty") ; return }
-        if (!email) { setError("Email must not be empty") ; return }
-        if (!faculty) { setError("Faculty is not selected"); return }
-        if (!password) { setError("Password must not be empty") ; return }
-        if (!retype || password !== retype) { setError("Password must be the same") ; return }
+        // if (!username) { setError("Username must not be empty") ; return }
+        // if (!email) { setError("Email must not be empty") ; return }
+        // if (!faculty) { setError("Faculty is not selected"); return }
+        // if (!password) { setError("Password must not be empty") ; return }
+        // if (!retype || password !== retype) { setError("Password must be the same") ; return }
+
+        try {
+            if (!username) throw "Username must not be empty."
+            
+            try { z.string().email().parse(email) }
+            catch { throw "Invalid email address." }
+
+            if (!isPhone(phone)) throw "Invalid phone number."
+            
+            if (!faculty) throw "Faculty is not selected."
+
+            if (!password) throw "Password must not be empty"
+            if (password.length < 8) throw "Password must be at least 8 characters long"
+
+            if (password !== retype) throw "Passwords do not match"
+
+        } catch(error) { return setError(error) }
 
         setIsLoading(() => true)
 
@@ -94,13 +113,13 @@ const StudentRegistrationPage = () => {
             {/* <div className="flex flex-col gap-4 md:gap-8 overflow-y-scroll"> */}
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 md:gap-8 flex-col md:flex-row">
                 {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
-                    <InputField className="grow" placeholder="username" value={username} onChange={setUsername}/>
-                    <InputField className="grow" placeholder="email" value={email} onChange={setEmail}/>
+                    <InputField className="grow" placeholder="username*" value={username} onChange={setUsername}/>
+                    <InputField className="grow" placeholder="email*" value={email} onChange={setEmail}/>
                 {/* </div> */}
                 {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
                     <Dropdown 
                         className="grow bg-white basis-0 z-[1001]"
-                        title={faculty ? faculty.name : "Select faculty"}
+                        title={faculty ? faculty.name : "Select faculty*"}
                         index={faculties.indexOf(faculty)} 
                         options={faculties.map(x => x.name)} 
                         onChange={(option, index) => {
@@ -109,11 +128,11 @@ const StudentRegistrationPage = () => {
                     />
                 {/* </div> */}
                 {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
-                    <InputField className="grow" placeholder="phone number" value={phone} onChange={setPhone}/>
+                    <InputField className="grow" placeholder="phone number*" value={phone} onChange={setPhone}/>
                 {/* </div> */}
                 {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
-                    <InputField className="grow" placeholder="password" type="password" value={password} onChange={setPassword}/>
-                    <InputField className="grow" placeholder="retype password" type="password" value={retype} onChange={setRetype}/>
+                    <InputField className="grow" placeholder="password*" type="password" value={password} onChange={setPassword}/>
+                    <InputField className="grow" placeholder="retype password*" type="password" value={retype} onChange={setRetype}/>
                 {/* </div> */}
             </div>
             {error && <p className="w-full p-2 text-center rounded border border-red-100 bg-red-50 font-serif text-sm text-red-500">
