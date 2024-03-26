@@ -3,18 +3,18 @@ import { useAuthContext } from "../contexts/AuthContext";
 import apiConfig from "../configs/api.config";
 import { usePushNoti } from "../components/Noti/NotiSystem";
 
-export default function useEffectMostActiveGuestUsers() {
+export default function useEffectMostUsedBrowsers() {
     let pushNoti = usePushNoti()
     let token = useAuthContext()
 
-    let [guestUsers, setGuestUsers] = useState([])
+    let [browsers, setBrowsers] = useState([])
 
     useEffect(() => {
         let aborter = new AbortController()
 
         async function getData() {
             try {
-                let response = await fetch(apiConfig.path.statistics.mostActiveGuestUsers(), {
+                let response = await fetch(apiConfig.path.statistics.mostUsedBrowsers(), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -25,7 +25,7 @@ export default function useEffectMostActiveGuestUsers() {
                 let json = await response.json()
                 console.log(json.data)
                 if (response.status === 200) {
-                    setGuestUsers(json.data)
+                    setBrowsers(json.data)
                 } else {
                     pushNoti({
                         title: "Unable to get Most Active Users",
@@ -45,6 +45,6 @@ export default function useEffectMostActiveGuestUsers() {
         return () => aborter.abort()
     }, [token])
 
-    return guestUsers
+    return browsers
 
 }

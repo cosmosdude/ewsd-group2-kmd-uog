@@ -193,10 +193,17 @@ const apiConfig = {
             },
 
             /**
-             * URL for getting most active guests
+             * URL for getting students with most upload
             */
             mostActiveStudents() {
                 return `${host}/api/studentlist`
+            },
+
+            /**
+             * URL for getting most used browsers.
+            */
+            mostUsedBrowsers() {
+                return `${host}/api/browsers`
             }
         }
     }

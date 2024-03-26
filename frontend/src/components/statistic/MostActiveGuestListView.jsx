@@ -1,7 +1,7 @@
-import userEffectMostActiveGuestUsers from "../../hooks/useEffectMostActiveGuestUsers";
+import useEffectMostActiveGuestUsers from "../../hooks/useEffectMostActiveGuestUsers";
 
 function MostActiveGuestListView() {
-    let guests = userEffectMostActiveGuestUsers()
+    let guests = useEffectMostActiveGuestUsers()
 
     return (
         <div className="grow basis-0 shrink-0 flex flex-col border">
