@@ -1045,6 +1045,18 @@ html {
   height: 100vh;
 }
 
+.h-\[40px\] {
+  height: 40px;
+}
+
+.h-\[12o93871289738129px\] {
+  height: 12o93871289738129px;
+}
+
+.h-\[192837819239px\] {
+  height: 192837819239px;
+}
+
 .max-h-\[200px\] {
   max-height: 200px;
 }

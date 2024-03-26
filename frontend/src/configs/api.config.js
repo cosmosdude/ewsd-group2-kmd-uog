@@ -200,6 +200,13 @@ const apiConfig = {
             },
 
             /**
+             * URL for getting students with most upload
+            */
+            mostViewedMagazines() {
+                return `${host}/api/most-view/magazines`
+            },
+
+            /**
              * URL for getting most used browsers.
             */
             mostUsedBrowsers() {

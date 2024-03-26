@@ -9,6 +9,7 @@ import Dropdown from "../components/Dropdown"
 import MostUploadedStudentListView from "../components/statistic/MostUploadedStudentListView"
 import MostActiveGuestListView from "../components/statistic/MostActiveGuestListView"
 import MostUsedBrowserListView from "../components/statistic/MostUsedBrowserListView"
+import MostReadMagazines from "../components/statistic/MostReadMagazines"
 
 const DashboardPage = () => {
     return (
@@ -90,7 +91,8 @@ const DashboardPage = () => {
                 </div>
                 {/* Popular Magazines */}
                 <div className="h-[400px] flex flex-col gap-[10px]">
-                    <div className="grow basis-0 shrink-0 flex flex-col border">
+                    <MostReadMagazines/>
+                    {/* <div className="grow basis-0 shrink-0 flex flex-col border">
                         <h1 className="p-[10px] border-b text-md font-bold">
                             Popular Magazines
                         </h1>
@@ -106,7 +108,7 @@ const DashboardPage = () => {
                             <li>2. World Education</li>
                             <li>3. International Fair</li>
                         </ul>
-                    </div>
+                    </div> */}
                     {/*  Most Viewed Contributions */}
                     <div className="grow basis-0 shrink-0 flex flex-col border">
                         <h1 className="p-[10px] border-b text-md font-bold">
