@@ -18,10 +18,10 @@ const UserDetailPage = () => {
         "user_id": 24,
         "user_name": "Mr Admin",
         "user_email": "tha.student@yopmail.com",
-        "faculty_name": "THA Faculty",
-        "faculty_id": 1,
-        "role_id": 4,
-        "role_name": "student"
+        "user_phone": "123",
+        "faculty_name": [],
+        "role_name": "student",
+        "user_last_access_time": "8 hours and 57 minutes ago"
     })
 
     console.log('User Detail Page')
@@ -76,10 +76,10 @@ const UserDetailPage = () => {
             <div className="flex min-h-[75px] bg-transparent"/>
             <div className="inline-block mx-auto text-center">
                 <h1 className="text-2xl font-bold">
-                    {details && details.user_name}
+                    {details?.user_name ?? "'"}
                 </h1>
                 <p className="">
-                    ID: {details && details.user_id}
+                    ID: {details?.user_id ?? ""}
                 </p>
             </div>
             <div className="block mx-auto">
@@ -93,7 +93,7 @@ const UserDetailPage = () => {
                                 <label>Email</label>
                             </td>
                             <td>
-                                <label>{details && details.user_email}</label>
+                                <label>{details?.user_email ?? ""}</label>
                             </td>
                         </tr>
                         <tr className="align-middle">
@@ -104,7 +104,7 @@ const UserDetailPage = () => {
                                 <label>Faculty</label>
                             </td>
                             <td>
-                                <label>{details && details.faculty_name}</label>
+                                <label>{details?.faculty_name.join(", ") ?? ""}</label>
                             </td>
                         </tr>
                         <tr className="align-middle">
@@ -115,7 +115,7 @@ const UserDetailPage = () => {
                                 <label>Phone</label>
                             </td>
                             <td>
-                                <label>{details && details.phone}</label>
+                                <label>{details?.user_phone ?? ""}</label>
                             </td>
                         </tr>
                         <tr className="align-middle">
@@ -126,7 +126,7 @@ const UserDetailPage = () => {
                                 <label>Last Accessed</label>
                             </td>
                             <td>
-                                <label>N/A</label>
+                                <label>{details?.user_last_access_time ?? ""}</label>
                             </td>
                         </tr>
                     </tbody>
