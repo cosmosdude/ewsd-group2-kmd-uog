@@ -299,6 +299,42 @@ class ContributionController extends Controller
                     $contribution->comment_count = $comment_count;
                 }
                 return $this->sendResponse($contributions, "Rejected Contributions Retrieved Successfully", 200);
+            } elseif ($request->status == 'pending') {
+                $contributions = DB::table('contributions')
+                    ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+                    ->join('users', 'users.id', '=', 'contributions.user_id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                    ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+                    ->where('closures.id', $request->closure_id)
+                    ->where('contributions.user_id', Auth::user()->id)
+                    ->where('contributions.status', 'upload')
+                    ->get([
+                        'falculties.id as faculty_id',
+                        'falculties.name as faculty_name',
+                        'users.id as user_id',
+                        'users.name as user_name',
+                        'users.email as user_email',
+                        'contributions.id as contribution_id',
+                        'contributions.name as contribution_name',
+                        'contributions.description as contribution_description',
+                        'contributions.images',
+                        'contributions.files',
+                        'contributions.submitted_date as contribution_submitted_date',
+                        'contributions.attempt_number as contribution_attempt_number',
+                        'contributions.status as contribution_status'
+                    ]);
+                // $images = [];
+                foreach ($contributions as $contribution) {
+                    $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                    $images = explode(",", $contribution->images);
+                    foreach ($images as $index => $image) {
+                        $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                    }
+                    $contribution->images = $images;
+                    $comment_count = Comment::where('contribution_id', $contribution->contribution_id)->count();
+                    $contribution->comment_count = $comment_count;
+                }
+                return $this->sendResponse($contributions, "Rejected Contributions Retrieved Successfully", 200);
             }
         }
     }
@@ -453,12 +489,13 @@ class ContributionController extends Controller
             'images' => 'nullable|max:5',
             // |mimes:jpg,jpeg,png
             'closure_id' => 'required|exists:closures,id',
-            // 'user_id' => 'required|exists:users,id',
+            //'user_id' => 'required|exists:users,id',
         ]);
 
         $request['user_id'] = Auth::user()->id;
         $closure = Closure::find($request->closure_id);
-        if (Carbon::parse($closure->closure_date)->isPast()) {
+
+        if (Carbon::parse($closure->closure_date)->addDay()->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
         if ($request->hasFile('files')) {
@@ -469,6 +506,7 @@ class ContributionController extends Controller
                 $uploadedFiles[] = $fileName;
             }
         }
+
         $uploadedImages = [];
         if ($request->hasFile('images')) {
             $images = $request->file('images');
@@ -482,7 +520,7 @@ class ContributionController extends Controller
             }
         }
 
-
+        // return response()->json(Auth::user());
         $contributionData = [
             'name' => $request->name,
             'description' => $request->description,
@@ -499,12 +537,13 @@ class ContributionController extends Controller
             $contributionData['images'] =  implode(',', $uploadedImages);
         }
         $contribution = Contribution::create($contributionData);
-        return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
+
         //if student of faculty_id and coordinator of faculty_id are the same send email
         $user = auth()->user();
         if ($user->role_id === 4) {
-            $coordinator = User::where('faculty_id', $user->faculty_id)
-                ->where('role_id', 3)
+            $coordinator = User::join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->where('faculty_users.faculty_id', $user->faculty_id)
+                ->where('users.role_id', 3)
                 ->first();
         }
         if ($coordinator) {
@@ -512,12 +551,7 @@ class ContributionController extends Controller
             //dd($coordinator);
             Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
-
-
-        // //send email noti
-        // $coordinatorEmail = 'ewsdgroup2@yopmail.com';
-        // $coordinatorName = 'Falculty Coordinator';
-        // Mail::to('ewsdgroup2@yopmail.com')->send(new ArticleUploaded(auth()->user()->name, $request->name));
+        return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
 
     }
 
@@ -645,4 +679,168 @@ class ContributionController extends Controller
         $uploadedcontributions = Contribution::where('user_id', $user->id)->get();
         return $this->sendResponse($uploadedcontributions, 'Uploaded Contribution list', 200);
     }
+    //contribution list of current closure
+    public function getCurrentClosureContributionList()
+    {
+
+        $closure = new ClosureController();
+        $currentclosure = $closure->getCurrentClosures();
+
+        $contributions = Contribution::select(
+            'contributions.name as Title',
+            'closures.start_date',
+            'closures.closure_date',
+            'closures.final_closure_date',
+        )
+            ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+            ->join('users', 'users.id', '=', 'contributions.user_id')
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->join('faculties', 'faculty_users.faculty_id', '=', 'faculties.id')
+            ->where('faculty_users.faculty_id', '=', $coordinator->faculty_id)
+            ->where('closures.id', $currentclosure->id)
+            ->get();
+
+        return $this->sendResponse($contributions, "Current Closure of Contribution List", 200);
+    }
+    public function addReadCount($id)
+    {
+        if (Auth::user()->hasRole('student') || Auth::user()->hadRole('guest')) {
+            $contribution = Contribution::findOrFail($id);
+            $contribution->update(['read_count' => ++$contribution->read_count]);
+            return $this->sendResponse($contribution, "Contribution Read Count Updated Successfully!", 200);
+        }
+        return $this->sendError("Nothing will change since you are not student or guest role", 403);
+    }
+    public function getCommentCount()
+    {
+        $success['comment'] = Contribution::where('is_commented', 1)->get()->count();
+        $success['uncomment'] = Contribution::where('is_commented', 0)->get()->count();
+        $uncommented =   Contribution::where('is_commented', 0)->get();
+        $overdue_count = 0;
+        foreach ($uncommented as $u) {
+            $submitted_date = Carbon::parse($u->submitted_date);
+            $day_diff = Carbon::now()->diffInDays($submitted_date);
+            if ($day_diff > 14) {
+                $overdue_count += 1;
+            }
+        }
+        $success['overdue'] = $overdue_count;
+        return $this->sendResponse($success, "Comment Counts for Admin Dashboard", 200);
+    }
+    //most uploaded student list
+    public function getMostlyUploadContribution(){
+        $contributions = DB::table('contributions')
+            ->join('users', 'contributions.user_id', 'users.id')
+            ->select('users.id', 'users.name', DB::raw('count(*) as mostly_uploaded'))
+            ->groupBy('users.id',  'users.name')
+            ->orderBy('mostly_uploaded', 'ASC')
+            ->limit(3)
+            ->get('users.name as student_name',
+                    'mostly_uploaded');
+
+        return $this->sendResponse($contributions, "Mostly uploaded Student", 200);
+    }
+
+    //most active user list
+   public function getMostActiveUserList(){
+       if (Auth::user()->hasRole('student') || Auth::user()->hasRole('guest')){
+            $faculty = DB::table('users')
+                ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                ->where('users.id', Auth::user()->id)
+                ->get(['faculty_users.faculty_id']);
+
+                $contributions = DB::table('contributions')
+                    ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+                    ->join('users', 'contributions.user_id', '=', 'users.id')
+                    ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                    ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+                    ->join('contributions.status', 'approve')
+                    ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
+                    ->get([
+                        'falculties.id as faculty_id',
+                        'falculties.name as faculty_name',
+                        'users.id as user_id',
+                        'users.name as user_name',
+                        'users.email as user_email',
+                        'contributions.id as contribution_id',
+                        'contributionsname as contribution_name',
+                        'contributions.images',
+                        'contributions.files',
+                        'contributions.submitted_date as contribution_submitted_date',
+                        'contributions.status as contribution_status'
+                    ]);
+                    foreach ($contributions as $contribution) {
+                        $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                        $images = explode(",", $contribution->images);
+                        foreach ($images as $image) {
+                            $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                        }
+                        $contribution->images = $images;
+                    }
+                    $userReadCounts = [];
+                        foreach ($contributions as $contribution) {
+                            if ($contribution->read_count > 0) {
+                                if (!isset($userReadCounts[$contribution->user_id])) {
+                                        $userReadCounts[$contribution->user_id] = 0;
+                                }
+                    $userReadCounts[$contribution->user_id] += $contribution->read_count;
+                            }
+                        }
+                    arsort($userReadCounts);
+
+        $topThreeUsers = array_slice($userReadCounts, 0, 3, true);
+        $mostActiveUsers = User::whereIn('id', array_keys($topThreeUsers))->get(['name']);
+        foreach ($mostActiveUsers as $user) {
+            $user->total_read_count = $userReadCounts[$user->id];
+        }
+
+        return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
+    }
+
+    return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
+
+}
+
+    public function getPieChartforAdmin(Request $request)
+    {
+       $academic_year = $request->query('academic_id');
+      // $percentOfContributions = Falculty::query();
+
+        if($academic_year){
+            $numberOfContributions = DB::table('falculties')
+                ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
+                ->join('users', 'faculty_users.user_id', '=', 'users.id')
+                ->join('contributions', 'contributions.user_id', '=', 'users.id')
+                ->select('falculties.name as Faculty_name',
+                        DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions'))
+                ->where('users.academic_id', $academic_year)
+                ->groupBy('falculties.name')
+                ->get();
+
+            $numberOfContributors = DB::table('falculties')
+            ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
+            ->join('users', 'faculty_users.user_id', '=', 'users.id')
+            ->join('contributions', 'contributions.user_id', '=', 'users.id')
+            ->select('falculties.name as Faculty_name',
+                    DB::raw('COUNT(DISTINCT contributions.user_id) as Number_of_Contributors'))
+            ->where('users.academic_id', $academic_year)
+            ->groupBy('falculties.name')
+            ->get();
+            $percentOfContributions = collect($numberOfContributions)->map(function ($item, $key) use ($numberOfContributors){
+            $percentage = 0;
+            if($numberOfContributors[$key]->Number_of_Contributors > 0){
+                $percentage = ($item->Number_of_Contributions / $numberOfContributors[$key]->Number_of_Contributors) * 100;
+            }
+            return[
+                'Faculty_Name' => $item->Faculty_name,
+                'Percentage_Of_Contributions' => $percentage . '%'
+            ];
+        });
+        return $this->sendResponse($percentOfContributions->toArray(), "Contributions by Faculty", 200);
+    }
+    return $this->sendResponse("Academic year is not provided", 403);
+}
+
+
+
 }

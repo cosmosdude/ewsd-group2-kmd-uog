@@ -17,11 +17,34 @@ export default {
         fadeout: {
           '0%': { opacity: 1.0 },
           '100%': { opacity: 0 },
+        },
+        'noti-in': {
+          '0%': { 
+            opacity: 0 ,
+            transform: 'scale(0.0, 0.0) translateY(100%)'
+          },
+          '100%': {
+             opacity: 1.0,
+             transform: 'scale(1, 1) translateY(0%)'
+          },
+        },
+
+        'noti-out': {
+          '100%': { 
+            opacity: 0 ,
+            transform: 'scale(0.0, 0.0) translateY(100%)'
+          },
+          '0%': {
+             opacity: 1.0,
+             transform: 'scale(1, 1) translateY(0%)'
+          },
         }
       },
       animation: {
         fadein: 'fadein 0.25s ease-in-out',
         fadeout: 'fadeout 0.25s ease-in-out',
+        'noti-in': 'noti-in 0.5s ease-in-out',
+        'noti-out': 'noti-out 0.5s ease-in-out delay 4s',
       },
       
       fontFamily: {
@@ -31,7 +54,7 @@ export default {
       fontSize: {
         s: ['6.5px', { lineHeight: '10.5px'}],
         m: ['8px', { lineHeight: '13px'}],
-        xs: ['11px', { lineHeight: '16px'}],
+        xs: ['12px', { lineHeight: '16px'}],
         sm: ['14px', { lineHeight: '20.5px'}],
         md: ['16px', { lineHeight: '25px'}],
         lg: ['20px', { lineHeight: '31.5px'}],

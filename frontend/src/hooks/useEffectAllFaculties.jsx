@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
-import AuthContext from "../contexts/AuthContext"
+import AuthContext, { useAuthContext } from "../contexts/AuthContext"
 import apiConfig from "../configs/api.config"
+import { usePushNoti } from "../components/Noti/NotiSystem"
 
 
 // Fetch faculties for once.
@@ -10,16 +11,18 @@ import apiConfig from "../configs/api.config"
 // Second item is error encountered while fetching faculties
 function useEffectAllFaculties() {
     
+    let pushNoti = usePushNoti()
+
     let [faculties, setFaculties] = useState([])
     let [error, setError] = useState(null)
-    // let accessToken = useContext(AuthContext)
+    let accessToken = useAuthContext()
 
     useEffect(() => {
         // abortion controller
         let aborter = new AbortController()
 
-        let headers = { 'Accepts': 'application/json' }
-        // if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`
+        let headers = { 'accept': 'application/json' }
+        if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`
 
         async function fetchData() {
             try {
@@ -34,6 +37,11 @@ function useEffectAllFaculties() {
                     setFaculties(json.data)
                 } else {
                     setError("Unable to get faculty list.")
+                    pushNoti({
+                        title: "Error",
+                        message: `Unable to get faculties. ${json.message} (status: ${response.status})`,
+                        style: 'danger'
+                    })
                 }
 
                 console.log(json)

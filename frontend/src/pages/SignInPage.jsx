@@ -12,8 +12,10 @@ import { useEffect, useRef, useState } from "react"
 import SignInNavBar from "../components/SignInNavBar"
 import LoadingIndicator from "../components/LoadingIndicator"
 import apiConfig from "../configs/api.config"
+import { usePushNoti } from "../components/Noti/NotiSystem"
 
 const SignInPage = () => {
+    let pushNoti = usePushNoti()
     let navigate = useNavigate()
 
     function gotoHome() {
@@ -74,7 +76,13 @@ const SignInPage = () => {
             if (response.status === 200) {
                 window.localStorage.setItem("accessToken", json.data.token)
                 gotoHome()
-            } else {
+            } else if (response.status >= 500) {
+                pushNoti({
+                    title: "Error",
+                    message: `Internal server error (status: ${response.status})`
+                })
+            }
+            else {
                 setError("Invalid email or password.")
             }
         } catch (error) {

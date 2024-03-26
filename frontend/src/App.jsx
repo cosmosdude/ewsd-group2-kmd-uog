@@ -30,10 +30,12 @@ import routesConfig from "./configs/routes.config"
 import LiveMagazinePage from "./pages/LiveMagazinePage"
 import GuestListPage from "./pages/GuestListPage"
 import UpdateContributionPage from "./pages/UpdateContributionPage"
+import NotiSystem from "./components/Noti/NotiSystem"
 
 function App() {
   return (
     <>
+      <NotiSystem>
         <Routes>
           <Route path="/" element={<BaseNavigation/>}>
             <Route path="home" element={<DashboardPage/>}/>
@@ -75,6 +77,7 @@ function App() {
           {/*Any route not specified above will be treated as 404*/}
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
+      </NotiSystem>
     </>
   )
 }

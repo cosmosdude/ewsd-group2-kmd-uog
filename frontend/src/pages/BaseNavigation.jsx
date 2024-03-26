@@ -14,12 +14,15 @@ import LogoutIcon from "../assets/sidenav/logout.png"
 import UserContext from "../contexts/UserContext"
 import TopNav from "../components/TopNav"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import NotiSystem, { usePushNoti } from "../components/Noti/NotiSystem"
 
 /**
  * Base navigation handler. 
  * Composed of left side nav bar and right side content view.
  * */
 export default function BaseNavigation() {
+    let pushNoti = usePushNoti()
+
     let navigate = useNavigate()
     let {pathname: path} = useLocation();
 

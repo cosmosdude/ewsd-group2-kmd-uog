@@ -9,12 +9,19 @@ import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import ThreeDotIcon from "../assets/threedots.png"
 import TableHeaderRow from "../components/TableHeaderRow"
 import BorderedButton from "../components/BorderedButton"
+import { usePushNoti } from "../components/Noti/NotiSystem"
 
 const FacultiesPage = () => {
+    let pushNoti = usePushNoti()
     let navigate = useNavigate()
     let accessToken = useContext(AuthContext);
 
-    let [faculties] = useEffectAllFaculties()
+    let [faculties, error] = useEffectAllFaculties()
+    // useEffect(() => {
+    //     if (error) {
+
+    //     }
+    // }, error)
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-8 overflow-y-hidden">

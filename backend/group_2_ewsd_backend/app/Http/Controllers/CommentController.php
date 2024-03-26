@@ -44,10 +44,21 @@ class CommentController extends Controller
             ]);
 
             //send email to student when m_coordinator commented
-            $student = $contribution->user;
+            //Please make changes in your .env file
+            // MAIL_MAILER=smtp
+            // MAIL_HOST=smtp.yomail.com
+            // MAIL_PORT=587
+            // MAIL_USERNAME=null
+            // MAIL_PASSWORD=null
+            // MAIL_ENCRYPTION=tls
+            // MAIL_FROM_ADDRESS=null
+            // MAIL_FROM_NAME="${APP_NAME}"
+            // $student = $contribution->user;
+
             Mail::to($student->email)->send(new CommentedEmail($student->name, $request->content, $contribution));
         } else {
             //send email to coordinator when student commented
+            $student_faculty_id = $this->getFacultyId($contribution->user_id);
             $coordinator = User::where('faculty_id', $student_faculty_id)
                 ->where('role_id', 3)
                 ->first();
@@ -56,6 +67,7 @@ class CommentController extends Controller
                 Mail::to($coordinator->email)->send(new CommentedEmail($coordinator->name, $request->content, $contribution));
             }
         }
+
         return $this->sendResponse($comment, "Successfully Commented to Contributions", 200);
 
     }

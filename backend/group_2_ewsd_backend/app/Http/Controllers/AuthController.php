@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicHistory;
 use App\Models\AcademicYear;
+use App\Models\Browser;
 use App\Models\FacultyUser;
 use App\Models\User;
 use Carbon\Carbon;
@@ -41,10 +42,10 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|max:100',
-            'email' => 'required|unique:users|max:255',
+            'email' => 'required|unique:users|max:255|email',
             'password' => 'required|min:8',
             'phone' => 'required',
-            // 'role_id' => 'required',
+            //'role_id' => 'required',
             'faculty_id' => 'required',
             // 'academic_id' => 'required',
         ]);
@@ -104,24 +105,47 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // $request->validate();
+        $request->validate([
+            'email' =>'required|email',
+            'password' => 'required',
+            'browser' => 'nullable'
+        ]);
         if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password
         ])) {
             $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
-            $faculty_id = FacultyUser::where('user_id',$user->id)->pluck('faculty_id')->first();;
+            $faculty_id = FacultyUser::where('user_id', $user->id)->pluck('faculty_id')->first();;
             $success['token'] =  $token;
             $success['id'] = $user->id;
-            $success['faculty_id'] =$faculty_id;
+            $success['faculty_id'] = $faculty_id;
             $success['name'] =  $user->name;
 
-            $user->update([
-                'last_login_time' => Carbon::now()->timezone('Europe/London')
-            ]);
-            $success['last_login_time'] = $user->last_login_time;
-            // return response()->json($user->last_login_time);
+            $success['id'] = $user->id;
+            if ($user->last_login_time != null) {
+                $user->update([
+                    'last_login_time' => Carbon::now()
+                ]);
+                $success['last_login_time'] = $this->timeDifference(Carbon::parse($user->last_login_time));
+            } else {
+                $success['last_login_time'] = "-";
+            }
+
+            if ($request->browser != null || $request->browser != '') {
+                $browser = Browser::where('name', $request->browser)->first();
+                if ($browser == null) {
+                    $browser = Browser::create([
+                        'name' => $request->browser,
+                        'count' => 1
+                    ]);
+                }else {
+                    $browser->update([
+                        'count' => ++$browser->count
+                    ]);
+                }
+            }
+
             return $this->sendResponse($success, 'User login successfully.', 200);
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
@@ -137,7 +161,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required|min:8',
             'faculties' => 'required|array'
         ]);

@@ -79,12 +79,26 @@ const SignUpPage = () => {
             let value = await response.text()
             console.log(value)
 
-            if (response.status === 200) {
+            if (response.status >= 500) {
+                pushNoti({
+                    title: "Error",
+                    message: `Internal server error (status: ${response.status})`
+                })
+            } else if (response.status >= 400) {
+                let json = await response.json()
+                pushNoti({
+                    title: "Error",
+                    message: `Unable to register account. (${json.message})`
+                })
+            }
+            else if (response.status === 200) {
                 gotoSignIn()
-            } else if (response.status === 500) {
-                setError("An account is already registered")
             } else {
                 setError("Unable to sign up.")
+                pushNoti({
+                    title: "Error",
+                    message: `Unable to register account. (status: ${response.status})`
+                })
             }
         } catch (error) {
             console.log(error)

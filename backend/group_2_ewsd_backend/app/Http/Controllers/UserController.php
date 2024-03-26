@@ -9,6 +9,7 @@ use App\Models\Falculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -100,6 +101,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
+            'password' => 'required',
 
         ]);
         if (Auth::user()->id == $id || Auth::user()->hasRole('administrator')) {
@@ -108,6 +110,7 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'password' => Hash::make($request->password)
             ]);
             return $this->sendResponse($user, "User Updated Successfully", 200);
         }
