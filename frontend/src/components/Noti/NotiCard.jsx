@@ -33,6 +33,7 @@ function NotiCard({title, message, style = 'default', onDismiss}) {
 
     return (
         <div className={`
+            relative
             p-[10px] 
             flex items-start gap-[10px] 
             grow
@@ -49,7 +50,7 @@ function NotiCard({title, message, style = 'default', onDismiss}) {
                 <h3 className=" text-sm font-bold ">{title ?? ' '}</h3>
                 <p className="text-xs">{message ?? ' '}</p>
             </div>
-            <button className="hover:opacity-25 transition-all" onClick={e => {
+            <button className="absolute right-[10px] top-[10px] hover:opacity-25 transition-all" onClick={e => {
                 clearTimer()
                 onDismiss?.(e)
             }}>

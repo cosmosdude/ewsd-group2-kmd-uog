@@ -16,7 +16,8 @@ export default function useEffectMostActiveStudents() {
                 let response = await fetch(apiConfig.path.statistics.mostActiveStudents(), {
                     signal: aborter.signal,
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        "Accept": "application/json"
                     }
                 })
 
@@ -24,6 +25,12 @@ export default function useEffectMostActiveStudents() {
                 console.log(json.data)
                 if (response.status === 200) {
                     setStudents(json.data)
+                } else {
+                    pushNoti({
+                        title: "Most Active Students",
+                        message: `${json.message} (status: ${response.status})`,
+                        style: 'danger'
+                    })
                 }
                 
             } catch (e) {

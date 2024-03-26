@@ -1,11 +1,12 @@
+import useEffectMostReadContributions from "../../hooks/useEffectMostReadContributions";
 import useEffectMostReadMagazines from "../../hooks/useEffectMostReadMagazines";
 
-function MostReadMagazines() {
-    let magazines = useEffectMostReadMagazines()
+function MostReadContributions() {
+    let contributions = useEffectMostReadContributions()
     return (
         <div className="grow basis-0 shrink-0 flex flex-col border overflow-scroll">
             <h1 className="sticky top-0 z-[1] p-[10px] border-b text-md font-bold bg-white">
-                Popular Magazines
+                Most Read Contributions
             </h1>
             <ul className="
             flex flex-col 
@@ -13,7 +14,7 @@ function MostReadMagazines() {
             [&>*]:flex [&>*]:items-center
             [&>*]:text-sm
             ">
-                {magazines.map((s, i) => {
+                {contributions.map((s, i) => {
                     return <li className="py-[10px]" key={i}>{i + 1}. {s.name}</li>
                 })}
             </ul>
@@ -21,4 +22,4 @@ function MostReadMagazines() {
     );
 }
 
-export default MostReadMagazines;
+export default MostReadContributions;

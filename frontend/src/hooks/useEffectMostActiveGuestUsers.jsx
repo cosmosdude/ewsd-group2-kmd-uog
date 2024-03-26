@@ -28,7 +28,7 @@ export default function useEffectMostActiveGuestUsers() {
                     setGuestUsers(json.data)
                 } else {
                     pushNoti({
-                        title: "Unable to get Most Active Users",
+                        title: "Most Active Users",
                         message: `${json.message} (status: ${response.status})`,
                         style: 'danger'
                     })

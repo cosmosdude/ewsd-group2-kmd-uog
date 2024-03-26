@@ -200,10 +200,17 @@ const apiConfig = {
             },
 
             /**
-             * URL for getting students with most upload
+             * URL for getting most viewed magazines
             */
             mostViewedMagazines() {
                 return `${host}/api/most-view/magazines`
+            },
+
+            /**
+             * URL for getting most read contributions/articles
+            */
+            mostReadContributions() {
+                return `${host}/api/contributionlist`
             },
 
             /**

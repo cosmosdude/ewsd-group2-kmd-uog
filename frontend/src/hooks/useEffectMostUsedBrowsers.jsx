@@ -28,7 +28,7 @@ export default function useEffectMostUsedBrowsers() {
                     setBrowsers(json.data)
                 } else {
                     pushNoti({
-                        title: "Unable to get Most Active Users",
+                        title: "Most Used Browsers",
                         message: `${json.message} (status: ${response.status})`,
                         style: 'danger'
                     })
