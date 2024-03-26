@@ -92,6 +92,9 @@ const MagazinePage = () => {
                     <Dropdown 
                         className="min-w-[200px]" 
                         title={faculty?.name ?? "Select faculty"} 
+                        index={
+                            faculties.indexOf(faculty) + 1
+                        }
                         options={
                             ['All', ...faculties.map(x => x.name)]
                         }

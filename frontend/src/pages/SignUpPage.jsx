@@ -22,7 +22,10 @@ const SignUpPage = () => {
 
     let [username, setUsername] = useState("");
     let [email, setEmail] = useState("");
-    let [faculty, setFaculty] = useState(null);
+    // let [faculty, setFaculty] = useState(null);
+
+    let [selectedFaculties, setSelectedFaculties] = useState([])
+
     let [password, setPassword] = useState("");
     let [retype, setRetype] = useState("")
 
@@ -45,7 +48,11 @@ const SignUpPage = () => {
         form.set("name", username)
         form.set("email", email)
         form.set("password", password)
-        form.set("faculties[0]", faculty.id)
+        for(let i = 0; i < selectedFaculties.length; i++) {
+            let faculty = selectedFaculties[i]
+            form.set(`faculties[${i}]`, faculty.id)
+        }
+        
         return form
     }
 
@@ -55,7 +62,7 @@ const SignUpPage = () => {
 
         if (!username) { setError("Username must not be empty") ; return }
         if (!email) { setError("Email must not be empty") ; return }
-        if (!faculty) { setError("Faculty must not be empty") ; return }
+        if (!selectedFaculties.length) { setError("Faculty must not be empty") ; return }
         if (!password) { setError("Password must not be empty") ; return }
         if (!retype || retype !== password) { setError("Passwords must be the same") ; return }
 
@@ -107,7 +114,6 @@ const SignUpPage = () => {
         setIsLoading(() => false) 
     }
 
-
     useEffect(gotoHomeIfAlreadyLoggedIn);
     return (
         <>
@@ -133,10 +139,23 @@ const SignUpPage = () => {
                             onChange={setEmail}
                         />
                         <Dropdown className="w-full z-[1001]" 
-                        title={faculty ? faculty.name : "Select faculty"} 
+                        title={
+                            selectedFaculties.length !== 0
+                            ? selectedFaculties.map(x => x.name).join(",") 
+                            : "Select faculty"
+                        } 
+                        indices={selectedFaculties.map((x) => faculties.indexOf(x))}
                         options={faculties.map(x => x.name)} 
                         onChange={(option, index) => {
-                            setFaculty(faculties[index])
+                            // setFaculty(faculties[index])
+                            let faculty = faculties[index]
+                            if (selectedFaculties.includes(faculty))
+                                setSelectedFaculties(selectedFaculties.filter(x => x !== faculty))
+                            else 
+                                setSelectedFaculties([...selectedFaculties, faculty])
+                            // setSelectedFaculties(
+
+                            // )
                         }}/>
                         <InputField 
                             className="w-full" src={LockSVG} placeholder="Enter password" 

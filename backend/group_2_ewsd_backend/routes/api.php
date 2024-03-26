@@ -87,7 +87,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/browsers',[BrowserController::class,'index']);
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
-        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
+        // Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
 

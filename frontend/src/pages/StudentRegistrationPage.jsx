@@ -100,7 +100,8 @@ const StudentRegistrationPage = () => {
                 {/* <div className="flex w-full gap-4 md:gap-8 flex-col md:flex-row"> */}
                     <Dropdown 
                         className="grow bg-white basis-0 z-[1001]"
-                        title={faculty ? faculty.name : "Select faculty"} 
+                        title={faculty ? faculty.name : "Select faculty"}
+                        index={faculties.indexOf(faculty)} 
                         options={faculties.map(x => x.name)} 
                         onChange={(option, index) => {
                             setFaculty(faculties[index])
