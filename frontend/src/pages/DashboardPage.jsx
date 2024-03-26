@@ -7,6 +7,7 @@ import SideNavItem from "../components/SideNavItem"
 import EWSDChart, {colors} from "../components/EWSDChart"
 import Dropdown from "../components/Dropdown"
 import MostUploadedStudentListView from "../components/statistic/MostUploadedStudentListView"
+import MostActiveGuestListView from "../components/statistic/MostActiveGuestListView"
 
 const DashboardPage = () => {
     return (
@@ -188,41 +189,9 @@ const DashboardPage = () => {
                 {/* Most Uploaded Students */}
                 <div className="h-[400px] flex flex-col gap-[10px]">
                     <MostUploadedStudentListView/>
-                    {/* <div className="grow basis-0 shrink-0 flex flex-col border">
-                        <h1 className="p-[10px] border-b text-md font-bold">
-                            Most Uploaded Students
-                        </h1>
-                        <ul className="
-                        grow 
-                        flex flex-col 
-                        py-[10px] [&>*]:px-[25px] 
-                        [&>*]:flex [&>*]:items-center
-                        [&>*]:grow
-                        [&>*]:text-sm
-                        ">
-                            <li>1. Student</li>
-                            <li>2. Student 2</li>
-                            <li>3. Student 3</li>
-                        </ul>
-                    </div> */}
-                    {/*  Most Viewed Contributions */}
-                    <div className="grow basis-0 shrink-0 flex flex-col border">
-                        <h1 className="p-[10px] border-b text-md font-bold">
-                            Most Active Users
-                        </h1>
-                        <ul className="
-                        grow 
-                        flex flex-col
-                        py-[10px] [&>*]:px-[25px] 
-                        [&>*]:grow
-                        [&>*]:flex [&>*]:items-center
-                        [&>*]:text-sm
-                        ">
-                            <li>1. Guest 1</li>
-                            <li>2. Guest 2</li>
-                            <li>3. Guest 3</li>
-                        </ul>
-                    </div>
+                    
+                    {/*  Most Active Guests */}
+                    <MostActiveGuestListView/>
                 </div>
                 <div className="h-[400px] flex flex-col gap-[10px] border overflow-scroll">
                     <div className="grow basis-0 shrink-0 flex flex-col">

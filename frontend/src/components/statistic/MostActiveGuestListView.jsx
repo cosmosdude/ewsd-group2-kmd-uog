@@ -1,22 +1,22 @@
-import useEffectMostActiveStudents from "../../hooks/useEffectMostActiveStudents";
+import userEffectMostActiveGuestUsers from "../../hooks/useEffectMostActiveGuestUsers";
 
-function MostUploadedStudentListView() {
-    let students = useEffectMostActiveStudents()
+function MostActiveGuestListView() {
+    let guests = userEffectMostActiveGuestUsers()
 
     return (
         <div className="grow basis-0 shrink-0 flex flex-col border">
             <h1 className="p-[10px] border-b text-md font-bold">
-                Most Uploaded Students
+                Most Active Users
             </h1>
             <ul className="
             grow 
-            flex flex-col 
+            flex flex-col
             py-[10px] [&>*]:px-[25px] 
-            [&>*]:flex [&>*]:items-center
             [&>*]:grow
+            [&>*]:flex [&>*]:items-center
             [&>*]:text-sm
             ">
-                {students.map((s, i) => {
+                {guests.map((s, i) => {
                     return <li key={i}>{i + 1}. {s.name}</li>
                 })}
             </ul>
@@ -24,4 +24,4 @@ function MostUploadedStudentListView() {
     );
 }
 
-export default MostUploadedStudentListView;
+export default MostActiveGuestListView;

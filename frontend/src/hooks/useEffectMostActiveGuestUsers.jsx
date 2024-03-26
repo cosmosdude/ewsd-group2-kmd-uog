@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import apiConfig from "../configs/api.config";
+import { usePushNoti } from "../components/Noti/NotiSystem";
 
 export default function userEffectMostActiveGuestUsers() {
-
+    let pushNoti = usePushNoti()
     let token = useAuthContext()
 
     let [guestUsers, setGuestUsers] = useState([])
@@ -16,14 +17,21 @@ export default function userEffectMostActiveGuestUsers() {
                 let response = await fetch(apiConfig.path.statistics.mostActiveGuestUsers(), {
                     signal: aborter.signal,
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
                     }
                 })
 
                 let json = await response.json()
                 console.log(json.data)
                 if (response.status === 200) {
-                    setUser(json.data)
+                    setGuestUsers(json.data)
+                } else {
+                    pushNoti({
+                        title: "Unable to get Most Active Users",
+                        message: `${json.message} (status: ${response.status})`,
+                        style: 'danger'
+                    })
                 }
                 
             } catch (e) {
@@ -37,6 +45,6 @@ export default function userEffectMostActiveGuestUsers() {
         return () => aborter.abort()
     }, [token])
 
-    return user
+    return guestUsers
 
 }
