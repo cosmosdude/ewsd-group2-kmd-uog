@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import apiConfig from "../configs/api.config";
 
-export default function userEffectMostActiveGuestUsers() {
+export default function useEffectMostActiveStudents() {
 
     let token = useAuthContext()
 
-    let [guestUsers, setGuestUsers] = useState([])
+    let [students, setStudents] = useState([])
 
     useEffect(() => {
         let aborter = new AbortController()
 
         async function getData() {
             try {
-                let response = await fetch(apiConfig.path.statistics.mostActiveGuestUsers(), {
+                let response = await fetch(apiConfig.path.statistics.mostActiveStudents(), {
                     signal: aborter.signal,
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -23,7 +23,7 @@ export default function userEffectMostActiveGuestUsers() {
                 let json = await response.json()
                 console.log(json.data)
                 if (response.status === 200) {
-                    setUser(json.data)
+                    setStudents(json.data)
                 }
                 
             } catch (e) {
@@ -37,6 +37,6 @@ export default function userEffectMostActiveGuestUsers() {
         return () => aborter.abort()
     }, [token])
 
-    return user
+    return students
 
 }

@@ -6,6 +6,7 @@ import SideNav from "../components/SideNav"
 import SideNavItem from "../components/SideNavItem"
 import EWSDChart, {colors} from "../components/EWSDChart"
 import Dropdown from "../components/Dropdown"
+import MostUploadedStudentListView from "../components/statistic/MostUploadedStudentListView"
 
 const DashboardPage = () => {
     return (
@@ -186,7 +187,8 @@ const DashboardPage = () => {
 
                 {/* Most Uploaded Students */}
                 <div className="h-[400px] flex flex-col gap-[10px]">
-                    <div className="grow basis-0 shrink-0 flex flex-col border">
+                    <MostUploadedStudentListView/>
+                    {/* <div className="grow basis-0 shrink-0 flex flex-col border">
                         <h1 className="p-[10px] border-b text-md font-bold">
                             Most Uploaded Students
                         </h1>
@@ -202,7 +204,7 @@ const DashboardPage = () => {
                             <li>2. Student 2</li>
                             <li>3. Student 3</li>
                         </ul>
-                    </div>
+                    </div> */}
                     {/*  Most Viewed Contributions */}
                     <div className="grow basis-0 shrink-0 flex flex-col border">
                         <h1 className="p-[10px] border-b text-md font-bold">
