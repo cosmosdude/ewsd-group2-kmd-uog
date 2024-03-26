@@ -14,6 +14,9 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import apiConfig from "../configs/api.config"
 import { usePushNoti } from "../components/Noti/NotiSystem"
 
+import { browserName, detect } from "detect-browser"
+import { capitalized } from "../util/capitalized"
+
 const SignInPage = () => {
     let pushNoti = usePushNoti()
     let navigate = useNavigate()
@@ -35,9 +38,11 @@ const SignInPage = () => {
     let [isLoading, setIsLoading] = useState(false);
 
     function getSignInFormData() {
+        let browser = detect(navigator.userAgent)
         let form = new FormData();
         form.set("email", username)
         form.set("password", password)
+        form.set('browser', capitalized(`${browser.name ?? "Unknown"} (v${browser.version ?? '0.0.0'})`))
         return form
     }
 
@@ -55,6 +60,13 @@ const SignInPage = () => {
     }
 
     async function login(e) {
+        e.preventDefault()
+        console.log(browserName(navigator.userAgent) )
+        let browser = detect(navigator.userAgent)
+        console.log(capitalized(`${browser.name ?? "Unknown"} (v${browser.version ?? '0.0.0'})`))
+        console.log(capitalized("hello world"))
+        console.log(capitalized("h"))
+
         setError(null);
         setIsLoading(() => true)
         e.preventDefault()
