@@ -4,7 +4,7 @@ import useEffectMostReadMagazines from "../../hooks/useEffectMostReadMagazines";
 function MostReadContributions() {
     let contributions = useEffectMostReadContributions()
     return (
-        <div className="grow basis-0 shrink-0 flex flex-col border overflow-scroll">
+        <div className="grow basis-0 shrink-0 flex flex-col border rounded-[10px] overflow-scroll">
             <h1 className="sticky top-0 z-[1] p-[10px] border-b text-md font-bold bg-white">
                 Most Read Contributions
             </h1>

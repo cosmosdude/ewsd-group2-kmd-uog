@@ -15,9 +15,10 @@ import apiConfig from "../configs/api.config"
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
 import extractContributionFileSrc from "../util/extractContributionFileSrc"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
+import { usePushNoti } from "../components/Noti/NotiSystem"
 
 const MagazinePage = () => {
-
+    let pushNoti = usePushNoti()
     let navigate = useNavigate()
 
     // get route parameters
@@ -37,6 +38,36 @@ const MagazinePage = () => {
     })
 
     let accessToken = useAuthContext()
+
+    let token = useAuthContext()
+
+    async function markAsRead(id) {
+        try {
+            let response = await fetch(apiConfig.path.readArticle(id), {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    "Accept": "application/json"
+                }
+            })
+
+            let json = await response.json()
+            console.log(json.data)
+            if (response.status === 200) {
+                // json.data.comments = [10, 20]
+                setData(json.data)
+            } else {
+                pushNoti({
+                    title: "Unable to mark as read", 
+                    message: json.message,
+                    style: 'danger'
+                })
+            }
+            
+        } catch (e) {
+            console.error("Error", e)
+            console.log("Error while fetching user data")
+        }
+    }
 
     async function downloadAllArticles() {
         try {
@@ -124,6 +155,7 @@ const MagazinePage = () => {
                                         extractContributionFileSrc(item.files),
                                         '_blank'
                                     )
+                                    markAsRead(item.id)
                                 }}
                                 // onCardClick={() => {
                                 //     navigate(routesConfig.contribution.detail(item.contribution_id))

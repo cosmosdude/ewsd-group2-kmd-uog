@@ -4,12 +4,13 @@ import useEffectFacultyGuestAndStudentCounts from "../../hooks/useEffectFacultyG
 import Dropdown from "../Dropdown";
 import EWSDChart, { colors } from "../EWSDChart";
 
-function GuestAndStudentCountView() {
-    let counts = useEffectFacultyGuestAndStudentCounts()
+function ContributionsByFacultyView() {
+    // let counts = useEffectFacultyGuestAndStudentCounts()
 
     let colors = [
-        "#94B777",
-        "#E6F69D"
+        "#F66D44",
+        "#AADEA7",
+        "#3392C5"
     ]
 
     let [academicYears] = useEffectAllAcademicYears()
@@ -19,7 +20,7 @@ function GuestAndStudentCountView() {
         <>
         <div className="flex p-[10px]">
             <h1 className="p-[10px] text-md font-bold">
-                List of Faculty
+                Contributions by Faculty
             </h1>
             <div className="grow"/>
             <Dropdown 
@@ -34,24 +35,17 @@ function GuestAndStudentCountView() {
             />
         </div>
         
-        <div className="w-full p-[10px] grow flex flex-col">
+        <div className="w-full p-[10px] grow flex flex-col ">
             <EWSDChart 
-                type='bar' 
+                type='doughnut' 
                 data={{
-                    labels: counts.map(x => x.name),
+                    labels: ["Business", "Arts", "IT"],
                     datasets: [
                         {
                             label: 'Students',
-                            data: counts.map(x => x.student_count),
-                            backgroundColor: colors[0],
-                            borderColor: colors[0],
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Guests',
-                            data: counts.map(x => x.guest_count),
-                            backgroundColor: colors[1],
-                            borderColor: colors[1],
+                            data: [65, 59, 40],
+                            backgroundColor: colors,
+                            borderColor: colors,
                             borderWidth: 1
                         }
                     ]
@@ -59,25 +53,25 @@ function GuestAndStudentCountView() {
                 options={{
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            ticks: {
-                                minRotation: 0,
-                                maxRotation: 0,
-                                skips: false
-                            }
-                        }
-                    },
                     plugins: {
-                        title: {
-                            align: 'start'
-                        },
+                        // title: {
+                        //     align: 'start'
+                        // },
                         legend: {
-                            display:false
+                            display: true,
+                            position: 'bottom'
                         },
+
                         datalabels: {
-                            display: false
+                            formatter: (value, ctx) => {
+                                const datapoints = ctx.chart.data.datasets[0].data
+                                const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+                                const percentage = value / total * 100
+                                return percentage.toFixed(2) + "%";
+                            },
+                            color: '#fff',
                         }
+                        
                     }
                 }}
             />
@@ -86,4 +80,4 @@ function GuestAndStudentCountView() {
     );
 }
 
-export default GuestAndStudentCountView;
+export default ContributionsByFacultyView;

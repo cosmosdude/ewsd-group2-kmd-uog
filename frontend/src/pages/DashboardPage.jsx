@@ -12,46 +12,21 @@ import MostUsedBrowserListView from "../components/statistic/MostUsedBrowserList
 import MostReadMagazines from "../components/statistic/MostReadMagazines"
 import MostReadContributions from "../components/statistic/MostReadContributions"
 import GuestAndStudentCountView from "../components/statistic/GuestAndStudentCountView"
+import NumberOfGuestsAndStudents from "../components/statistic/NumberOfGuestsAndStudents"
+import ContributionsByFacultyView from "../components/statistic/ContributionsByFacultyView"
+import CurrentContributionsView from "../components/statistic/CurrentContributionsView"
 
 const DashboardPage = () => {
     return (
         <div className=" h-full flex flex-col gap-[10px] p-[20px] overflow-scroll bg-white">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-[10px]">
-                <div className="border h-[400px] flex flex-col">
-                    <div className="flex p-[10px] items-center justify-start">
-                        <h1 className="px-[10px] text-md font-bold">
-                            Contributions
-                        </h1>
-                        <div className="grow"/>
-                        <Dropdown className="grow" title="Magazine Name" modified/>
-                    </div>
-                    <div className="w-full p-[10px] grow flex flex-col">
-                        <EWSDChart 
-                            type='bar' 
-                            data={{
-                                labels: ["Commented", "Unommented", "Overdue"],
-                                datasets: [{
-                                label: 'My First Dataset',
-                                data: [65, 59, 40],
-                                backgroundColor: colors.background,
-                                borderColor: colors.border,
-                                borderWidth: 1
-                                }]
-                            }}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        display:false
-                                    }
-                                }
-                            }}
-                        />
-                    </div>  
+                <div className="border rounded-[10px] h-[400px] flex flex-col">
+                    <CurrentContributionsView/>
+                     
                 </div>
-                <div className="border flex flex-col h-[400px]">
-                    <div className="flex p-[10px] items-start justify-start">
+                <div className="border rounded-[10px] flex flex-col h-[400px]">
+                    <ContributionsByFacultyView/>
+                    {/* <div className="flex p-[10px] items-start justify-start">
                         <h1 className="text-md font-bold">
                         Contributions{<br/>}By Faculty
                         </h1>
@@ -89,53 +64,20 @@ const DashboardPage = () => {
                                 }
                             }}
                         />
-                    </div>  
+                    </div>   */}
                 </div>
                 {/* Popular Magazines */}
                 <div className="h-[400px] flex flex-col gap-[10px]">
                     <MostReadMagazines/>
-                    {/* <div className="grow basis-0 shrink-0 flex flex-col border">
-                        <h1 className="p-[10px] border-b text-md font-bold">
-                            Popular Magazines
-                        </h1>
-                        <ul className="
-                        grow 
-                        flex flex-col 
-                        py-[10px] [&>*]:px-[25px] 
-                        [&>*]:flex [&>*]:items-center
-                        [&>*]:grow
-                        [&>*]:text-sm
-                        ">
-                            <li>1. Mother's Day</li>
-                            <li>2. World Education</li>
-                            <li>3. International Fair</li>
-                        </ul>
-                    </div> */}
+                    
                     {/*  Most Viewed Contributions */}
                     <MostReadContributions/>
-                    {/* <div className="grow basis-0 shrink-0 flex flex-col border">
-                        <h1 className="p-[10px] border-b text-md font-bold">
-                            Most Viewed Contributions
-                        </h1>
-                        <ul className="
-                        grow 
-                        flex flex-col
-                        py-[10px] [&>*]:px-[25px] 
-                        [&>*]:grow
-                        [&>*]:flex [&>*]:items-center
-                        [&>*]:text-sm
-                        ">
-                            <li>1. Mother's Day</li>
-                            <li>2. World Education</li>
-                            <li>3. International Fair</li>
-                        </ul>
-                    </div> */}
                 </div>
             {/* </div> */}
 
             {/* Bottom Row */}
             {/* <div className="w-full grid grid-cols-1 md:grid-cols-3 items-start gap-[10px]"> */}
-                <div className="border h-[400px] flex flex-col">
+                <div className="border rounded-[10px] h-[400px] flex flex-col">
                     <GuestAndStudentCountView/> 
                 </div>
 
@@ -145,9 +87,12 @@ const DashboardPage = () => {
                     {/*  Most Active Guests */}
                     <MostActiveGuestListView/>
                 </div>
-                <div className="h-[400px] flex flex-col gap-[10px] border overflow-scroll">
+                <div className="h-[400px] flex flex-col gap-[10px] border rounded-[10px] overflow-scroll">
                     <MostUsedBrowserListView/>
                 </div>
+            </div>
+            <div className="border rounded-[10px] flex flex-col">
+                <NumberOfGuestsAndStudents/> 
             </div>
         </div>
     )

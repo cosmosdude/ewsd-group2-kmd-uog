@@ -4,20 +4,20 @@ import CrossSVG from '../../assets/cross.svg'
 
 function NotiCard({title, message, style = 'default', onDismiss}) {
     let bg = 'bg-primary-200'
-    let border = 'border-primary-600'
+    let border = '//border-primary-600'
     let fg = 'text-dark-500'
 
     if (style === 'danger') {
         bg = 'bg-red-50'
-        border = 'border-red-200'
+        border = '//border-red-200'
         fg = 'text-red-600'
     }
 
-    // if (style === 'success') {
-    //     bg = 'bg-success-100'
-    //     border = 'border-success-200'
-    //     fg = 'text-success-700'
-    // }
+    if (style === 'success') {
+        bg = 'bg-[#BAFFC1]'
+        border = '//border-green-200'
+        fg = 'text-black'
+    }
 
     let timer
     const clearTimer = () => {

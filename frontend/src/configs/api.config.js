@@ -92,6 +92,13 @@ const apiConfig = {
         },
 
         /**
+         * URL to mark article read.
+        */
+        readArticle(id) {
+            return `${host}/api/contributions/${id}/read-count`
+        },
+
+        /**
          * URL to get article detail.
          * `/api/contributions/${id}`
          * @param id Article/Contribution id

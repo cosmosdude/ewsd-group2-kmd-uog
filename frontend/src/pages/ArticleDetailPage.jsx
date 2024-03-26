@@ -13,8 +13,11 @@ import extractContributionImageSrcs from "../util/extractContributionImageSrcs";
 import UploadIcon from "../assets/upload.png"
 import FilledButton from "../components/FilledButton";
 import Dialog from "../components/Dialog";
+import { usePushNoti } from "../components/Noti/NotiSystem";
 
 function ArticleDetailPage() {
+
+    let pushNoti = usePushNoti()
 
     let navigate = useNavigate()
     let {id} = useParams()
@@ -59,6 +62,15 @@ function ArticleDetailPage() {
             if (response.status === 200) {
                 let results = json?.data 
                 console.log("F", results)
+
+                if (status === 'approve') {
+                    pushNoti({
+                        title: "Success",
+                        message: "Successfully added to the selected contribution.",
+                        style: 'success'
+                    })
+                }
+
             } else {
                 console.log('F json', json)
             }
