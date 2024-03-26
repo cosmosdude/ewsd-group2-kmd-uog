@@ -27,10 +27,25 @@ const UsersPage = () => {
         setFilteredUsers(
             searchText 
             // if search text is not empty, filter it
-            ? users.filter(user => user.user_name.toLowerCase().includes(searchText.toLowerCase()))
+            ? users.filter(matches)
             // otherwise, take all users
             : [...users]
         )
+    }
+
+    function matches(user) {
+        let text = searchText.toLowerCase()
+        // If name matches
+        if (user?.user_name?.toLowerCase().includes(text)) return true
+        // If email matches
+        if (user?.user_email?.toLowerCase().includes(text)) return true
+        // if role matches
+        if (user?.role_name?.toLowerCase().includes(text)) return true
+        // if faculty matches
+        if (user?.faculty_names.filter(x => x.toLowerCase().includes(text)).length !== 0 )
+        return true
+
+        return false
     }
 
     useEffect(() => {
