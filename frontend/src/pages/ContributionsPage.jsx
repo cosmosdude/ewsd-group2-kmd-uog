@@ -18,6 +18,9 @@ const ContributionsPage = () => {
     let shouldShowCurrent = ['administrator', 'm_coordinator', 'student']
         .includes(user?.role_name)
 
+    let shouldShowUpcoming = ['administrator', 'm_coordinator', 'student']
+        .includes(user?.role_name)
+
     console.log("user detail is", user)
 
     return (
@@ -37,6 +40,7 @@ const ContributionsPage = () => {
                         Previous<br/>Magazines
                     </MagazineCard>
                     {shouldShowCurrent && <MagazineCard to='/magazine/current'>Current<br/>Magazines</MagazineCard>}
+                    {shouldShowUpcoming && <MagazineCard to='/magazine/upcoming'>Upcoming<br/>Magazines</MagazineCard>}
                 </div>
             </div>
         </div>

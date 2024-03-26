@@ -129,7 +129,7 @@ const apiConfig = {
          * `api/closures`
         */
         magazines(id = "") {
-            return `${host}/api/closures`
+            return `${host}/api/closures/${id}`
         },
 
         /**
@@ -149,6 +149,14 @@ const apiConfig = {
         */
         currentMagazines() {
             return `${host}/api/closures/current`
+        },
+
+        /**
+         * URL to get upcoming magazines.
+         * `api/closures/current`
+        */
+        upcomingMagazines() {
+            return `${host}/api/upcoming-closures`
         },
 
         /**

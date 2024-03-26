@@ -33,6 +33,7 @@ import UpdateContributionPage from "./pages/UpdateContributionPage"
 import NotiSystem from "./components/Noti/NotiSystem"
 import UserData from "./hooks/UserData/UserData"
 import AuthToken from "./hooks/AuthToken/AuthToken"
+import UpcomingMagazinesPage from "./pages/UpcomingMagazinesPage"
 
 function App() {
   return (
@@ -61,6 +62,8 @@ function App() {
 					<Route path="magazine/current/history" element={<StudentContributionHistoryPage/>}/>
 					{/* Create and Update  */}
 					<Route path="magazine/current/:id" element={<MagazineNewPage/>}/>
+
+					<Route path="magazine/upcoming" element={<UpcomingMagazinesPage/>}/>
 
 					<Route path="academicyear" element={<AcademicYearPage/>}/>
 					<Route path="academicyear/:id" element={<NewAcademicYearPage/>}/>

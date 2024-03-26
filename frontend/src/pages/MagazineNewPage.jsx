@@ -8,6 +8,7 @@ import { useAuthContext } from "../contexts/AuthContext"
 
 import ThreeDotIcon from "../assets/threedots.png"
 import apiConfig from "../configs/api.config"
+import FilledButton from "../components/FilledButton"
 
 const MagazineNewPage = () => {
     
@@ -61,17 +62,25 @@ const MagazineNewPage = () => {
 
     async function upsertMagazine() {
         console.log("magazine id:", magazine.id)
-        // if magazine has id, meaning it is a update
-        // don't do anything for now
-        // TODO: Implement Update function
-        // if (!magazine.id) return
 
         setError(null)
         console.log("Before test")
-        if (!magazine.name) { setError('Title must not be empty'); return }
-        if (!magazine.start_date) { setError('Start date must not be empty'); return}
-        if (!magazine.closure_date) { setError('Closure date must not be empty'); return}
-        if (!magazine.final_closure_date) { setError('Final closure date must not be empty'); return}
+
+        try {
+            if (!magazine.name) throw 'Title must not be empty'
+            if (!magazine.start_date) throw 'Start date must not be empty'
+            if (!magazine.closure_date) throw 'Closure date must not be empty'
+
+            let startDate = new Date(magazine.start_date)
+            let closureDate = new Date(magazine.closure_date)
+            if (startDate > closureDate) throw "Closure date cannot be earlier then start date."
+
+            if (!magazine.final_closure_date) throw 'Final closure date must not be empty'
+            let finalDate = new Date(managzine.final_closure_date)
+            if (closureDate > finalDate) throw "Final closure date cannot be earlier then closure date."
+
+        } catch (error) { return setError(error) }
+
         console.log("After test")
         setIsLoading(() => true)
         if (isUpdate) await updateMagazine()
@@ -133,7 +142,8 @@ const MagazineNewPage = () => {
                 if (response.status >= 200 && response.status < 300) {
                     let json = await response.json()
                     console.log(json)
-                    navigate(`/magazine/current/${json.data.id}`)
+                    // navigate(`/magazine/current/${json.data.id}`)
+                    navigate()
                 } else {
                     setError(`Unable to create magazine closure. (${response.status})`)
                 }
@@ -147,7 +157,7 @@ const MagazineNewPage = () => {
     }
 
     useEffect(() => {
-        // if it is update, don't fetch detail
+        // if it is not update, don't fetch detail
         if (!isUpdate) return;
         // otherwise, fetch detail
 
@@ -171,8 +181,12 @@ const MagazineNewPage = () => {
                     setMagazine(results)
                 } else if (response.status === 404) {     
                     navigate('notfound')
-                } 
-            } catch { }
+                } else {
+                    console.log("MAGAZINE", "Error")
+                }
+            } catch (error) { 
+                console.error("MAGAZINE", error)
+            }
         }
         // fetch async
         fetchData()
@@ -262,19 +276,27 @@ const MagazineNewPage = () => {
                     {error}
                 </p>}
                 <div className={`flex w-full gap-4 md:grap-8 ${isUpdate ? 'md:w-[150px]' : 'md:w-[300px]'} md:mx-auto`}>
-                    {!isUpdate && <button 
+                    {/* {!isUpdate && <button 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
                         // onClick={null}
-                    >Save</button>}
-                    {isUpdate && <button 
+                    >Save</button>} */}
+
+                    {!isUpdate && <FilledButton title="Save"/>}
+
+                    
+                    {/* {isUpdate && <button 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-purple-500 text-white hover:opacity-50 transition-all`} 
                         // onClick={null}
-                    >Update</button>}
-                    {!isUpdate && <Link 
+                    >Update</button>} */}
+
+                    {isUpdate && <FilledButton title="Update"/>}
+
+                    {/* {!isUpdate && <Link 
                         className={`${isLoading && 'hidden'} grow basis-0 p-2 px-4 rounded bg-gray-400 text-white text-center hover:opacity-50 transition-all`} 
                         to="/magazine/current">
                         Cancel
-                    </Link>}
+                    </Link>} */}
+                    {!isUpdate && <FilledButton title="Cancel" to={-1} gray/>}
                     {isLoading && <div className="flex items-center justify-center w-full"><LoadingIndicator/></div>}
                 </div>
             </form>

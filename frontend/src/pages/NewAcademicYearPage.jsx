@@ -136,7 +136,7 @@ const NewAcademicYearPage = () => {
             let json = await response.json();
             if (response.status >= 200 && response.status < 300) {
                 console.log(json)
-                // navigate("/academicyear")
+                navigate("/academicyear")
             }  else {
                 console.log(json)
                 setError("Unable to update academic year. (Parse Error)")
