@@ -704,7 +704,7 @@ class ContributionController extends Controller
     }
     public function addReadCount($id)
     {
-        if (Auth::user()->hasRole('student') || Auth::user()->hadRole('guest')) {
+        if (Auth::user()->hasRole('student') || Auth::user()->hasRole('guest')) {
             $contribution = Contribution::findOrFail($id);
             $contribution->update(['read_count' => ++$contribution->read_count]);
             return $this->sendResponse($contribution, "Contribution Read Count Updated Successfully!", 200);

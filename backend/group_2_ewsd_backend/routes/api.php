@@ -60,7 +60,7 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
         Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
         //contribution and comment count list
-        Route::get('/contributions', [ContributionController::class, 'index']);
+        // Route::get('/contributions', [ContributionController::class, 'index']);
     });
 
     Route::middleware('role:guest')->group(function () {
@@ -68,15 +68,15 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/guest/unregistered-faculty/{id}', [UserController::class, 'getUnregisteredFacultyOfGuest']);
     });
 
-    Route::middleware('role:student')->group(function () {
-        Route::post('/contributions', [ContributionController::class, 'store']);
-        Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
-        Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
-        Route::apiResource('/contributions', ContributionController::class)->except('index', 'show', 'destroy');
-        Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
-        //contribution and comment count list
-        Route::get('/contributions', [ContributionController::class, 'index']);
-    });
+    // Route::middleware('role:student')->group(function () {
+    //     Route::post('/contributions', [ContributionController::class, 'store']);
+    //     Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
+    //     Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
+    //     Route::apiResource('/contributions', ContributionController::class)->except('index', 'show', 'destroy');
+    //     Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
+    //     //contribution and comment count list
+    //     Route::get('/contributions', [ContributionController::class, 'index']);
+    // });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
         Route::post('/contributions/all', [ContributionController::class, 'getAllContributionsByCoordinatorAndStudent']);

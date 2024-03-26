@@ -1,6 +1,7 @@
 export const host = 'http://127.0.0.1:8000'
 
-export default {
+const apiConfig = {
+
     host: host,
 
     path: {
@@ -180,7 +181,18 @@ export default {
             return `${host}/api/faculties/${facultyId}/guest-user`
         },
 
-
-        
+        /**
+         * Statistical API paths
+        */
+        statistics: {
+            /**
+             * URL for getting most active guests
+            */
+            mostActiveGuestUsers() {
+                return `${host}/api/userlist`
+            }
+        }
     }
 }
+
+export default apiConfig
