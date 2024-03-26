@@ -10,6 +10,8 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import FilledButton from "../components/FilledButton"
 import apiConfig from "../configs/api.config"
+import { z } from "zod"
+import { isPhone } from "../util/isPhone"
 
 const NewFacultyPage = () => {
 
@@ -68,15 +70,32 @@ const NewFacultyPage = () => {
 
     async function createAccount() {
         setError(null)
-        if (!facultyName) { setError("Faculty name must not be empty") ; return }
+        // if (!facultyName) { setError("Faculty name must not be empty") ; return }
         
-        if (!username) { setError("Username must not be empty") ; return }
-        if (!email) { setError("Email must not be empty") ; return }
+        // if (!username) { setError("Username must not be empty") ; return }
+        // if (!email) { setError("Email must not be empty") ; return }
 
         // if (!faculty) { setError("Faculty is not selected"); return }
 
-        if (!password) { setError("Password must not be empty") ; return }
-        if (!retype || password !== retype) { setError("Password must be the same") ; return }
+        // if (!password) { setError("Password must not be empty") ; return }
+        // if (!retype || password !== retype) { setError("Password must be the same") ; return }
+
+        try {
+            if (!facultyName) throw "Faculty name must not be empty"
+            if (!username) throw "Username must not be empty"
+
+            if (!phone) throw "Phone must not be empty"
+            if (!isPhone(phone)) throw "Invalid phone number"
+
+            if (!email) throw "Email must not be empty"
+            try { z.string().email().parse(email) }
+            catch { throw "Invalid email" }
+
+            if (!password) throw "Password must not be empty"
+            if (password.length < 8) throw "Password must be at least 8 characters long"
+
+            if (password !== retype) throw "Passwords do not match"
+        } catch(error) { return setError(error) }
 
         setIsLoading(() => true)
 
