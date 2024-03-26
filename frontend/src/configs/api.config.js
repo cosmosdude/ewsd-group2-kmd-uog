@@ -79,8 +79,8 @@ const apiConfig = {
          * URL to get all faculties.
          * `/api/faculties`
         */
-        faculties() {
-            return `${host}/api/faculties`
+        faculties(id) {
+            return `${host}/api/faculties/${id ?? ""}`
         },
 
         /**

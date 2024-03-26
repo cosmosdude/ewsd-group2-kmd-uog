@@ -13,10 +13,10 @@ const ContributionsPage = () => {
     let navigate = useNavigate()
 
     let user = useEffectUserDetail()
-    let isStudent = user.role_name === 'student'
+    let isStudent = user?.role_name === 'student'
     
     let shouldShowCurrent = ['administrator', 'm_coordinator', 'student']
-        .includes(user.role_name)
+        .includes(user?.role_name)
 
     console.log("user detail is", user)
 

@@ -1,4 +1,4 @@
-import {Link, useNavigate, useParams} from "react-router-dom"
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom"
 
 import "../style/tailwind.css"
 import { useContext, useEffect, useRef, useState } from "react"
@@ -16,6 +16,9 @@ import { isPhone } from "../util/isPhone"
 const NewFacultyPage = () => {
 
     let { id } = useParams()
+
+    let {pathname} = useLocation()
+    let isUpdate = !pathname.includes("new")
 
     let navigate = useNavigate()
     let accessToken = useAuthContext();
@@ -47,7 +50,7 @@ const NewFacultyPage = () => {
         form.set("username", username)
         form.set("email", email)
         form.set('phone', phone)
-        form.set('password', password)
+        if (password) form.set('password', password)
         
         return form;
     }
@@ -70,16 +73,7 @@ const NewFacultyPage = () => {
 
     async function createAccount() {
         setError(null)
-        // if (!facultyName) { setError("Faculty name must not be empty") ; return }
         
-        // if (!username) { setError("Username must not be empty") ; return }
-        // if (!email) { setError("Email must not be empty") ; return }
-
-        // if (!faculty) { setError("Faculty is not selected"); return }
-
-        // if (!password) { setError("Password must not be empty") ; return }
-        // if (!retype || password !== retype) { setError("Password must be the same") ; return }
-
         try {
             if (!facultyName) throw "Faculty name must not be empty"
             if (!username) throw "Username must not be empty"
@@ -104,7 +98,7 @@ const NewFacultyPage = () => {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-                'Accept': 'application/json'
+                'Accept': 'application/json',
             },
             body: getFormData()
         })
@@ -117,10 +111,66 @@ const NewFacultyPage = () => {
                 let json = await response.json()
                 setError(json.message)
             } else {
-                setError(`Server error ${respnose.status}`)
+                setError(`Server error ${response.status}`)
             }
         } catch {
-            setError("Unable to create student account. (Fetch Error)")
+            setError("Unable to create faculty. (Fetch Error)")
+        }
+
+        setIsLoading(() => false)
+    }
+
+    async function updateAccount() {
+        setError(null)
+
+        try {
+            if (!facultyName) throw "Faculty name must not be empty"
+            if (!username) throw "Username must not be empty"
+
+            if (!phone) throw "Phone must not be empty"
+            if (!isPhone(phone)) throw "Invalid phone number"
+
+            if (!email) throw "Email must not be empty"
+            try { z.string().email().parse(email) }
+            catch { throw "Invalid email" }
+
+            if (password && password.length < 8) throw "Password must be at least 8 characters long"
+            if (password && password !== retype) throw "Passwords do not match"
+        } catch(error) { return setError(error) }
+
+        setIsLoading(() => true)
+
+        let body = ""
+        for (const [k,v] of getFormData().entries()) {
+            body += `${k}=${v}&`
+        }
+
+        // console.log("Data", body)
+        // return
+
+        let response = await fetch(
+            apiConfig.path.faculties(id), {
+            method: "PUT",
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
+        
+        try {
+            if (response.status >= 200 && response.status < 300) {
+                let json = await response.json();
+                navigate("/faculty")
+            } else if (response.status === 422) {
+                let json = await response.json()
+                setError(json.message)
+            } else {
+                setError(`Server error ${response.status}`)
+            }
+        } catch {
+            setError("Unable to update. (Fetch Error)")
         }
 
         setIsLoading(() => false)
@@ -173,7 +223,7 @@ const NewFacultyPage = () => {
                     <FilledButton title="Cancel" to={-1} gray/>
                 </div>}
                 {id !== 'new' && <div className="grid grid-cols-1 w-full gap-4 md:grap-8 md:w-[300px] md:mx-auto">
-                    <FilledButton title="Update" onClick={null}/>
+                    <FilledButton title="Update" onClick={updateAccount}/>
                 </div>}
             </div>
         </div>

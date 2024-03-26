@@ -94,7 +94,7 @@ class FalcultyController extends Controller
             'email' => 'required|unique:falculties,email,' . $id . ',id',
             'phone' => 'required',
             'description' => 'required',
-            'password' => 'required'
+
         ]);
         $requestData['faculty_name'] = $request->faculty_name;
         $requestData['room_no'] = $request->room_no;
@@ -103,7 +103,10 @@ class FalcultyController extends Controller
         $requestData['coordinator_email'] = $request->email;
         $requestData['coordinator_phone'] = $request->phone;
         $requestData['description'] = $request->description;
-        $requestData['password'] = $request->password;
+        if ($request->password) {
+            $requestData['password'] = $request->password;
+        }
+        
         $faculty = Falculty::findOrFail($id);
         $coordinator = User::with(['facultyUsers' => function ($q) use ($id) {
             $q->where('faculty_id', $id);
@@ -120,12 +123,18 @@ class FalcultyController extends Controller
                 'building_no' => $requestData['building_no'],
                 'description' => $requestData['description'],
             ]);
-            $coordinator->update([
+
+            $coordinatorData = [
                 'name' => $requestData['username'],
                 'email' => $requestData['coordinator_email'],
                 'phone' => $requestData['coordinator_phone'],
-                'password' => Hash::make($requestData['password']),
-            ]);
+            ];
+
+            if ($request->password) {
+                $coordinatorData['password'] = Hash::make($requestData['password']);
+            }
+
+            $coordinator->update($coordinatorData);
             $success['faculty'] = $faculty;
             $success['coordinator'] = $coordinator;
             return $success;
