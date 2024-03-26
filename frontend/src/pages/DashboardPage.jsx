@@ -11,6 +11,7 @@ import MostActiveGuestListView from "../components/statistic/MostActiveGuestList
 import MostUsedBrowserListView from "../components/statistic/MostUsedBrowserListView"
 import MostReadMagazines from "../components/statistic/MostReadMagazines"
 import MostReadContributions from "../components/statistic/MostReadContributions"
+import GuestAndStudentCountView from "../components/statistic/GuestAndStudentCountView"
 
 const DashboardPage = () => {
     return (
@@ -135,60 +136,7 @@ const DashboardPage = () => {
             {/* Bottom Row */}
             {/* <div className="w-full grid grid-cols-1 md:grid-cols-3 items-start gap-[10px]"> */}
                 <div className="border h-[400px] flex flex-col">
-                    <div className="flex p-[10px]">
-                        <h1 className="p-[10px] text-md font-bold">
-                            List of Faculty
-                        </h1>
-                        <div className="grow"/>
-                        <Dropdown className="grow" title="Academic Year" modified/>
-                    </div>
-                    
-                    <div className="w-full p-[10px] grow flex flex-col">
-                        <EWSDChart 
-                            type='bar' 
-                            data={{
-                                labels: ["Business", "Arts", "IT"],
-                                datasets: [
-                                    {
-                                        label: 'Students',
-                                        data: [65, 59, 40],
-                                        backgroundColor: colors.background,
-                                        borderColor: colors.border,
-                                        borderWidth: 1
-                                    },
-                                    {
-                                        label: 'Guests',
-                                        data: [50, 40, 30],
-                                        backgroundColor: colors.background,
-                                        borderColor: colors.border,
-                                        borderWidth: 1
-                                    }
-                                ]
-                            }}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                scales: {
-                                    x: {
-                                        ticks: {
-                                            minRotation: 0,
-                                            maxRotation: 0,
-                                            skips: false
-                                        }
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        align: 'start'
-                                    },
-                                    legend: {
-                                        display:false
-                                    },
-                                    
-                                }
-                            }}
-                        />
-                    </div>  
+                    <GuestAndStudentCountView/> 
                 </div>
 
                 {/* Most Active Users */}

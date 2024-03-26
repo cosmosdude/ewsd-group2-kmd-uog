@@ -188,6 +188,13 @@ const apiConfig = {
             /**
              * URL for getting most active guests
             */
+            facultyGuestAndStudentCounts() {
+                return `${host}/api/guest-student-counts`
+            },
+
+            /**
+             * URL for getting most active guests
+            */
             mostActiveGuestUsers() {
                 return `${host}/api/userlist`
             },
