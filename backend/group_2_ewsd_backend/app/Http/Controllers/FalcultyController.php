@@ -91,7 +91,6 @@ class FalcultyController extends Controller
             'room_no' => 'required',
             'building_no' => 'required',
             'username' => 'required',
-            'email' => 'required|unique:falculties,email,' . $id . ',id',
             'phone' => 'required',
             'description' => 'required',
 
@@ -100,7 +99,6 @@ class FalcultyController extends Controller
         $requestData['room_no'] = $request->room_no;
         $requestData['building_no'] = $request->building_no;
         $requestData['username'] = $request->username;
-        $requestData['coordinator_email'] = $request->email;
         $requestData['coordinator_phone'] = $request->phone;
         $requestData['description'] = $request->description;
         if ($request->password) {
@@ -117,7 +115,6 @@ class FalcultyController extends Controller
 
             $faculty->update([
                 'name' => $requestData['faculty_name'],
-                'email' => $requestData['coordinator_email'],
                 'phone' => $requestData['coordinator_phone'],
                 'room_no' => $requestData['room_no'],
                 'building_no' => $requestData['building_no'],
@@ -126,7 +123,6 @@ class FalcultyController extends Controller
 
             $coordinatorData = [
                 'name' => $requestData['username'],
-                'email' => $requestData['coordinator_email'],
                 'phone' => $requestData['coordinator_phone'],
             ];
 
