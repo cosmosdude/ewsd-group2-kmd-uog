@@ -9,6 +9,7 @@ import { useAuthContext } from "../contexts/AuthContext"
 import ThreeDotIcon from "../assets/threedots.png"
 import apiConfig from "../configs/api.config"
 import FilledButton from "../components/FilledButton"
+import useEffectAllAcademicYears from "../hooks/useEffectAllAcademicYears"
 
 const MagazineNewPage = () => {
     
@@ -27,12 +28,23 @@ const MagazineNewPage = () => {
         "academic_id": null
     })
 
+    let [academicYears] = useEffectAllAcademicYears()
+    let [academicYear, setAcademicYear] = useState(null)
+
     let [error, setError] = useState(null);
     let [isLoading, setIsLoading] = useState(false);
 
     function getData() {
         return {...magazine}
     }
+
+    useEffect(() => {
+        setAcademicYear(academicYears[academicYears.findIndex((x) => {
+            console.log("ID", x.id)
+            console.log("Academic ID", magazine.academic_id)
+            return x.id === Number(magazine.academic_id)
+        })])
+    }, [academicYears, magazine])
 
     function getFormData() {
         let f = new FormData();
@@ -55,7 +67,7 @@ const MagazineNewPage = () => {
         f.set('start_date', magazine.start_date)
         f.set('closure_date', magazine.closure_date)
         f.set('final_closure_date', magazine.final_closure_date)
-        f.set('academic_id', magazine.academic_id ? magazine.academic_id : '1')
+        f.set('academic_id', academicYear?.id)
         console.log(f)
         return f
     }
@@ -68,18 +80,21 @@ const MagazineNewPage = () => {
 
         try {
             if (!magazine.name) throw 'Title must not be empty'
+            if (!academicYear) throw "Academic year must not be empty."
+
             if (!magazine.start_date) throw 'Start date must not be empty'
             if (!magazine.closure_date) throw 'Closure date must not be empty'
 
             let startDate = new Date(magazine.start_date)
             let closureDate = new Date(magazine.closure_date)
+
             if (startDate > closureDate) throw "Closure date cannot be earlier then start date."
 
             if (!magazine.final_closure_date) throw 'Final closure date must not be empty'
-            let finalDate = new Date(managzine.final_closure_date)
+            let finalDate = new Date(magazine.final_closure_date)
             if (closureDate > finalDate) throw "Final closure date cannot be earlier then closure date."
 
-        } catch (error) { return setError(error) }
+        } catch (error) { return setError(error.toString()) }
 
         console.log("After test")
         setIsLoading(() => true)
@@ -104,11 +119,13 @@ const MagazineNewPage = () => {
                 body: getFormData()
             })
 
+            console.log("STATUS", response.status)
             try {
+
                 if (response.status >= 200 && response.status < 300) {
                     let json = await response.json()
-                    console.log(json)
-                    navigate(`/magazine/current/${json.data.id}`)
+                    console.log("JSON", json)
+                    navigate(-1)
                 } else {
                     setError(`Unable to create magazine closure. (${response.status})`)
                 }
@@ -141,9 +158,9 @@ const MagazineNewPage = () => {
             try {
                 if (response.status >= 200 && response.status < 300) {
                     let json = await response.json()
-                    console.log(json)
+                    console.log("JSON", json)
                     // navigate(`/magazine/current/${json.data.id}`)
-                    navigate()
+                    navigate(-1)
                 } else {
                     setError(`Unable to create magazine closure. (${response.status})`)
                 }
@@ -225,7 +242,18 @@ const MagazineNewPage = () => {
                             }
                         } 
                     />
-                    <Dropdown disabled title='Select academic year'/>
+                    <Dropdown
+                        title={academicYear?.name ?? "Select academic year*"}
+                        options={academicYears.map(x => x.name)}
+                        index={academicYears.findIndex((x) => {
+                            // console.log("X", x)
+                            return x.id === academicYear?.id
+                        })}
+                        onChange={(name, index) => {
+                            setMagazine({...magazine, academic_id: academicYears[index].id})
+                            setAcademicYear(academicYears[index])
+                        }}
+                    />
                 </div>
                 <fieldset className="border-2 rounded p-4">
                     <legend className="px-2">Set closure date</legend>
