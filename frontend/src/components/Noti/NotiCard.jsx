@@ -35,7 +35,7 @@ function NotiCard({title, message, style = 'default', onDismiss}) {
         <div className={`
             p-[10px] 
             flex items-start gap-[10px] 
-            w-[375px]
+            grow
             ${bg}
             border ${border} rounded-[6px]
             mt-[20px] mx-[20px]
