@@ -15,6 +15,7 @@ import { useEffect, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import apiConfig from "../configs/api.config"
+import { z } from "zod"
 
 const SignUpPage = () => {
     let navigate = useNavigate();
@@ -60,11 +61,31 @@ const SignUpPage = () => {
         setError(null);
         e.preventDefault()
 
-        if (!username) { setError("Username must not be empty") ; return }
-        if (!email) { setError("Email must not be empty") ; return }
-        if (!selectedFaculties.length) { setError("Faculty must not be empty") ; return }
-        if (!password) { setError("Password must not be empty") ; return }
-        if (!retype || retype !== password) { setError("Passwords must be the same") ; return }
+        try {
+            if (!username) throw "Username must not be empty"
+            
+            if (!email) throw "Email must not be empty"
+
+            try { z.string().email().parse(email) } 
+            catch { throw "Invalid email" }
+
+            if (!selectedFaculties.length) throw "Faculty must not be empty" 
+            if (!password) throw "Password must not be empty" 
+            if (password.length < 8) throw "Password must be at least 8 characters long."
+            if (!retype || retype !== password) throw "Passwords do not match" 
+        } catch (error) {
+            return setError(error)
+        }
+
+        
+
+        
+        
+        
+        
+
+        
+
 
         setIsLoading(() => true)
         console.log("Logging in")
