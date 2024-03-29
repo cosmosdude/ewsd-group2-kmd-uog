@@ -25,8 +25,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
     Route::post('contributionlist', [ContributionController::class, 'filter']);
-
     Route::get('/contributions', [ContributionController::class, 'index']);
+
     Route::get('/contributions/{id}', [ContributionController::class, 'show']);
 
     Route::post('/faculties/{id}/guest-user', [FalcultyController::class, 'getGuestUserList']);
@@ -58,7 +58,6 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
         Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
         //contribution and comment count list
-        Route::get('/contributions', [ContributionController::class, 'index']);
     });
 
     Route::middleware('role:guest')->group(function () {
@@ -72,8 +71,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
         Route::apiResource('/contributions', ContributionController::class)->except('index', 'show', 'destroy');
         Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
-        //contribution and comment count list
-        Route::get('/contributions', [ContributionController::class, 'index']);
+
     });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
