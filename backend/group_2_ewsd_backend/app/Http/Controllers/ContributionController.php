@@ -396,10 +396,12 @@ class ContributionController extends Controller
                     }
                     $contribution->images = $images;
                 }
-                $selectedContributions[] = $contributions;
+                // Merge contributions into $selectedContributions array
+                $selectedContributions = array_merge($selectedContributions, $contributions->toArray());
             }
 
             return $this->sendResponse($selectedContributions, "Selected Contribution for Guest", 200);
+
         } elseif (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('m_manager') || Auth::user()->hasRole('m_coordinator') || Auth::user()->hasRole('student')) {
             if ($request->faculty_id) {
                 // dd($request->faculty_id);
