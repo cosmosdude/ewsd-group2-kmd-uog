@@ -15,6 +15,7 @@ import apiConfig from "../configs/api.config"
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
 import extractContributionFileSrc from "../util/extractContributionFileSrc"
 import BorderedButton from "../components/BorderedButton"
+import { fastformat } from "../util/fastformat"
 
 const filter = {
     
@@ -47,6 +48,14 @@ const LiveMagazinePage = () => {
     // current closure value
     let [magazine] = useEffectMagazineDetail(magazineId)
 
+    let isUploadable = false
+
+    if (magazine.closure_date) {
+        console.log("Closure Date", magazine.closure_date)
+        isUploadable = new Date() < new Date(magazine.closure_date)
+
+    }
+
     let user = useEffectUserDetail()
     let isStudent = 'student' === user.role_name
     let isMC = 'm_coordinator' === user.role_name
@@ -73,7 +82,7 @@ const LiveMagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
-                { isStudent && <BorderedButton 
+                {isUploadable && isStudent && <BorderedButton 
                     // className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
                     title="New Contribution"
                     to={routesConfig.contribution.upload(magazineId)}
