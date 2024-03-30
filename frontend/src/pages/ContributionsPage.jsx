@@ -6,6 +6,7 @@ import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import { useAuthContext } from "../contexts/AuthContext"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import BorderedButton from "../components/BorderedButton"
 
 const ContributionsPage = () => {
     
@@ -13,7 +14,7 @@ const ContributionsPage = () => {
     let navigate = useNavigate()
 
     let user = useEffectUserDetail()
-    let isStudent = user?.role_name === 'student'
+    let isGuest = user?.role_name === 'guest'
     
     let shouldShowCurrent = ['administrator', 'm_coordinator', 'student']
         .includes(user?.role_name)
@@ -33,6 +34,7 @@ const ContributionsPage = () => {
                         {name: "magazines", current: true},
                     ]}/>
                 <span className="grow"/>
+                { isGuest && <BorderedButton title="Subscribe Faculty" to="subscribe"/>}
             </div>
             <div className="flex flex-col gap-4 md:gap-8 overflow-visible">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full flex-wrap transition-all">

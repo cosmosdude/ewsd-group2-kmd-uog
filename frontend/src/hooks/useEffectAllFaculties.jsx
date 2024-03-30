@@ -10,7 +10,7 @@ import { useAuthContext } from "../contexts/AuthContext"
 // Returns an array with exactly 2 elements
 // First items is the faculty list
 // Second item is error encountered while fetching faculties
-function useEffectAllFaculties() {
+function useEffectAllFaculties(userOnly) {
     
     let pushNoti = usePushNoti()
 
@@ -27,7 +27,7 @@ function useEffectAllFaculties() {
 
         async function fetchData() {
             try {
-                let response = await fetch(apiConfig.path.faculties(), {
+                let response = await fetch(userOnly ? apiConfig.path.userFaculties() : apiConfig.path.faculties(), {
                     signal: aborter.signal,
                     headers: headers
                 })

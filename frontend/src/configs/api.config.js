@@ -87,6 +87,10 @@ const apiConfig = {
             return `${host}/api/faculties/${id ?? ""}`
         },
 
+        userFaculties() {
+            return `${host}/api/faculties-for-users`
+        },
+
         /**
          * URL to upload article.
          * `/api/contributions/`

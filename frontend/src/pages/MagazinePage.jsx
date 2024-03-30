@@ -26,7 +26,7 @@ const MagazinePage = () => {
     // current closure value
     let [magazine] = useEffectMagazineDetail(magazineId)
 
-    let [faculties] = useEffectAllFaculties()
+    let [faculties] = useEffectAllFaculties(true)
     let [faculty, setFaculty] = useState({name: "All", id: null})
 
     let user = useEffectUserDetail()
@@ -36,6 +36,8 @@ const MagazinePage = () => {
     let articles = useEffectSelectedArticlesOfMagazine({
         magazineId, facultyId: faculty.id
     })
+
+    console.log("Articles", articles)
 
     let accessToken = useAuthContext()
 

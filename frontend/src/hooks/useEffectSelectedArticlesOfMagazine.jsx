@@ -32,7 +32,7 @@ function useEffectSelectedArticlesOfMagazine({magazineId = "", facultyId}) {
                 if (response.status === 200) {
                     let results = json?.data 
                     setArticles(results ?? [])
-                    console.log("FUCK Success")
+                    console.log("FUCK Success", json)
                 } else {
                     console.log('FUCK json', json)
                 }

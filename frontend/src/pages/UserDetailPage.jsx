@@ -9,6 +9,9 @@ import { useNavigate, useParams } from "react-router"
 import { useAuthContext } from "../contexts/AuthContext"
 import apiConfig from "../configs/api.config"
 
+import {profile} from "../assets/profile/profile"
+
+
 const UserDetailPage = () => {
     let navigate = useNavigate()
     let { id } = useParams()
@@ -71,7 +74,9 @@ const UserDetailPage = () => {
                 <span className="grow"/>
             </div>
             <div className="flex h-[150px] bg-gray-200">
-                <div className="inline-block mx-auto z-10 w-[150px] h-[150px] bg-gray-500 rounded-full mt-[75px]"></div>
+                <img 
+                    src={profile(details?.user_id)}
+                    className="inline-block mx-auto z-10 w-[150px] h-[150px] rounded-full mt-[75px]"/>
             </div>
             <div className="flex min-h-[75px] bg-transparent"/>
             <div className="inline-block mx-auto text-center">
