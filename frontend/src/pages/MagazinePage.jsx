@@ -61,7 +61,6 @@ const MagazinePage = () => {
                     message: json.message,
                     style: 'danger'
                 })
-
             }
             
         } catch (e) {

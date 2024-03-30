@@ -26,6 +26,7 @@ class UserController extends Controller
                 'users.name as user_name',
                 'users.email as user_email',
                 'users.phone as user_phone',
+                'users.last_login_time as last_login_time',
                 'falculties.name as faculty_name',
                 'roles.id as role_id',
                 'roles.name as role_name'
@@ -44,6 +45,7 @@ class UserController extends Controller
                     'user_phone' => $user->user_phone,
                     'role_id' => $user->role_id,
                     'role_name' => $user->role_name,
+                    'last_login_time' => $this->timeDifference($user->last_login_time),
                     'faculty_info' => []
                 ];
             }

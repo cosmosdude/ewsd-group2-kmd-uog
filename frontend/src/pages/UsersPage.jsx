@@ -129,7 +129,7 @@ const UsersPage = () => {
                                 <td className="p-3">{user.user_email}</td>
                                 <td className="p-3">{user.faculty_names.join(',')}</td>
                                 {/* <td className="p-3">{user.role_name}</td> */}
-                                <td className="p-3">N/A</td>
+                                <td className="p-3">{user.last_login_time}</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">

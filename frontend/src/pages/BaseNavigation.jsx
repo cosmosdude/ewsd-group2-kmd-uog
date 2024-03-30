@@ -16,6 +16,7 @@ import TopNav from "../components/TopNav"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import NotiSystem, { usePushNoti } from "../components/Noti/NotiSystem"
 import { useAuthState } from "../hooks/AuthToken/AuthToken"
+import { useUserContext } from "../hooks/UserData/UserData"
 
 /**
  * Base navigation handler. 
@@ -31,6 +32,10 @@ export default function BaseNavigation() {
     let [accessToken, setAccessToken] = useAuthState()
     // fetch user detail upon accessToken change
     let user = useEffectUserDetail()
+
+    let cachedUser = useUserContext()
+    let isGuest = cachedUser.role_name === 'guest'
+    console.log("Role Name", cachedUser.role_name, "is guest", isGuest)
 
     let [showNav, setShowNav] = useState(false)
 
@@ -94,6 +99,7 @@ export default function BaseNavigation() {
                 <div className="flex flex-col w-full h-screen ">
                     {/* <div className="w-full h-full"> */}
                     <TopNav
+                        allowHamburger={!isGuest}
                         onNav={ () => {
                             setShowNav(x => !x)
                         }}
@@ -111,7 +117,7 @@ export default function BaseNavigation() {
                         `}>
                         </div>
                         {/* left side */}
-                        <SideNav showForSM={showNav}>
+                        {!isGuest && <SideNav showForSM={showNav}>
                             {isAdmin && <SideNavItem 
                                 selected={path.startsWith('/home')} 
                                 src={HomeIcon}
@@ -152,7 +158,7 @@ export default function BaseNavigation() {
                                 cta="Academic Year" 
                                 onClick={() => {navigate('/academicyear')}}
                             />}
-                        </SideNav>
+                        </SideNav>}
                         
 
                         {/* right side */}

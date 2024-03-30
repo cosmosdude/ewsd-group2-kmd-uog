@@ -14,6 +14,10 @@ const apiConfig = {
             return this.userDetail('')
         },
 
+        students() {
+            return `${host}/api/users/roles/students`
+        },
+
         userDetail(id) {
             return `${host}/api/users/${id}`
         },

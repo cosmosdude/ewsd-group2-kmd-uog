@@ -19,7 +19,7 @@ import { z } from "zod"
 
 const SignUpPage = () => {
     let navigate = useNavigate();
-    let [faculties] = useEffectAllFaculties()
+    let faculties = useEffectAllFaculties()[0].filter(x => x.id !== 1)
 
     let [username, setUsername] = useState("");
     let [email, setEmail] = useState("");

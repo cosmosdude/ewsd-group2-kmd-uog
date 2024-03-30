@@ -2,12 +2,17 @@ import DownArrowIcon from "../assets/downarrow.png"
 import { profile } from "../assets/profile/profile"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
-export default function TopNav({onNav, userId, onProfile, onLogout}) {
+export default function TopNav({allowHamburger, onNav, userId, onProfile, onLogout}) {
+
+    console.log("Allow Hamburger", allowHamburger)
     return (
-        <div className="z-[10005] shrink-0 flex gap-1 items-center w-full pl-[12.5px] pr-[25px] py-[12.5px] bg-secondary-700">
-            <button className="block md:hidden" onClick={onNav}>
-                <img className="w-[38px] h-[38px] bg-slate-100"/>
-            </button>
+        <div className="z-[10005] shrink-0 flex gap-[10px] items-center w-full pl-[12.5px] pr-[25px] py-[12.5px] bg-secondary-700">
+            {allowHamburger && <button className="flex flex-col gap-[4px] items-center justify-center md:hidden w-[30px] h-[30px] border rounded" onClick={onNav}>
+                {/* <img className=""/> */}
+                <div className="w-[15px] h-[2px] bg-white"/>
+                <div className="w-[15px] h-[2px] bg-white"/>
+                <div className="w-[15px] h-[2px] bg-white"/>
+            </button>}
             <header className="inline-block md:w-[250px] text-center font-serif text-md font-bold text-white">Large University</header>
             <div className="grow"/>
             <div className="group relative gap-1 flex items-center">

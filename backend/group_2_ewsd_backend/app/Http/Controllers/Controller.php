@@ -40,7 +40,7 @@ class Controller extends BaseController
         $studentLastAccess = Carbon::parse($studentLastAccess);
         $timeDifference = $currentTime->diff($studentLastAccess);
         if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
-            return '00 minutes ago';
+            return '-';
         }
 
         if ($timeDifference->days == 0 && $timeDifference->h == 0) {
@@ -59,6 +59,6 @@ class Controller extends BaseController
             return 'Yesterday ' . $studentLastAccess->format('g:i A');
         }
 
-        return $studentLastAccess->format('d-m-Y g:i A');
+        return $studentLastAccess->format('d M Y, g:i A');
     }
 }
