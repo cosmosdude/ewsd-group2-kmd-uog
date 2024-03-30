@@ -7,6 +7,7 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import { useAuthContext } from "../contexts/AuthContext"
 import useEffectMagazines from "../hooks/useEffectMagazines"
 import TableHeaderRow from "../components/TableHeaderRow"
+import MagazineListItemRow from "../components/MagazineListItemRow"
 
 const MagazineHistoryPage = () => {
     
@@ -38,16 +39,13 @@ const MagazineHistoryPage = () => {
                     </thead>
                     <tbody>
                     {magazines.map((magazine, index) => {
-                        return (
-                            <tr key={index} className="text-center hover:bg-slate-100 font-serif text-sm">
-                                <td className="p-3">{index + 1}</td>
-                                <td className="p-3 underline font-semibold decoration-3 decoration-gray-400">
-                                    <Link to={`${magazine.id}`}>{magazine.name}</Link>
-                                </td>
-                                <td className="p-3">{magazine.start_date}</td>
-                                <td className="p-3">{magazine.final_closure_date}</td>
-                            </tr>
-                        )
+                        return <MagazineListItemRow
+                            key={magazine.id} 
+                            index={index}
+                            to={`${magazine.id}/view`}
+                            magazine={magazine}
+                            showClosureDate={false}
+                        />
                     }) }
                     </tbody>
                 </table>
