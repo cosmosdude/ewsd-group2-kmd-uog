@@ -91,6 +91,14 @@ const apiConfig = {
             return `${host}/api/faculties-for-users`
         },
 
+        unregisteredFacultiesIdsForGuest() {
+            return `${host}/api/guest/unregistered-faculty`
+        },
+
+        registerFacultiesForGuest() {
+            return `${host}/api/guest/faculty-register`
+        },
+
         /**
          * URL to upload article.
          * `/api/contributions/`
