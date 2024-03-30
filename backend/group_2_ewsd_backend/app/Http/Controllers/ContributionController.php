@@ -600,9 +600,16 @@ class ContributionController extends Controller
     public function show($id)
     {
 
-        $contribution = Contribution::where('id', $id)->first();
+        $contribution = Contribution::
+        where('id', $id)->first();
         $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
         // public_path('images') . DIRECTORY_SEPARATOR .
+        $user_info = DB::table('users')->join('faculty_users','users.id','=','faculty_users.user_id')->join('falculties','falculties.id','=','faculty_users.faculty_id')
+        ->where('users.id',$contribution->user_id)
+        ->first([
+            'users.name as student_name',
+            'falculties.name as student_faculty_name',
+        ]);
         $comments = Contribution::with('comments')->where('id', $id)->first()->comments;
         $date_calculated_comment = [];
 
@@ -622,6 +629,7 @@ class ContributionController extends Controller
 
         $success['contribution'] = $contribution;
         $success['comments'] = $date_calculated_comment;
+        $success['contributor'] = $user_info;
 
         return $this->sendResponse($success, "Contribution Retrieved", 200);
     }
