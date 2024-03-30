@@ -76,6 +76,18 @@ const FacultiesPage = () => {
                                             <img className="m-1" src={ThreeDotIcon}/>
                                         </div>
                                         <ul className="absolute flex flex-col gap-2 top-full p-2 right-0 z-10 shadow-xl invisible group-hover:visible bg-slate-100 rounded">
+                                            <li>
+                                                <button 
+                                                    className="inline-block text-sm font-bold rounded w-full h-full hover:bg-gray-200 p-2"
+                                                    onClick={
+                                                        () => { 
+                                                            if (faculty.id) navigate(`/faculty/${faculty.id}/detail`) 
+                                                        }
+                                                    }
+                                                >
+                                                    Detail
+                                                </button>
+                                            </li> 
                                            <li>
                                                 <button 
                                                     className="inline-block text-sm font-bold rounded w-full h-full hover:bg-gray-200 p-2"
@@ -85,7 +97,7 @@ const FacultiesPage = () => {
                                                         }
                                                     }
                                                 >
-                                                    Detail
+                                                    Update
                                                 </button>
                                             </li> 
                                         </ul>
