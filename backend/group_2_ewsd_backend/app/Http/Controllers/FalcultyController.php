@@ -8,6 +8,7 @@ use App\Models\FacultyUser;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,6 +18,30 @@ class FalcultyController extends Controller
     {
         $faculties = Falculty::all();
         return $this->sendResponse($faculties, "Faculty Lists", 200);
+    }
+    public function getAllFacultyForUser(){
+
+        if(Auth::user()->hasRole('guest')){
+            $faculties = DB::table('users')
+            ->join('faculty_users','users.id','=','faculty_users.user_id')
+            ->join('falculties','falculties.id','=','faculty_users.faculty_id')
+            ->where('users.id',Auth::user()->id)
+            ->get([
+                'falculties.id',
+                'falculties.name',
+                'falculties.email',
+                'falculties.phone',
+                'falculties.description',
+                'falculties.room_no',
+                'falculties.building_no',
+                'falculties.created_at',
+                'falculties.updated_at'
+            ]);
+            return $this->sendResponse($faculties, "Faculty Lists Only for Guest User", 200);
+        }else{
+            $faculties = Falculty::all();
+            return $this->sendResponse($faculties, "Faculty Lists", 200);
+        }
     }
     public function show($id)
     {
@@ -104,7 +129,7 @@ class FalcultyController extends Controller
         if ($request->password) {
             $requestData['password'] = $request->password;
         }
-        
+
         $faculty = Falculty::findOrFail($id);
         $coordinator = User::with(['facultyUsers' => function ($q) use ($id) {
             $q->where('faculty_id', $id);
