@@ -756,6 +756,10 @@ class ContributionController extends Controller
         if (Auth::user()->hasRole('student') || Auth::user()->hasRole('guest')) {
             $contribution = Contribution::findOrFail($id);
             $contribution->update(['read_count' => ++$contribution->read_count]);
+            $user = User::findOrFail(Auth::user()->id);
+            $user->update([
+                'view_count' => ++$user->view_count
+            ]);
             return $this->sendResponse($contribution, "Contribution Read Count Updated Successfully!", 200);
         }
         return $this->sendError("Nothing will change since you are not student or guest role", 403);
@@ -793,59 +797,61 @@ class ContributionController extends Controller
     //most active user list
    public function getMostActiveUserList(){
 
-        $faculty = DB::table('users')
-            ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-            ->where('users.role_id', 4)
-            ->orWhere('users.role_id', 5)
-            ->get(['faculty_users.faculty_id']);
+    $users = User::whereIn('role_id',[4,5])->orderBy('view_count','desc')->get();
+    return $this->sendResponse($users,"Most Active User List",200);
+        // $faculty = DB::table('users')
+        //     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+        //     ->where('users.role_id', 4)
+        //     ->orWhere('users.role_id', 5)
+        //     ->get(['faculty_users.faculty_id']);
 
-        $contributions = DB::table('contributions')
-            ->join('closures', 'closures.id', '=', 'contributions.closure_id')
-            ->join('users', 'contributions.user_id', '=', 'users.id')
-            ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-            ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
-            ->whereIn('users.role_id', [4, 5])
-            ->where('contributions.status', 'approve')
-            ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
-            ->get([
-                'falculties.id as faculty_id',
-                'falculties.name as faculty_name',
-                'users.id as user_id',
-                'users.name as user_name',
-                'users.email as user_email',
-                'contributions.id as contribution_id',
-                'contributions.name as contribution_name',
-                'contributions.images',
-                'contributions.files',
-                'contributions.submitted_date as contribution_submitted_date',
-                'contributions.status as contribution_status'
-            ]);
-        foreach ($contributions as $contribution) {
-            $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-            $images = explode(",", $contribution->images);
-            foreach ($images as $image) {
-                $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
-            }
-            $contribution->images = $images;
-        }
-        $userReadCounts = [];
-            foreach ($contributions as $contribution) {
-                if ($contribution->read_count > 0) {
-                    if (!isset($userReadCounts[$contribution->user_id])) {
-                            $userReadCounts[$contribution->user_id] = 0;
-                    }
-        $userReadCounts[$contribution->user_id] += $contribution->read_count;
-                }
-            }
-        arsort($userReadCounts);
+        // $contributions = DB::table('contributions')
+        //     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+        //     ->join('users', 'contributions.user_id', '=', 'users.id')
+        //     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+        //     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+        //     ->whereIn('users.role_id', [4, 5])
+        //     ->where('contributions.status', 'approve')
+        //     ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
+        //     ->get([
+        //         'falculties.id as faculty_id',
+        //         'falculties.name as faculty_name',
+        //         'users.id as user_id',
+        //         'users.name as user_name',
+        //         'users.email as user_email',
+        //         'contributions.id as contribution_id',
+        //         'contributions.name as contribution_name',
+        //         'contributions.images',
+        //         'contributions.files',
+        //         'contributions.submitted_date as contribution_submitted_date',
+        //         'contributions.status as contribution_status'
+        //     ]);
+        // foreach ($contributions as $contribution) {
+        //     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+        //     $images = explode(",", $contribution->images);
+        //     foreach ($images as $image) {
+        //         $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
+        //     }
+        //     $contribution->images = $images;
+        // }
+        // $userReadCounts = [];
+        //     foreach ($contributions as $contribution) {
+        //         if ($contribution->read_count > 0) {
+        //             if (!isset($userReadCounts[$contribution->user_id])) {
+        //                     $userReadCounts[$contribution->user_id] = 0;
+        //             }
+        // $userReadCounts[$contribution->user_id] += $contribution->read_count;
+        //         }
+        //     }
+        // arsort($userReadCounts);
 
-        $topThreeUsers = array_slice($userReadCounts, 0, 3, true);
-        $mostActiveUsers = User::whereIn('id', array_keys($topThreeUsers))->get(['name']);
-        foreach ($mostActiveUsers as $user) {
-            $user->total_read_count = $userReadCounts[$user->id];
-        }
+        // $topThreeUsers = array_slice($userReadCounts, 0, 3, true);
+        // $mostActiveUsers = User::whereIn('id', array_keys($topThreeUsers))->get(['name']);
+        // foreach ($mostActiveUsers as $user) {
+        //     $user->total_read_count = $userReadCounts[$user->id];
+        // }
 
-        return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
+        // return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
 
     //return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
     }

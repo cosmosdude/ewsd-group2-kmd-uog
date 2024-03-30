@@ -22,6 +22,7 @@ Route::get('/faculties', [FalcultyController::class, 'index']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/faculties-for-users', [FalcultyController::class, 'getAllFacultyForUser']);
     Route::get('/contributions/{id}/read-count', [ContributionController::class, 'addReadCount']);
+    //Need to add governance policy -> userlist, studnetlist
     Route::get('userlist', [ContributionController::class, 'getMostActiveUserList']);
     Route::get('studentlist', [ContributionController::class, 'getMostlyUploadContribution']);
     Route::post('contributionsbyfaculty', [ContributionController::class, 'getPieChartforAdmin']);
