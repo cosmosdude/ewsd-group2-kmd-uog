@@ -822,9 +822,11 @@ public function getPieChartforAdmin(Request $request)
         $percentOfContributions = collect($numberOfContributionsResult)->map(function ($item, $key) use ($numberOfContributorsResult) {
             $percentage = 0;
             if ($numberOfContributorsResult[$key]->Number_of_Contributors > 0) {
-                $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 100;
+                $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 10;
             }
-             $percentage = number_format($percentage, 2, '.', '');
+            $percentage = number_format($percentage, 0, '.', '');
+
+            $percentage = min($percentage, 100);
             return [
                 'Faculty_Name' => $item->Faculty_name,
                 'Percentage_Of_Contributions' => $percentage . '%'
