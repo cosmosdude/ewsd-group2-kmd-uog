@@ -42,6 +42,7 @@ class ContributionController extends Controller
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
+                    ->where('closures.id',$request->closure_id)
                     ->get([
                         'falculties.id as faculty_id',
                         'falculties.name as faculty_name',
@@ -55,7 +56,8 @@ class ContributionController extends Controller
                         'contributions.files',
                         'contributions.submitted_date as contribution_submitted_date',
                         'contributions.attempt_number as contribution_attempt_number',
-                        'contributions.status as contribution_status'
+                        'contributions.status as contribution_status',
+                        'closures.id as closure_id'
                     ]);
                 // $images = [];
                 foreach ($contributions as $contribution) {
@@ -79,6 +81,7 @@ class ContributionController extends Controller
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
                     ->where('contributions.is_commented', 0)
+                    ->where('closures.id',$request->closure_id)
                     ->get([
                         'falculties.id as faculty_id',
                         'falculties.name as faculty_name',
@@ -114,6 +117,7 @@ class ContributionController extends Controller
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
+                    ->where('closures.id',$request->closure_id)
                     ->where('contributions.is_commented', 1)
                     ->get([
                         'falculties.id as faculty_id',
@@ -151,6 +155,7 @@ class ContributionController extends Controller
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
                     ->where('contributions.is_commented', 0)
+                    ->where('closures.id',$request->closure_id)
                     ->get([
                         'falculties.id as faculty_id',
                         'falculties.name as faculty_name',
@@ -655,7 +660,7 @@ class ContributionController extends Controller
         $contribution = Contribution::findOrFail($id);
         $closure = Closure::find($request->closure_id);
 
-        if (Carbon::parse($closure->final_closure_date)->isPast()) {
+        if (Carbon::parse($closure->final_closure_date)->addDay()->isPast()) {
             return $this->sendError('The closure is expired', 400);
         }
 
