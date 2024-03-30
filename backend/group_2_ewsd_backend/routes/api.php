@@ -53,11 +53,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:student')->group(function () {
         //index function
-        Route::get('/contributions/{id}', [ContributionController::class, 'show']);
+        // Route::get('/contributions/{id}', [ContributionController::class, 'show']);
         Route::post('/contributions', [ContributionController::class, 'store']);
         Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
         Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
-        Route::apiResource('/contributions', ContributionController::class )->except('show','destroy');
+        // Route::apiResource('/contributions', ContributionController::class )->except('index','show','destroy');
         Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
         //contribution and comment count list
         // Route::get('/contributions', [ContributionController::class, 'index']);
@@ -67,16 +67,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/guest/faculty-register', [UserController::class, 'registerFacultyByGuest']);
         Route::get('/guest/unregistered-faculty/{id}', [UserController::class, 'getUnregisteredFacultyOfGuest']);
     });
-
-    // Route::middleware('role:student')->group(function () {
-    //     Route::post('/contributions', [ContributionController::class, 'store']);
-    //     Route::post('/contributions/update/{id}', [ContributionController::class, 'update']);
-    //     Route::get('/closures/{id}/upload', [ClosureController::class, 'viewUploadContributionofStudent']);
-    //     Route::apiResource('/contributions', ContributionController::class)->except('index', 'show', 'destroy');
-    //     Route::get('contributionlist', [ContributionController::class, 'UploadedContributionList']);
-    //     //contribution and comment count list
-    //     Route::get('/contributions', [ContributionController::class, 'index']);
-    // });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);
         Route::post('/contributions/all', [ContributionController::class, 'getAllContributionsByCoordinatorAndStudent']);
@@ -87,7 +77,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/browsers',[BrowserController::class,'index']);
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
-        // Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
+        Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
         Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
 
@@ -129,3 +119,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/closures/{id}/download', [ClosureController::class, 'downloadApprovedContributions']);
     });
 });
+
+
+
+
