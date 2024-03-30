@@ -62,7 +62,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:guest')->group(function () {
         Route::post('/guest/faculty-register', [UserController::class, 'registerFacultyByGuest']);
-        Route::get('/guest/unregistered-faculty/{id}', [UserController::class, 'getUnregisteredFacultyOfGuest']);
+        Route::get('/guest/unregistered-faculty', [UserController::class, 'getUnregisteredFacultyOfGuest']);
     });
     Route::middleware('role:m_coordinator,student')->group(function () {
         Route::post('/comments', [CommentController::class, 'store']);

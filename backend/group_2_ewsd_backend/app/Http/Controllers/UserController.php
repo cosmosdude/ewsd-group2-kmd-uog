@@ -235,11 +235,11 @@ class UserController extends Controller
         }
         return $this->sendResponse(Auth::user()->name, "Faculty Registered Successfully");
     }
-    public function getUnregisteredFacultyOfGuest($id)
+    public function getUnregisteredFacultyOfGuest()
     {
         $registered_faculties = DB::table('users')
             ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-            ->where('users.id', $id)
+            ->where('users.id', Auth::user()->id)
             ->pluck('faculty_users.faculty_id')
             ->toArray();
         $faculties = Falculty::all()->pluck("id")->toArray();
