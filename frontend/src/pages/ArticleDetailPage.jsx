@@ -14,6 +14,7 @@ import UploadIcon from "../assets/upload.png"
 import FilledButton from "../components/FilledButton";
 import Dialog from "../components/Dialog";
 import { usePushNoti } from "../components/Noti/NotiSystem";
+import { profile } from "../assets/profile/profile";
 
 function ArticleDetailPage() {
 
@@ -31,7 +32,7 @@ function ArticleDetailPage() {
     let detail = useEffectArticleDetail(id, [commentUUID])
     let status = detail?.contribution?.status
     let isUpload = status !== 'approve' && status !== 'reject'
-    console.log(detail, isUpload)
+    console.log("Detail", detail, isUpload, "isUpload && !isStudent", isUpload && !isStudent)
 
     let commentSection = useRef()
 
@@ -143,6 +144,7 @@ function ArticleDetailPage() {
                     <h1 className="text-2xl font-bold">Comment Section</h1>
                     <div className="flex flex-col gap-[20px]">
                         <ContributionCard
+                            authorId={detail.contribution?.user_id}
                             author={detail.contribution?.user_name}
                             srcs={
                                 extractContributionImageSrcs(detail.contribution?.images)
@@ -200,13 +202,14 @@ function ArticleDetailPage() {
                 {detail?.comments?.map((x, i) => {
                     return <Comment 
                         key={i}
+                        authorId={x.commenter_id}
                         author={x.commenter}
                         ago={x.commented_time}
                         comment={x.comment_content}
                     />
                 }) ?? false}
 
-                <CommentBox onComment={comment}/>
+                <CommentBox userId={user.user_id} onComment={comment}/>
             </div>
         </div>
     );
@@ -214,12 +217,12 @@ function ArticleDetailPage() {
 
 export default ArticleDetailPage;
 
-function Comment({author, ago, comment}) {
+function Comment({authorId, author, ago, comment}) {
     return (
         <div className="px-[25px]">
             <div className="flex flex-col gap-[10px] bg-white p-[20px] rounded-[4px] shadow-md">
                 <div className="flex gap-[10px] items-center pb-[10px] border-b border-b-secondary-200">
-                    <div className="w-[40px] aspect-square border rounded-full"/>
+                    <img src={profile(authorId)} className="w-[40px] aspect-square border rounded-full"/>
                     <div className="flex flex-col grow">
                         <p className="font-bold text-sm">{author === undefined ? "Dr. Hla": author}</p>
                         <p className="text-xs text-dark-300 font-light">{ago === undefined ? "5 hours ago" : ago}</p>
@@ -233,11 +236,11 @@ function Comment({author, ago, comment}) {
     );
 }
 
-function CommentBox({onComment}) {
+function CommentBox({userId, onComment}) {
     let textArea = useRef()
     return (
         <div className="sticky bottom-0 bg-primary-200 py-[25px] px-[25px] flex gap-[10px] items-start">
-            <div className="block w-[40px] aspect-square border rounded-full"/>
+            <img src={profile(userId)} className="block w-[40px] aspect-square border rounded-full"/>
             <div className="
                 grow 
                 flex flex-col items-end gap-[10px]

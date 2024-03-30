@@ -97,6 +97,7 @@ export default function BaseNavigation() {
                         onNav={ () => {
                             setShowNav(x => !x)
                         }}
+                        userId={user.user_id}
                         onProfile={gotoProfile}
                         onLogout={() => { setShowLogoutDialog(true) }}
                     />
@@ -138,7 +139,8 @@ export default function BaseNavigation() {
                             <SideNavItem 
                                 selected={
                                     path.startsWith('/contribution') ||
-                                    path.startsWith('/magazine')
+                                    path.startsWith('/magazine') ||
+                                    path.startsWith('/article')
                                 }
                                 src={ContributionIcon}
                                 cta="Magazines" 

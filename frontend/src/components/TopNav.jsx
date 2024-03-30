@@ -1,6 +1,8 @@
 import DownArrowIcon from "../assets/downarrow.png"
+import { profile } from "../assets/profile/profile"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
-export default function TopNav({onNav, onProfile, onLogout}) {
+export default function TopNav({onNav, userId, onProfile, onLogout}) {
     return (
         <div className="z-[10005] shrink-0 flex gap-1 items-center w-full pl-[12.5px] pr-[25px] py-[12.5px] bg-secondary-700">
             <button className="block md:hidden" onClick={onNav}>
@@ -10,8 +12,10 @@ export default function TopNav({onNav, onProfile, onLogout}) {
             <div className="grow"/>
             <div className="group relative gap-1 flex items-center">
                 <div className="flex items-center gap-[8px] hover:opacity-25 transition-all">
-                    <div className="bg-slate-100 w-[44px] h-[44px] rounded-full cursor-pointer"/>
-                    {/* <div className="bg-slate-100 w-[18px] h-[18px] rounded-full"/> */}
+                    <img 
+                        className=" w-[44px] h-[44px] rounded-full"
+                        src={profile(userId)}
+                    />
                     <img src={DownArrowIcon} className="w-[24px] h-[24px] rounded-full"/>
                 </div>
 

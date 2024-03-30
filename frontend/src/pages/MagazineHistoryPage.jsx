@@ -42,7 +42,7 @@ const MagazineHistoryPage = () => {
                         return <MagazineListItemRow
                             key={magazine.id} 
                             index={index}
-                            to={`${magazine.id}/view`}
+                            to={`${magazine.id}`}
                             magazine={magazine}
                             showClosureDate={false}
                         />

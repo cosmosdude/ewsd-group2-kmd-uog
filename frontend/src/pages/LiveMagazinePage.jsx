@@ -85,7 +85,7 @@ const LiveMagazinePage = () => {
             </div> */}
             <div className="flex flex-col z-[1001]">
                 <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
-                    <label>Filter:</label>
+                    {isMC && <label>Filter:</label>}
                     {isMC && <Dropdown 
                         className="min-w-[200px]"
                         title={commentFilter.name} 
@@ -112,6 +112,7 @@ const LiveMagazinePage = () => {
                         return (
                             <ContributionCard 
                                 key={index}
+                                authorId={item.user_id}
                                 author={item.user_name}
                                 srcs={
                                     extractContributionImageSrcs(item?.images)

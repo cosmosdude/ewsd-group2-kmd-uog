@@ -3,6 +3,7 @@ import Carousel from "./Carousel"
 import FilledButton from "./FilledButton"
 
 import MessageIcon from "../assets/message.svg"
+import { profile } from "../assets/profile/profile"
 // import { Carousel } from 'react-responsive-carousel'
 
 function getStatusDisplay(status) {
@@ -16,7 +17,7 @@ function getStatusDisplay(status) {
 }
 
 export default function ContributionCard({
-    author, 
+    authorId, author, 
     srcs = [],
     title, subtitle,
     description, facultyName,
@@ -45,7 +46,7 @@ export default function ContributionCard({
         >
             <div className="flex flex-col w-[300px] p-[10px] gap-[10px]">
                 <div className="flex gap-[5px] items-center py-[10px] border-b-[0.5px] border-b-secondary-200">
-                    <div className="w-[30px] h-[30px] bg-slate-200 rounded-full"/>
+                    <img src={profile(authorId)} className="w-[30px] h-[30px] rounded-full"/>
                     <p className="grow text-xs font-bold">{author}</p>
                     <p className="shrink-0 text-xs font-bold">{facultyName}</p>
                 </div>

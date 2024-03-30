@@ -144,6 +144,7 @@ const MagazinePage = () => {
                         return (
                             <ContributionCard 
                                 key={index}
+                                authorId={item.user_id}
                                 author={item.user_name}
                                 srcs={
                                     extractContributionImageSrcs(item.images)

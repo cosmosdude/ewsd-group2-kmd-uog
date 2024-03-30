@@ -2,6 +2,7 @@ import apiConfig from "../configs/api.config"
 
 export default function extractContributionImageSrcs(images) {
     if (!images) return []
+    if (typeof(images) === 'string') images = images.split(',')
     // if is array
     if (Array.isArray(images)) return images.map(extractImageName).map(x => apiConfig.host + x)
     return [apiConfig.host + extractImageName(images)]
