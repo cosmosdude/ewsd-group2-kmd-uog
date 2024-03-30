@@ -781,15 +781,13 @@ class ContributionController extends Controller
         return $this->sendResponse($success, "Comment Counts for Admin Dashboard", 200);
     }
     //most uploaded student list
-    public function getMostlyUploadContribution(){
+    public function getMostlyUploadContribution() {
         $contributions = DB::table('contributions')
             ->join('users', 'contributions.user_id', 'users.id')
-            ->select('users.id', 'users.name', DB::raw('count(*) as mostly_uploaded'))
-            ->groupBy('users.id',  'users.name')
-            ->orderBy('mostly_uploaded', 'ASC')
-            ->limit(3)
-            ->get('users.name as student_name',
-                    'mostly_uploaded');
+            ->select('user_id', 'users.name', DB::raw("Count(user_id) as count"))
+            ->groupBy('user_id', "name")
+            ->orderBy('count', 'desc')
+            ->get();
 
         return $this->sendResponse($contributions, "Mostly uploaded Student", 200);
     }
@@ -906,5 +904,5 @@ class ContributionController extends Controller
     }
 
 
-    
+
 }

@@ -248,7 +248,7 @@ const apiConfig = {
              * URL for getting most read contributions/articles
             */
             mostReadContributions() {
-                return `${host}/api/contributionlist`
+                return `${host}/api/statistic/most-read-contributions`
             },
 
             /**
