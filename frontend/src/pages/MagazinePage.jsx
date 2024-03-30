@@ -146,6 +146,7 @@ const MagazinePage = () => {
                                 key={index}
                                 authorId={item.user_id}
                                 author={item.user_name}
+                                facultyName={item.faculty_name}
                                 srcs={
                                     extractContributionImageSrcs(item.images)
                                 }

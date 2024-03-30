@@ -621,6 +621,7 @@ class ContributionController extends Controller
                 ->first(['users.name as commenter_name']);
 
             $date_calculated_comment[] = [
+                'commenter_id' => $comment->user_id,
                 'comment_content' => $comment->content,
                 'commenter' => $user->commenter_name,
                 'commented_time' => $this->timeDifference($comment->commented_time)

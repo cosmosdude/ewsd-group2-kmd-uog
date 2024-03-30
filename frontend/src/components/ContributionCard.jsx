@@ -33,9 +33,10 @@ export default function ContributionCard({
         // Outer
         <div 
             className={`
-            text-left rounded border 
+            shadow-xl
+            text-left rounded 
             transition-all 
-            ${onCardClick ? 'cursor-pointer hover:border-secondary-500' : ''}
+            ${onCardClick ? 'cursor-pointer hover:shadow-sm' : ''}
             `}
             onClick={e => {
                 e.preventDefault()

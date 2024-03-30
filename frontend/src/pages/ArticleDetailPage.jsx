@@ -145,7 +145,8 @@ function ArticleDetailPage() {
                     <div className="flex flex-col gap-[20px]">
                         <ContributionCard
                             authorId={detail.contribution?.user_id}
-                            author={detail.contribution?.user_name}
+                            author={detail.contributor?.student_name}
+                            facultyName={detail.contributor?.student_faculty_name}
                             srcs={
                                 extractContributionImageSrcs(detail.contribution?.images)
                                 // [apiConfig.host + "/images/" + detail.contribution?.images]
