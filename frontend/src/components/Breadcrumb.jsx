@@ -1,11 +1,12 @@
 import { Fragment } from "react"
 import { Link } from "react-router-dom"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import { useUserContext } from "../hooks/UserData/UserData"
 
 
 const Breadcrumb = ({links = [], className = ""}) => {
 
-    let user = useEffectUserDetail()
+    let user = useUserContext()
 
     function modifiedLink(l) {
         if (l === '/home' && !["administrator", "m_manager", "m_coordinator"].includes(user.role_name))

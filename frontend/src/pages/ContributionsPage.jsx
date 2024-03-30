@@ -7,13 +7,14 @@ import LoadingIndicator from "../components/LoadingIndicator"
 import { useAuthContext } from "../contexts/AuthContext"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import BorderedButton from "../components/BorderedButton"
+import { useUserContext } from "../hooks/UserData/UserData"
 
 const ContributionsPage = () => {
     
     let accessToken = useAuthContext();
     let navigate = useNavigate()
 
-    let user = useEffectUserDetail()
+    let user = useUserContext()
     let isGuest = user?.role_name === 'guest'
     
     let shouldShowCurrent = ['administrator', 'm_coordinator', 'student']

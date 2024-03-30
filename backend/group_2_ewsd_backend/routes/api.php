@@ -28,8 +28,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/selected-contributions', [ContributionController::class, 'getAllSelectedContributions']);
     Route::post('contributionlist', [ContributionController::class, 'filter']);
-
     Route::get('/contributions', [ContributionController::class, 'index']);
+
     Route::get('/contributions/{id}', [ContributionController::class, 'show']);
 
     Route::post('/faculties/{id}/guest-user', [FalcultyController::class, 'getGuestUserList']);

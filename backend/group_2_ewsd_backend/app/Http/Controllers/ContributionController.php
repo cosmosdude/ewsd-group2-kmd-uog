@@ -18,6 +18,39 @@ use Illuminate\Support\Facades\Mail;
 
 class ContributionController extends Controller
 {
+    public function index(){
+        $userId = Auth::user()->faculty_id;
+
+        $currentClosures = $this->getCurrentClosures();
+
+        $contributions = DB::table('contributions')
+            ->join('users', 'contributions.user_id', '=', 'users.id')
+            ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+            ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
+            ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+            ->where('faculty_users.faculty_id', $userId)
+            ->whereIn('contributions.closure_id', collect($currentClosures)->pluck('id'))
+            ->get([
+                'contributions.id as contribution_id',
+                        'contributions.name as contribution_name',
+                        'contributions.description as contribution_description',
+                        'contributions.images',
+                        'contributions.files',
+                        'contributions.submitted_date as contribution_submitted_date',
+                        'contributions.attempt_number as contribution_attempt_number',
+                        'contributions.status as contribution_status'
+            ]);
+            foreach ($contributions as $contribution) {
+                $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+                $images = explode(",", $contribution->images);
+                foreach ($images as $index => $image) {
+                    $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
+                }
+                $contribution->images = $images;
+            }
+
+        return $this->sendResponse($contribution, "Contribution List", 200);
+    }
 
     //all contribution only for m_coordinator and student
     public function getAllContributionsByCoordinatorAndStudent(Request $request)
@@ -759,10 +792,11 @@ class ContributionController extends Controller
 
     //most active user list
    public function getMostActiveUserList(){
-       if (Auth::user()->hasRole('student') || Auth::user()->hasRole('guest')){
+
             $faculty = DB::table('users')
                 ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-                ->where('users.id', Auth::user()->id)
+                ->where('users.role_id', 4)
+                ->orWhere('users.role_id', 5)
                 ->get(['faculty_users.faculty_id']);
 
                 $contributions = DB::table('contributions')
@@ -770,7 +804,8 @@ class ContributionController extends Controller
                     ->join('users', 'contributions.user_id', '=', 'users.id')
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
-                    ->join('contributions.status', 'approve')
+                    ->whereIn('users.role_id', [4, 5])
+                    ->where('contributions.status', 'approve')
                     ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
                     ->get([
                         'falculties.id as faculty_id',
@@ -779,7 +814,7 @@ class ContributionController extends Controller
                         'users.name as user_name',
                         'users.email as user_email',
                         'contributions.id as contribution_id',
-                        'contributionsname as contribution_name',
+                        'contributions.name as contribution_name',
                         'contributions.images',
                         'contributions.files',
                         'contributions.submitted_date as contribution_submitted_date',
@@ -811,9 +846,8 @@ class ContributionController extends Controller
         }
 
         return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
-    }
 
-    return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
+    //return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
 
 }
 
@@ -827,9 +861,10 @@ class ContributionController extends Controller
                 ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
                 ->join('users', 'faculty_users.user_id', '=', 'users.id')
                 ->join('contributions', 'contributions.user_id', '=', 'users.id')
+                ->join('closures', 'closures.id', '=', 'contributions.colsure_id')
                 ->select('falculties.name as Faculty_name',
                         DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions'))
-                ->where('users.academic_id', $academic_year)
+                ->where('closures.academic_id', $academic_year)
                 ->groupBy('falculties.name')
                 ->get();
 
@@ -837,9 +872,10 @@ class ContributionController extends Controller
             ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
             ->join('users', 'faculty_users.user_id', '=', 'users.id')
             ->join('contributions', 'contributions.user_id', '=', 'users.id')
+            ->join('closures', 'closures.id', '=', 'contributions.colsure_id')
             ->select('falculties.name as Faculty_name',
                     DB::raw('COUNT(DISTINCT contributions.user_id) as Number_of_Contributors'))
-            ->where('users.academic_id', $academic_year)
+            ->where('closures.academic_id', $academic_year)
             ->groupBy('falculties.name')
             ->get();
             $percentOfContributions = collect($numberOfContributions)->map(function ($item, $key) use ($numberOfContributors){
@@ -854,7 +890,7 @@ class ContributionController extends Controller
         });
         return $this->sendResponse($percentOfContributions->toArray(), "Contributions by Faculty", 200);
     }
-    return $this->sendResponse("Academic year is not provided", 403);
+   // return $this->sendResponse("Academic year is not provided", 403);
 }
 
 

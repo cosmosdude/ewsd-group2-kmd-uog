@@ -15,6 +15,7 @@ import FilledButton from "../components/FilledButton";
 import Dialog from "../components/Dialog";
 import { usePushNoti } from "../components/Noti/NotiSystem";
 import { profile } from "../assets/profile/profile";
+import { useUserContext } from "../hooks/UserData/UserData";
 
 function ArticleDetailPage() {
 
@@ -24,7 +25,7 @@ function ArticleDetailPage() {
     let {id} = useParams()
     let accessToken = useAuthContext()
 
-    let user = useEffectUserDetail()
+    let user = useUserContext()
     let isStudent = user.role_name === 'student'
 
     let [commentUUID, setCommentUUID] = useState(Math.random())
