@@ -51,16 +51,17 @@ const MagazinePage = () => {
             })
 
             let json = await response.json()
-            console.log(json.data)
+            console.log("READSTATUS:", json.data)
             if (response.status === 200) {
                 // json.data.comments = [10, 20]
-                setData(json.data)
+                // setData(json.data)
             } else {
                 pushNoti({
                     title: "Unable to mark as read", 
                     message: json.message,
                     style: 'danger'
                 })
+
             }
             
         } catch (e) {
@@ -157,7 +158,7 @@ const MagazinePage = () => {
                                         extractContributionFileSrc(item.files),
                                         '_blank'
                                     )
-                                    markAsRead(item.id)
+                                    markAsRead(item.contribution_id)
                                 }}
                                 // onCardClick={() => {
                                 //     navigate(routesConfig.contribution.detail(item.contribution_id))
