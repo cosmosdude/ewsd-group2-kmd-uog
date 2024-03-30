@@ -765,27 +765,7 @@ class ContributionController extends Controller
                     ->whereIn('users.role_id', [4, 5])
                     ->where('contributions.status', 'approve')
                     ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
-                    ->get([
-                        'falculties.id as faculty_id',
-                        'falculties.name as faculty_name',
-                        'users.id as user_id',
-                        'users.name as user_name',
-                        'users.email as user_email',
-                        'contributions.id as contribution_id',
-                        'contributions.name as contribution_name',
-                        'contributions.images',
-                        'contributions.files',
-                        'contributions.submitted_date as contribution_submitted_date',
-                        'contributions.status as contribution_status'
-                    ]);
-                    foreach ($contributions as $contribution) {
-                        $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                        $images = explode(",", $contribution->images);
-                        foreach ($images as $image) {
-                            $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
-                        }
-                        $contribution->images = $images;
-                    }
+                    ->get();
                     $userReadCounts = [];
                         foreach ($contributions as $contribution) {
                             if ($contribution->read_count > 0) {
@@ -814,8 +794,6 @@ public function getPieChartforAdmin(Request $request)
     $request->validate([
         'academic_id' => 'required'
     ]);
-
-    $academic_year = $request->query('academic_id');
 
     if ($academic_year) {
         $numberOfContributions = DB::table('falculties')
@@ -846,6 +824,7 @@ public function getPieChartforAdmin(Request $request)
             if ($numberOfContributorsResult[$key]->Number_of_Contributors > 0) {
                 $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 100;
             }
+             $percentage = number_format($percentage, 2, '.', '');
             return [
                 'Faculty_Name' => $item->Faculty_name,
                 'Percentage_Of_Contributions' => $percentage . '%'
