@@ -19,7 +19,7 @@ function MagazineListItemRow({
 
     let closure = fastformat(makeDate(magazine.closure_date), "d MMM yyyy")
 
-    let final = fastformat(makeDate(magazine.closure_date), "d MMM yyyy")
+    let final = fastformat(makeDate(magazine.final_closure_date), "d MMM yyyy")
 
 
     return (

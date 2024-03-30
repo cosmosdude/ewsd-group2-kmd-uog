@@ -35,6 +35,7 @@ import UserData from "./hooks/UserData/UserData"
 import AuthToken from "./hooks/AuthToken/AuthToken"
 import UpcomingMagazinesPage from "./pages/UpcomingMagazinesPage"
 import FacultyDetailPage from "./pages/FacultyDetailPage"
+import GuestFacultyRegisterPage from "./pages/GuestFacultyRegisterPage"
 
 function App() {
   return (
@@ -57,6 +58,8 @@ function App() {
 					<Route path="faculty/:id/detail" element={<FacultyDetailPage/>}/>
 
 					<Route path="contribution" element={<ContributionsPage/>}/>
+					<Route path="contribution/subscribe" element={<GuestFacultyRegisterPage/>}/>
+
 					<Route path="magazine/history" element={<MagazineHistoryPage/>}/>
 					<Route path="magazine/history/:magazineId" element={<MagazinePage/>}/>
 					<Route path="magazine/current" element={<MagazineCurrentPage/>}/>

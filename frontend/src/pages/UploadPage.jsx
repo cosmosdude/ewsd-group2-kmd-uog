@@ -138,7 +138,7 @@ function UploadPage() {
         className="
         fixed 
         left-0 top-0 
-        z-[1000]
+        z-[21000]
         flex w-screen h-screen bg-black/90 p-[25px] md:px-[150px] md:py-[50px] overflow-hidden
         "
         onClick={e => {

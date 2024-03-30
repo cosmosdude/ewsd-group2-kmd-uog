@@ -718,6 +718,10 @@ html {
   top: 100%;
 }
 
+.right-\[24px\] {
+  right: 24px;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -772,6 +776,14 @@ html {
 
 .z-auto {
   z-index: auto;
+}
+
+.z-\[3000\] {
+  z-index: 3000;
+}
+
+.z-\[21000\] {
+  z-index: 21000;
 }
 
 .col-auto {
@@ -843,6 +855,11 @@ html {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.mx-\[100px\] {
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 .mb-0 {
@@ -2487,6 +2504,16 @@ html {
   padding-bottom: 20px;
 }
 
+.py-\[16px\] {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.py-\[24px\] {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
 .pb-3 {
   padding-bottom: 0.75rem;
 }
@@ -2589,6 +2616,10 @@ html {
 
 .pt-\[25px\] {
   padding-top: 25px;
+}
+
+.pb-\[20px\] {
+  padding-bottom: 20px;
 }
 
 .text-left {
@@ -3120,9 +3151,22 @@ html {
     z-index: 10001;
   }
 
+  .md\:z-\[10000\] {
+    z-index: 10000;
+  }
+
+  .md\:z-\[21000\] {
+    z-index: 21000;
+  }
+
   .md\:mx-auto {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .md\:mx-\[100px\] {
+    margin-left: 100px;
+    margin-right: 100px;
   }
 
   .md\:block {

@@ -142,7 +142,7 @@ function ArticleDetailPage() {
                 {/* Detail section */}
                 <div className="flex flex-col gap-[20px] items-center md:overflow-y-scroll">
                     <h1 className="text-2xl font-bold">Comment Section</h1>
-                    <div className="flex flex-col gap-[20px]">
+                    <div className="flex flex-col gap-[20px] pb-[50px]">
                         <ContributionCard
                             authorId={detail.contribution?.user_id}
                             author={detail.contributor?.student_name}
