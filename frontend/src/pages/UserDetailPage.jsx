@@ -73,10 +73,10 @@ const UserDetailPage = () => {
                 />
                 <span className="grow"/>
             </div>
-            <div className="flex h-[150px] bg-gray-200">
+            <div className="flex h-[192px] bg-gradient-to-r from-secondary-200 to-secondary-600">
                 <img 
                     src={profile(details?.user_id)}
-                    className="inline-block mx-auto z-10 w-[150px] h-[150px] rounded-full mt-[75px]"/>
+                    className="inline-block mx-auto z-10 w-[150px] h-[150px] rounded-full mt-[100px]"/>
             </div>
             <div className="flex min-h-[75px] bg-transparent"/>
             <div className="inline-block mx-auto text-center">

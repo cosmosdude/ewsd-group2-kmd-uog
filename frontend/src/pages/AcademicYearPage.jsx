@@ -9,6 +9,7 @@ import ThreeDotIcon from "../assets/threedots.png"
 import useEffectAllAcademicYears from "../hooks/useEffectAllAcademicYears"
 import TableHeaderRow from "../components/TableHeaderRow"
 import BorderedButton from "../components/BorderedButton"
+import { fastformat } from "../util/fastformat"
 
 export default function AcademicYearPage() {
 
@@ -17,6 +18,12 @@ export default function AcademicYearPage() {
     let accessToken = useAuthContext();
 
     let [academicYears] = useEffectAllAcademicYears()
+
+    function dateText(date) {
+        date = new Date(date)
+        date = isNaN(date) ? new Date() : date
+        return fastformat(date, 'd MMM yyyy')
+    }
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-8 overflow-y-hidden">
@@ -48,8 +55,8 @@ export default function AcademicYearPage() {
                             <tr key={index} className="text-center hover:bg-slate-100">
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">{year.name}</td>
-                                <td className="p-3">{year.start_date}</td>
-                                <td className="p-3">{year.end_date}</td>
+                                <td className="p-3">{dateText(year.start_date)}</td>
+                                <td className="p-3">{dateText(year.end_date)}</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">
