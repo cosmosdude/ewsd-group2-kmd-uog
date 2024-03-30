@@ -1,8 +1,19 @@
 import { Fragment } from "react"
 import { Link } from "react-router-dom"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
 
 const Breadcrumb = ({links = [], className = ""}) => {
+
+    let user = useEffectUserDetail()
+
+    function modifiedLink(l) {
+        if (l === '/home' && !["administrator", "m_manager", "m_coordinator"].includes(user.role_name))
+        return "/contribution"
+        else
+        return l
+    }
+
     return (
         <ul className={`flex gap-2 items-center ${className}`}>
             {links.map((item, index) => {
@@ -17,7 +28,7 @@ const Breadcrumb = ({links = [], className = ""}) => {
                                 ${item.current && 'text-blue-400'} 
                                 hover:opacity-50 transition-all
                                 `} 
-                                to={item.link}
+                                to={modifiedLink(item.link)}
                             >{item.name}</Link>
                         </li>
                         {!isLast && (<li className="font-serif text-sm">/</li>)}

@@ -88,10 +88,6 @@ const LiveMagazinePage = () => {
                     to={routesConfig.contribution.upload(magazineId)}
                 />}
             </div>
-            {/* <div className="flex flex-col items-center gap-2">
-                <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>
-                <h1>Selected Contributions</h1>
-            </div> */}
             <div className="flex flex-col z-[1001]">
                 <div className="inline-flex items-center gap-[10px] mx-auto md:w-auto ">
                     {isMC && <label>Filter:</label>}

@@ -15,56 +15,25 @@ import GuestAndStudentCountView from "../components/statistic/GuestAndStudentCou
 import NumberOfGuestsAndStudents from "../components/statistic/NumberOfGuestsAndStudents"
 import ContributionsByFacultyView from "../components/statistic/ContributionsByFacultyView"
 import CurrentContributionsView from "../components/statistic/CurrentContributionsView"
+import useEffectUserDetail from "../hooks/useEffectUserDetail"
 
 const DashboardPage = () => {
+
+    let user = useEffectUserDetail()
+
+    let navigate = useNavigate()
+    if (!["administrator", "m_manager", "m_coordinator"].includes(user.role_name)) {
+        navigate("/contribution")
+    }
+
     return (
         <div className=" h-full flex flex-col gap-[10px] p-[20px] overflow-scroll bg-white">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-[10px]">
                 <div className="border rounded-[10px] h-[400px] flex flex-col">
                     <CurrentContributionsView/>
-                     
                 </div>
                 <div className="border rounded-[10px] flex flex-col h-[400px]">
                     <ContributionsByFacultyView/>
-                    {/* <div className="flex p-[10px] items-start justify-start">
-                        <h1 className="text-md font-bold">
-                        Contributions{<br/>}By Faculty
-                        </h1>
-                        <div className="grow"/>
-                        <Dropdown className="grow" title="Academic Year" modified/>
-                    </div>
-                    
-                    <div className="w-full p-[10px] grow flex flex-col ">
-                        <EWSDChart 
-                            type='doughnut' 
-                            data={{
-                                labels: ["Business", "Arts", "IT"],
-                                datasets: [
-                                    {
-                                        label: 'Students',
-                                        data: [65, 59, 40],
-                                        backgroundColor: colors.background,
-                                        borderColor: colors.border,
-                                        borderWidth: 1
-                                    }
-                                ]
-                            }}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    // title: {
-                                    //     align: 'start'
-                                    // },
-                                    legend: {
-                                        display: true,
-                                        position: 'bottom'
-                                    },
-                                    
-                                }
-                            }}
-                        />
-                    </div>   */}
                 </div>
                 {/* Popular Magazines */}
                 <div className="h-[400px] flex flex-col gap-[10px]">
