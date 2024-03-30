@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('upload_count')->nullable();
-            $table->integer('view_count')->nullable();
+            $table->integer('upload_count')->default(0);
+            $table->integer('view_count')->default(0);
         });
     }
 
