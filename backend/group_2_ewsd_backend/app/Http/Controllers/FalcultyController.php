@@ -19,26 +19,27 @@ class FalcultyController extends Controller
         $faculties = Falculty::all();
         return $this->sendResponse($faculties, "Faculty Lists", 200);
     }
-    public function getAllFacultyForUser(){
+    public function getAllFacultyForUser()
+    {
 
-        if(Auth::user()->hasRole('guest')){
+        if (Auth::user()->hasRole('guest')) {
             $faculties = DB::table('users')
-            ->join('faculty_users','users.id','=','faculty_users.user_id')
-            ->join('falculties','falculties.id','=','faculty_users.faculty_id')
-            ->where('users.id',Auth::user()->id)
-            ->get([
-                'falculties.id',
-                'falculties.name',
-                'falculties.email',
-                'falculties.phone',
-                'falculties.description',
-                'falculties.room_no',
-                'falculties.building_no',
-                'falculties.created_at',
-                'falculties.updated_at'
-            ]);
+                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+                ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+                ->where('users.id', Auth::user()->id)
+                ->get([
+                    'falculties.id',
+                    'falculties.name',
+                    'falculties.email',
+                    'falculties.phone',
+                    'falculties.description',
+                    'falculties.room_no',
+                    'falculties.building_no',
+                    'falculties.created_at',
+                    'falculties.updated_at'
+                ]);
             return $this->sendResponse($faculties, "Faculty Lists Only for Guest User", 200);
-        }else{
+        } else {
             $faculties = Falculty::all();
             return $this->sendResponse($faculties, "Faculty Lists", 200);
         }
@@ -169,7 +170,7 @@ class FalcultyController extends Controller
             ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
             ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
             ->where('faculty_users.faculty_id', $id)
-            ->where('users.role_id',5)
+            ->where('users.role_id', 5)
             ->get([
                 'users.id as guest_id',
                 'users.name as guest_name',
@@ -179,20 +180,20 @@ class FalcultyController extends Controller
 
         return $this->sendResponse($guests, "Guests List", 200);
     }
-    public function getStudentAndGuestCount(){
+    public function getStudentAndGuestCount()
+    {
         $counts = DB::table('users')
-        ->select(
-            'falculties.id as id',
-            'falculties.name as name',
-            DB::raw('COUNT(CASE WHEN users.role_id = 4 THEN users.id END) as student_count'),
-            DB::raw('COUNT(CASE WHEN users.role_id = 5 THEN users.id END) as guest_count')
-        )
-        ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-        ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
-        ->whereIn('users.role_id', [4, 5])
-        ->groupBy('falculties.id', 'falculties.name')
-        ->get();
+            ->select(
+                'falculties.id as id',
+                'falculties.name as name',
+                DB::raw('COUNT(CASE WHEN users.role_id = 4 THEN users.id END) as student_count'),
+                DB::raw('COUNT(CASE WHEN users.role_id = 5 THEN users.id END) as guest_count')
+            )
+            ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+            ->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+            ->whereIn('users.role_id', [4, 5])
+            ->groupBy('falculties.id', 'falculties.name')
+            ->get();
         return $this->sendResponse($counts, "Student and Guest Count", 200);
     }
-
 }

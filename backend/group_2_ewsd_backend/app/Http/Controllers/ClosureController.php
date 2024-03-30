@@ -173,7 +173,7 @@ class ClosureController extends Controller
         $zipFilePath = public_path($zipFileName);
         $articlesFolderPath = public_path('Articles') . now()->format('YmdHis');
 
-        // Create the Articles folder
+        
         if (!mkdir($articlesFolderPath) && !is_dir($articlesFolderPath)) {
             return response()->json(['error' => 'Failed to create Articles folder'], 500);
         }
