@@ -809,46 +809,53 @@ class ContributionController extends Controller
 
 }
 
-    public function getPieChartforAdmin(Request $request)
-    {
-       $academic_year = $request->query('academic_id');
-      // $percentOfContributions = Falculty::query();
+public function getPieChartforAdmin(Request $request)
+{
+    $request->validate([
+        'academic_id' => 'required'
+    ]);
 
-        if($academic_year){
-            $numberOfContributions = DB::table('falculties')
-                ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
-                ->join('users', 'faculty_users.user_id', '=', 'users.id')
-                ->join('contributions', 'contributions.user_id', '=', 'users.id')
-                ->join('closures', 'closures.id', '=', 'contributions.colsure_id')
-                ->select('falculties.name as Faculty_name',
-                        DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions'))
-                ->where('closures.academic_id', $academic_year)
-                ->groupBy('falculties.name')
-                ->get();
+    $academic_year = $request->query('academic_id');
 
-            $numberOfContributors = DB::table('falculties')
+    if ($academic_year) {
+        $numberOfContributions = DB::table('falculties')
             ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
             ->join('users', 'faculty_users.user_id', '=', 'users.id')
             ->join('contributions', 'contributions.user_id', '=', 'users.id')
-            ->join('closures', 'closures.id', '=', 'contributions.colsure_id')
+            ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+            ->select('falculties.name as Faculty_name',
+                    DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions'))
+            ->where('closures.academic_id', $academic_year)
+            ->groupBy('falculties.name');
+
+        $numberOfContributors = DB::table('falculties')
+            ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
+            ->join('users', 'faculty_users.user_id', '=', 'users.id')
+            ->join('contributions', 'contributions.user_id', '=', 'users.id')
+            ->join('closures', 'closures.id', '=', 'contributions.closure_id')
             ->select('falculties.name as Faculty_name',
                     DB::raw('COUNT(DISTINCT contributions.user_id) as Number_of_Contributors'))
             ->where('closures.academic_id', $academic_year)
-            ->groupBy('falculties.name')
-            ->get();
-            $percentOfContributions = collect($numberOfContributions)->map(function ($item, $key) use ($numberOfContributors){
+            ->groupBy('falculties.name');
+
+        $numberOfContributionsResult = $numberOfContributions->get();
+        $numberOfContributorsResult = $numberOfContributors->get();
+
+        $percentOfContributions = collect($numberOfContributionsResult)->map(function ($item, $key) use ($numberOfContributorsResult) {
             $percentage = 0;
-            if($numberOfContributors[$key]->Number_of_Contributors > 0){
-                $percentage = ($item->Number_of_Contributions / $numberOfContributors[$key]->Number_of_Contributors) * 100;
+            if ($numberOfContributorsResult[$key]->Number_of_Contributors > 0) {
+                $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 100;
             }
-            return[
+            return [
                 'Faculty_Name' => $item->Faculty_name,
                 'Percentage_Of_Contributions' => $percentage . '%'
             ];
         });
+
         return $this->sendResponse($percentOfContributions->toArray(), "Contributions by Faculty", 200);
     }
-   // return $this->sendResponse("Academic year is not provided", 403);
+
+    return $this->sendResponse("Academic year is not provided", 403);
 }
 
 
