@@ -816,7 +816,7 @@ class ContributionController extends Controller
         ->join('users','users.id','=','contributions.user_id')
         ->join('faculty_users','users.id','=','faculty_users.user_id')
         ->where('closures.academic_id',$request->academic_id)
-        ->select(DB::raw('COUNT(contributions.id) as countribution_count','faculty_users.faculty_id'))
+        ->select(['faculty_users.faculty_id',DB::raw('COUNT(contributions.id) as countribution_count')])
         ->groupBy('faculty_users.faculty_id')
         ->get();
         return $this->sendResponse($contributionsCount, "Number of contributions",200);
