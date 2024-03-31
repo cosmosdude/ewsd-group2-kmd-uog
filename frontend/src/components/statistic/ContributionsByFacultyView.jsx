@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useEffectAllAcademicYears from "../../hooks/useEffectAllAcademicYears";
 import useEffectFacultyGuestAndStudentCounts from "../../hooks/useEffectFacultyGuestAndStudentCounts";
 import Dropdown from "../Dropdown";
 import EWSDChart, { colors } from "../EWSDChart";
+import useContributionsByFaculties from "../../hooks/useContributionsByFaculties";
 
 function ContributionsByFacultyView() {
     // let counts = useEffectFacultyGuestAndStudentCounts()
@@ -15,6 +16,14 @@ function ContributionsByFacultyView() {
 
     let [academicYears] = useEffectAllAcademicYears()
     let [year, setYear] = useState()
+
+    useEffect(() => {
+        setYear(academicYears[0])
+    }, [academicYears])
+
+    let contributions = useContributionsByFaculties(year?.id ?? 0)
+    console.log("Academic", year)
+    console.log("Contributions", contributions, contributions.map(x => x.countribution_count))
 
     return ( 
         <>
@@ -39,11 +48,11 @@ function ContributionsByFacultyView() {
             <EWSDChart 
                 type='doughnut' 
                 data={{
-                    labels: ["Business", "Arts", "IT"],
+                    labels: contributions.map(x => x.name),
                     datasets: [
                         {
                             label: 'Students',
-                            data: [65, 59, 40],
+                            data: contributions.map(x => x.countribution_count),
                             backgroundColor: colors,
                             borderColor: colors,
                             borderWidth: 1

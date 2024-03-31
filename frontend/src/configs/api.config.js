@@ -216,6 +216,11 @@ const apiConfig = {
          * Statistical API paths
         */
         statistics: {
+
+            contributionsByFaculties(academicId) {
+                return `${host}/api/contributionsbyfaculty?academic_id=${academicId}`
+            },
+
             /**
              * URL for getting most active guests
             */
