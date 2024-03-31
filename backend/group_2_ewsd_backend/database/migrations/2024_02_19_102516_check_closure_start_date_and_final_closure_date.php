@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateCheckClosureDateProcedure extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +14,17 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::unprepared('
+        $query = "
             CREATE PROCEDURE `check_closure_date` ()
             BEGIN
-            SELECT *
-            FROM closures
-            WHERE start_date <= CURDATE()
-            AND final_closure_date >= CURDATE();
+                SELECT *
+                FROM closures
+                WHERE start_date <= CURDATE()
+                AND final_closure_date >= CURDATE();
             END
-        ');
+        ";
+
+        DB::unprepared($query);
     }
 
     /**
@@ -32,6 +34,8 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP PROCEDURE IF EXISTS `check_closure_date`');
+        $query = "DROP PROCEDURE IF EXISTS `check_closure_date`";
+
+        DB::unprepared($query);
     }
-};
+}

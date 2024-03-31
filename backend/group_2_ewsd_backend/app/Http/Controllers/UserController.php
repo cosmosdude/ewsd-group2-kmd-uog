@@ -60,7 +60,7 @@ class UserController extends Controller
     {
         $authenticatedUserId = Auth::user()->id;
 
-        if ($authenticatedUserId == $id || Auth::user()->hasRole('administrator')) {
+        // if ( Auth::user()->hasRole('administrator')) {
             $user = DB::table('users')
                 ->select(
                     'users.id as user_id',
@@ -90,7 +90,7 @@ class UserController extends Controller
             } else {
                 return $this->sendError(null, "User not found", 404);
             }
-        }
+        // }
 
         return $this->sendError(null, "You don't have permission to view this user", 403);
     }
