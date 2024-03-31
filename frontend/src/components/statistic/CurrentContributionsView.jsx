@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useEffectAllAcademicYears from "../../hooks/useEffectAllAcademicYears";
 import useEffectFacultyGuestAndStudentCounts from "../../hooks/useEffectFacultyGuestAndStudentCounts";
 import Dropdown from "../Dropdown";
 import EWSDChart, { colors } from "../EWSDChart";
 import useEffectMagazines from "../../hooks/useEffectMagazines";
+import useMagazineCommentStatues from "../../hooks/useMagazineCommentStatues";
 
 function CurrentContributionsView() {
 
     let magazines = useEffectMagazines()
     let [magazine, setMagazine] = useState()
+
+    useEffect(() => {
+        setMagazine(magazines[0])
+    }, [magazines])
+
+    let count = useMagazineCommentStatues(magazine?.id)
 
     return ( 
         <>
@@ -35,7 +42,7 @@ function CurrentContributionsView() {
                     labels: ["Commented", "Unommented", "Overdue"],
                     datasets: [{
                     label: 'My First Dataset',
-                    data: [65, 59, 40],
+                    data: [count.commented, count.uncommented, count.overdue],
                     backgroundColor: "#66ADD3",
                     borderColor: "#66ADD3",
                     borderWidth: 1

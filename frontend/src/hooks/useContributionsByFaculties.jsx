@@ -45,7 +45,7 @@ function useContributionsByFaculties(academicYearId) {
         fetchData()
         // upon tear down, cancel the fetch
         return () => aborter.abort()
-    }, [academicYearId])
+    }, [accessToken, academicYearId])
 
     return contributions
 }
