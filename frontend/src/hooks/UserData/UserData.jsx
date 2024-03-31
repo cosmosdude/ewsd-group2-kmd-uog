@@ -12,6 +12,8 @@ export default function UserData({children}) {
 
     let [user, setUser] = useState({})
 
+    console.error("user", user)
+
     useEffect(() => {
         let aborter = new AbortController()
 
@@ -26,14 +28,14 @@ export default function UserData({children}) {
                 })
 
                 let json = await response.json()
-                console.log(json.data)
+                console.log("FUCKING USER", json.data)
                 if (response.status === 200) {
                     setUser(json.data)
                 }
                 
             } catch (e) {
-                console.log("Error while fetching user data")
-                console.log(e)
+                console.error("Error while fetching user data")
+                console.error(e)
             }
         }
 

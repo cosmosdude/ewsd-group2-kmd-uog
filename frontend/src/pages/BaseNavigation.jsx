@@ -34,7 +34,7 @@ export default function BaseNavigation() {
     let user = useEffectUserDetail()
 
     let cachedUser = useUserContext()
-    let isGuest = cachedUser.role_name === 'guest'
+    let isGuest = cachedUser?.role_name === 'guest'
     console.log("Role Name", cachedUser.role_name, "is guest", isGuest)
 
     let [showNav, setShowNav] = useState(false)
