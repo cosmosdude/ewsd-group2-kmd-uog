@@ -155,6 +155,10 @@ const apiConfig = {
             return `${host}/api/closures/${id}`
         },
 
+        previousMagazines() {
+            return `${host}/api/previous-closures`
+        },
+
         /**
          * URL to download magazine.
          * 

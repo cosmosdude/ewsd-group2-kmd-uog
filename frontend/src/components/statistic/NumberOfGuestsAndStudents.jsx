@@ -6,7 +6,8 @@ function NumberOfGuestsAndStudents() {
     let counts = useEffectFacultyGuestAndStudentCounts()
 
     let colors = [
-        "#64C2A6"
+        "#64C2A6",
+        "#E6F69D"
     ]
 
     return ( 

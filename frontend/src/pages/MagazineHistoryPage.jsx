@@ -8,12 +8,13 @@ import { useAuthContext } from "../contexts/AuthContext"
 import useEffectMagazines from "../hooks/useEffectMagazines"
 import TableHeaderRow from "../components/TableHeaderRow"
 import MagazineListItemRow from "../components/MagazineListItemRow"
+import usePreviousMagazines from "../hooks/usePreviousMagazines"
 
 const MagazineHistoryPage = () => {
     
     // let accessToken = useAuthContext();
     let navigate = useNavigate()
-    let magazines = useEffectMagazines()
+    let magazines = usePreviousMagazines()
 
     return (
         <div className="flex flex-col gap-8 w-full h-full p-4 px-8 overflow-y-hidden">
