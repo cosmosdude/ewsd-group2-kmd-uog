@@ -80,8 +80,8 @@ class ClosureController extends Controller
         if (Auth::user()->hasRole('administrator')) {
             $previousClosures = Closure::whereRaw('DATE_ADD(final_closure_date, INTERVAL 1 DAY) < NOW()')
                 ->select(
-                    'id as No',
-                    'name as Title',
+                    'id',
+                    'name',
                     'start_date as start_date',
                     'final_closure_date as end_date'
                 )
