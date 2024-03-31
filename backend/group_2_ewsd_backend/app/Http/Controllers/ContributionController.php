@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Mail;
 
 class ContributionController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $userId = Auth::user()->faculty_id;
 
         $currentClosures = $this->getCurrentClosures();
@@ -32,22 +33,22 @@ class ContributionController extends Controller
             ->whereIn('contributions.closure_id', collect($currentClosures)->pluck('id'))
             ->get([
                 'contributions.id as contribution_id',
-                        'contributions.name as contribution_name',
-                        'contributions.description as contribution_description',
-                        'contributions.images',
-                        'contributions.files',
-                        'contributions.submitted_date as contribution_submitted_date',
-                        'contributions.attempt_number as contribution_attempt_number',
-                        'contributions.status as contribution_status'
+                'contributions.name as contribution_name',
+                'contributions.description as contribution_description',
+                'contributions.images',
+                'contributions.files',
+                'contributions.submitted_date as contribution_submitted_date',
+                'contributions.attempt_number as contribution_attempt_number',
+                'contributions.status as contribution_status'
             ]);
-            foreach ($contributions as $contribution) {
-                $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-                $images = explode(",", $contribution->images);
-                foreach ($images as $index => $image) {
-                    $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
-                }
-                $contribution->images = $images;
+        foreach ($contributions as $contribution) {
+            $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
+            $images = explode(",", $contribution->images);
+            foreach ($images as $index => $image) {
+                $images[$index] = public_path('images') . DIRECTORY_SEPARATOR . $image;
             }
+            $contribution->images = $images;
+        }
 
         return $this->sendResponse($contribution, "Contribution List", 200);
     }
@@ -75,7 +76,7 @@ class ContributionController extends Controller
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
-                    ->where('closures.id',$request->closure_id)
+                    ->where('closures.id', $request->closure_id)
                     ->get([
                         'falculties.id as faculty_id',
                         'falculties.name as faculty_name',
@@ -114,7 +115,7 @@ class ContributionController extends Controller
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
                     ->where('contributions.is_commented', 0)
-                    ->where('closures.id',$request->closure_id)
+                    ->where('closures.id', $request->closure_id)
                     ->get([
                         'falculties.id as faculty_id',
                         'falculties.name as faculty_name',
@@ -150,7 +151,7 @@ class ContributionController extends Controller
                     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
-                    ->where('closures.id',$request->closure_id)
+                    ->where('closures.id', $request->closure_id)
                     ->where('contributions.is_commented', 1)
                     ->get([
                         'falculties.id as faculty_id',
@@ -188,7 +189,7 @@ class ContributionController extends Controller
                     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
                     ->where('faculty_users.faculty_id', $mc_faculty_id)
                     ->where('contributions.is_commented', 0)
-                    ->where('closures.id',$request->closure_id)
+                    ->where('closures.id', $request->closure_id)
                     ->get([
                         'falculties.id as faculty_id',
                         'falculties.name as faculty_name',
@@ -439,7 +440,6 @@ class ContributionController extends Controller
             }
 
             return $this->sendResponse($selectedContributions, "Selected Contribution for Guest", 200);
-
         } elseif (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('m_manager') || Auth::user()->hasRole('m_coordinator') || Auth::user()->hasRole('student')) {
             if ($request->faculty_id) {
                 // dd($request->faculty_id);
@@ -592,7 +592,6 @@ class ContributionController extends Controller
             Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
-
     }
 
     public function update(Request $request, $id)
@@ -640,16 +639,15 @@ class ContributionController extends Controller
     public function show($id)
     {
 
-        $contribution = Contribution::
-        where('id', $id)->first();
+        $contribution = Contribution::where('id', $id)->first();
         $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
         // public_path('images') . DIRECTORY_SEPARATOR .
-        $user_info = DB::table('users')->join('faculty_users','users.id','=','faculty_users.user_id')->join('falculties','falculties.id','=','faculty_users.faculty_id')
-        ->where('users.id',$contribution->user_id)
-        ->first([
-            'users.name as student_name',
-            'falculties.name as student_faculty_name',
-        ]);
+        $user_info = DB::table('users')->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')->join('falculties', 'falculties.id', '=', 'faculty_users.faculty_id')
+            ->where('users.id', $contribution->user_id)
+            ->first([
+                'users.name as student_name',
+                'falculties.name as student_faculty_name',
+            ]);
         $comments = Contribution::with('comments')->where('id', $id)->first()->comments;
         $date_calculated_comment = [];
 
@@ -781,79 +779,28 @@ class ContributionController extends Controller
         return $this->sendResponse($success, "Comment Counts for Admin Dashboard", 200);
     }
     //most uploaded student list
-    public function getMostlyUploadContribution(){
+    public function getMostlyUploadContribution()
+    {
         $contributions = DB::table('contributions')
             ->join('users', 'contributions.user_id', 'users.id')
             ->select('users.id', 'users.name', DB::raw('count(*) as mostly_uploaded'))
             ->groupBy('users.id',  'users.name')
             ->orderBy('mostly_uploaded', 'ASC')
             ->limit(3)
-            ->get('users.name as student_name',
-                    'mostly_uploaded');
+            ->get(
+                'users.name as student_name',
+                'mostly_uploaded'
+            );
 
         return $this->sendResponse($contributions, "Mostly uploaded Student", 200);
     }
 
     //most active user list
-   public function getMostActiveUserList(){
+    public function getMostActiveUserList()
+    {
 
-    $users = User::whereIn('role_id',[4,5])->orderBy('view_count','desc')->get();
-    return $this->sendResponse($users,"Most Active User List",200);
-        // $faculty = DB::table('users')
-        //     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-        //     ->where('users.role_id', 4)
-        //     ->orWhere('users.role_id', 5)
-        //     ->get(['faculty_users.faculty_id']);
-
-        // $contributions = DB::table('contributions')
-        //     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
-        //     ->join('users', 'contributions.user_id', '=', 'users.id')
-        //     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-        //     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
-        //     ->whereIn('users.role_id', [4, 5])
-        //     ->where('contributions.status', 'approve')
-        //     ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
-        //     ->get([
-        //         'falculties.id as faculty_id',
-        //         'falculties.name as faculty_name',
-        //         'users.id as user_id',
-        //         'users.name as user_name',
-        //         'users.email as user_email',
-        //         'contributions.id as contribution_id',
-        //         'contributions.name as contribution_name',
-        //         'contributions.images',
-        //         'contributions.files',
-        //         'contributions.submitted_date as contribution_submitted_date',
-        //         'contributions.status as contribution_status'
-        //     ]);
-        // foreach ($contributions as $contribution) {
-        //     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-        //     $images = explode(",", $contribution->images);
-        //     foreach ($images as $image) {
-        //         $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
-        //     }
-        //     $contribution->images = $images;
-        // }
-        // $userReadCounts = [];
-        //     foreach ($contributions as $contribution) {
-        //         if ($contribution->read_count > 0) {
-        //             if (!isset($userReadCounts[$contribution->user_id])) {
-        //                     $userReadCounts[$contribution->user_id] = 0;
-        //             }
-        // $userReadCounts[$contribution->user_id] += $contribution->read_count;
-        //         }
-        //     }
-        // arsort($userReadCounts);
-
-        // $topThreeUsers = array_slice($userReadCounts, 0, 3, true);
-        // $mostActiveUsers = User::whereIn('id', array_keys($topThreeUsers))->get(['name']);
-        // foreach ($mostActiveUsers as $user) {
-        //     $user->total_read_count = $userReadCounts[$user->id];
-        // }
-
-        // return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
-
-    //return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
+        $users = User::whereIn('role_id', [4, 5])->orderBy('view_count', 'desc')->get();
+        return $this->sendResponse($users, "Most Active User List", 200);
     }
 
     public function getPieChartforAdmin(Request $request)
@@ -870,8 +817,10 @@ class ContributionController extends Controller
                 ->join('users', 'faculty_users.user_id', '=', 'users.id')
                 ->join('contributions', 'contributions.user_id', '=', 'users.id')
                 ->join('closures', 'closures.id', '=', 'contributions.closure_id')
-                ->select('falculties.name as Faculty_name',
-                        DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions'))
+                ->select(
+                    'falculties.name as Faculty_name',
+                    DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions')
+                )
                 ->where('closures.academic_id', $academic_year)
                 ->groupBy('falculties.name');
 
@@ -880,8 +829,10 @@ class ContributionController extends Controller
                 ->join('users', 'faculty_users.user_id', '=', 'users.id')
                 ->join('contributions', 'contributions.user_id', '=', 'users.id')
                 ->join('closures', 'closures.id', '=', 'contributions.closure_id')
-                ->select('falculties.name as Faculty_name',
-                        DB::raw('COUNT(DISTINCT contributions.user_id) as Number_of_Contributors'))
+                ->select(
+                    'falculties.name as Faculty_name',
+                    DB::raw('COUNT(DISTINCT contributions.user_id) as Number_of_Contributors')
+                )
                 ->where('closures.academic_id', $academic_year)
                 ->groupBy('falculties.name');
 
@@ -904,7 +855,4 @@ class ContributionController extends Controller
 
         return $this->sendResponse("Academic year is not provided", 403);
     }
-
-
-
 }
