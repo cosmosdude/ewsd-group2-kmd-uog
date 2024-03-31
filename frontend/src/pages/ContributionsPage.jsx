@@ -5,7 +5,6 @@ import Dropdown from "../components/Dropdown"
 import { useContext, useState } from "react"
 import LoadingIndicator from "../components/LoadingIndicator"
 import { useAuthContext } from "../contexts/AuthContext"
-import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import BorderedButton from "../components/BorderedButton"
 import { useUserContext } from "../hooks/UserData/UserData"
 

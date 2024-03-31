@@ -16,10 +16,11 @@ import NumberOfGuestsAndStudents from "../components/statistic/NumberOfGuestsAnd
 import ContributionsByFacultyView from "../components/statistic/ContributionsByFacultyView"
 import CurrentContributionsView from "../components/statistic/CurrentContributionsView"
 import useEffectUserDetail from "../hooks/useEffectUserDetail"
+import { useUserContext } from "../hooks/UserData/UserData"
 
 const DashboardPage = () => {
 
-    let user = useEffectUserDetail()
+    let user = useUserContext()
 
     let navigate = useNavigate()
     if (!["administrator", "m_manager", "m_coordinator"].includes(user.role_name)) {
@@ -60,6 +61,7 @@ const DashboardPage = () => {
                     <MostUsedBrowserListView/>
                 </div>
             </div>
+
             <div className="border rounded-[10px] flex flex-col">
                 <NumberOfGuestsAndStudents/> 
             </div>

@@ -119,6 +119,7 @@ class FalcultyController extends Controller
             'username' => 'required',
             'phone' => 'required',
             'description' => 'required',
+            'password' => 'nullable'
 
         ]);
         $requestData['faculty_name'] = $request->faculty_name;

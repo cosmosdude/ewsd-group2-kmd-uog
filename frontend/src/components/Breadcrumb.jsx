@@ -1,6 +1,5 @@
 import { Fragment } from "react"
 import { Link } from "react-router-dom"
-import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import { useUserContext } from "../hooks/UserData/UserData"
 
 
