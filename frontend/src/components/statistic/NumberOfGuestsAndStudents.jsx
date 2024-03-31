@@ -29,15 +29,15 @@ function NumberOfGuestsAndStudents() {
                         {
                             label: 'Students',
                             data: counts.map(x => x.student_count),
-                            backgroundColor: colors,
-                            borderColor: colors,
+                            backgroundColor: colors[0],
+                            borderColor: colors[0],
                             borderWidth: 1
                         },
                         {
                             label: 'Guests',
                             data: counts.map(x => x.guest_count),
-                            backgroundColor: colors,
-                            borderColor: colors,
+                            backgroundColor: colors[1],
+                            borderColor: colors[1],
                             borderWidth: 1
                         }
                     ]
