@@ -221,6 +221,10 @@ const apiConfig = {
                 return `${host}/api/contributionsbyfaculty?academic_id=${academicId}`
             },
 
+            contributionsAndContributors(academicId) {
+                return `${host}/api/statistic/contributions-contributors?academic_id=${academicId}`
+            },
+
             contributionCommentCount(magazineId) {
                 return `${host}/api/statistic/magazine-comment?magazine_id=${magazineId}`
             },

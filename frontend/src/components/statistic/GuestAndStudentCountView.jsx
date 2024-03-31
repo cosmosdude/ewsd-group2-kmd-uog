@@ -3,10 +3,9 @@ import useEffectAllAcademicYears from "../../hooks/useEffectAllAcademicYears";
 import useEffectFacultyGuestAndStudentCounts from "../../hooks/useEffectFacultyGuestAndStudentCounts";
 import Dropdown from "../Dropdown";
 import EWSDChart, { colors } from "../EWSDChart";
+import useContributionsAndContributorsCount from "../../hooks/useContributionsAndContributorsCount";
 
 function GuestAndStudentCountView() {
-    let counts = useEffectFacultyGuestAndStudentCounts()
-
     let colors = [
         "#94B777",
         "#E6F69D"
@@ -14,6 +13,7 @@ function GuestAndStudentCountView() {
 
     let [academicYears] = useEffectAllAcademicYears()
     let [year, setYear] = useState()
+    let counts = useContributionsAndContributorsCount(year?.id ?? '')
 
     return ( 
         <>
@@ -38,18 +38,18 @@ function GuestAndStudentCountView() {
             <EWSDChart 
                 type='bar' 
                 data={{
-                    labels: counts.map(x => x.name),
+                    labels: counts.map(x => x.faculty_name),
                     datasets: [
                         {
-                            label: 'Students',
-                            data: counts.map(x => x.student_count),
+                            label: 'Contributions',
+                            data: counts.map(x => x.contribution_count),
                             backgroundColor: colors[0],
                             borderColor: colors[0],
                             borderWidth: 1
                         },
                         {
-                            label: 'Guests',
-                            data: counts.map(x => x.guest_count),
+                            label: 'Contributors',
+                            data: counts.map(x => x.contributor_count),
                             backgroundColor: colors[1],
                             borderColor: colors[1],
                             borderWidth: 1
