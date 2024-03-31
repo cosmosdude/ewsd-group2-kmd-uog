@@ -88,6 +88,8 @@ Route::middleware('auth:api')->group(function () {
         //academic_year
         Route::post('/academicyear', [AcademicYearController::class, 'store']);
         Route::put('/academicyearupdate/{id}', [AcademicYearController::class, 'update']);
+        Route::get('upcoming-closures', [ClosureController::class, 'upcomingClosure']);
+             Route::get('/comment-counts', [ContributionController::class, 'getCommentCount']);
     });
 
     Route::middleware(['role:administrator,m_coordinator'])->group(function () {
