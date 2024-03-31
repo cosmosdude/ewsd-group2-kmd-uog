@@ -34,6 +34,7 @@ function useEffectAllAcademicYears() {
                     setAcademicYears(json.data.data)
                 } else {
                     setError("Unable to get faculty list.")
+                    console.error("Academic year Error", json.message)
                 }
                 
             } catch (error) {

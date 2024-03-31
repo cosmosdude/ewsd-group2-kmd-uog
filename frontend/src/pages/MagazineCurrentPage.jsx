@@ -60,7 +60,7 @@ const MagazineCurrentPage = () => {
                         return <MagazineListItemRow
                             key={magazine.id} 
                             index={index}
-                            to={`${magazine.id}/view`}
+                            to={isAdmin ? '': `${magazine.id}/view`}
                             magazine={magazine}
                             // showClosureDate={false}
                             showOptions={isAdmin}

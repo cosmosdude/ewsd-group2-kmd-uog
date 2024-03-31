@@ -112,7 +112,7 @@ const UserDetailPage = () => {
                                 <label>{details?.faculty_name.join(", ") ?? ""}</label>
                             </td>
                         </tr>
-                        <tr className="align-middle">
+                        {details?.user_phone && <tr className="align-middle">
                             <td className="py-2">
                                 <img className='inline-block w-[24px] h-[24px]' src={PhoneIcon}/>
                             </td>
@@ -122,7 +122,7 @@ const UserDetailPage = () => {
                             <td>
                                 <label>{details?.user_phone ?? ""}</label>
                             </td>
-                        </tr>
+                        </tr>}
                         <tr className="align-middle">
                             <td className="py-2"> 
                                 <img className='inline-block w-[24px] h-[24px]' src={HistoryIcon}/>

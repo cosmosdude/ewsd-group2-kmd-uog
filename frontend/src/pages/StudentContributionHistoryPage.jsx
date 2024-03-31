@@ -11,10 +11,12 @@ import Dropdown from "../components/Dropdown"
 import apiConfig from "../configs/api.config"
 import useEffectUploadedContributions from "../hooks/useEffectUploadedContributions"
 import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
+import { useUserContext } from "../hooks/UserData/UserData"
 
 const StudentContributionHistoryPage = () => {
 
     let contributions = useEffectUploadedContributions()
+    let user = useUserContext()
 
     return (
         <div className="flex flex-col h-full p-4 px-8 gap-[10px] overflow-y-hidden">
@@ -40,7 +42,8 @@ const StudentContributionHistoryPage = () => {
                         return (
                         <ContributionCard 
                         key={index}
-                        author={item.user_id}
+                        authorId={item.user_id}
+                        author={user.user_name}
                         srcs={extractContributionImageSrcs(item.images)}
                         title={item.name} 
                         description={item.description}

@@ -20,6 +20,8 @@ Route::post('hash', [AuthController::class, 'testHash']);
 Route::post('/guest-register', [AuthController::class, 'guestRegister']);
 Route::apiResource('faculties', FalcultyController::class)->except('show', 'destroy');
 Route::get('/faculties', [FalcultyController::class, 'index']);
+Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
+
 Route::middleware('auth:api')->group(function () {
     Route::get('/faculties-for-users', [FalcultyController::class, 'getAllFacultyForUser']);
     Route::get('/contributions/{id}/read-count', [ContributionController::class, 'addReadCount']);
@@ -77,7 +79,6 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
         Route::apiResource('faculties', FalcultyController::class)->except('index', 'show', 'destroy');
-        Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
 
         Route::post('/faculties', [FalcultyController::class, 'store']);
@@ -98,7 +99,7 @@ Route::middleware('auth:api')->group(function () {
         //in most of the LMS, update student information only done by the admin
         Route::apiResource('users', UserController::class)->except('show', 'destroy', 'store');
         Route::post('/register', [AuthController::class, 'register']);
-        Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
+        // Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
         Route::post('/student-register', [AuthController::class, 'studentRegister']);
 
         //academic_year
@@ -119,6 +120,6 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware(['role:administrator,m_coordinator,m_manager'])->group(function () {
         Route::get('/statistic/most-read-contributions', [StatisticController::class, 'mostReadContributions']);
         Route::get('/statistic/magazine-comment', [StatisticController::class, 'getMagazineCommentStatuses']);
-        
+        Route::get('statistic/contributions-contributors', [StatisticController::class, 'contributionsAndContributors']);
     });
 });

@@ -40,7 +40,7 @@ class Controller extends BaseController
         $studentLastAccess = Carbon::parse($studentLastAccess);
         $timeDifference = $currentTime->diff($studentLastAccess);
         if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
-            return '-';
+            return '0 minutes ago';
         }
 
         if ($timeDifference->days == 0 && $timeDifference->h == 0) {

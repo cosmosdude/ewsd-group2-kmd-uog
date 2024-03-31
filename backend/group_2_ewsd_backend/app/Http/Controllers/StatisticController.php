@@ -13,7 +13,8 @@ class StatisticController extends Controller
 
     }
 
-    public function mostReadContributions() {
+    public function mostReadContributions() 
+    {
         $contributions = DB::table('contributions')
             ->orderBy('read_count', 'desc')
             ->limit(5)
@@ -22,7 +23,8 @@ class StatisticController extends Controller
         return $this->sendResponse($contributions, "test", 200);
     }
 
-    public function getMagazineCommentStatuses(Request $request) {
+    public function getMagazineCommentStatuses(Request $request) 
+    {
         $magazineId = $request->query('magazine_id');
 
         $uncommented = $this->uncommentedCount($magazineId)[0]->count;
@@ -33,6 +35,54 @@ class StatisticController extends Controller
             "commented" => $commented,
             "overdue" => $overdue,
         ], "Ok, 200");
+    }
+
+    public function contributionsAndContributors(Request $request) 
+    {
+        $academic_id = $request->query('academic_id');
+
+        // $contributions = DB::table('contributions')
+        //     ->join('closures', 'contributions.closure_id', '=', 'closures.id')
+        //     ->join('users', 'users.id', '=', 'contributions.user_id')
+        //     // ->join('faculty_users as fu', 'fu.user_id')
+        //     // ->join('falculties as f', 'f.id', '=', '')
+        //     ->where('closures.academic_id', '=', $academic_id)
+        //     ->select()
+        //     // ->select(DB::raw("COUNT(*) as count"))
+        //     ->get();
+
+        $contributions = DB::table('contributions')
+            ->join('users', 'users.id', '=', 'contributions.user_id')
+            ->join('faculty_users as fu', 'fu.user_id', '=', 'users.id')
+            ->join('falculties as f', 'f.id', '=', 'fu.faculty_id')
+            ->select(['f.name as faculty_name', DB::raw('count(f.id) as contribution_count')])
+            ->groupBy('f.id')
+            ->get();
+
+        /*
+        select 
+        f.name as faculty_name, COUNT(f.id) as contribution_count
+        from contributions
+        join users on users.id=contributions.user_id
+        join faculty_users as fu on fu.user_id=users.id
+        join falculties as f on f.id=fu.faculty_id
+        group by f.id;
+        */
+
+        $users = DB::table('contributions')
+            ->join('closures', 'contributions.closure_id', '=', 'closures.id')
+            ->where('closures.academic_id', '=', $academic_id)
+            ->select(DB::raw("COUNT(user_id) as count"))
+            ->groupBy('user_id')
+            ->get()[0]->count;
+
+        return $this->sendResponse(
+            [
+                "contribution_count" => $contributions,
+                "contributor_count" => $users,
+            ], 
+            "OK", 200
+        );
     }
 
     private function uncommentedCount($magazineId) {
