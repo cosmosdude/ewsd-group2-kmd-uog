@@ -58,11 +58,11 @@ const MagazinePage = () => {
                 // json.data.comments = [10, 20]
                 // setData(json.data)
             } else {
-                pushNoti({
-                    title: "Unable to mark as read", 
-                    message: json.message,
-                    style: 'danger'
-                })
+                // pushNoti({
+                //     title: "Unable to mark as read", 
+                //     message: json.message,
+                //     style: 'danger'
+                // })
             }
             
         } catch (e) {
