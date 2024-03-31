@@ -41,7 +41,7 @@ function CurrentContributionsView() {
                 data={{
                     labels: ["Commented", "Unommented", "Overdue"],
                     datasets: [{
-                    label: 'My First Dataset',
+                    label: 'Contributions',
                     data: [count.commented, count.uncommented, count.overdue],
                     backgroundColor: "#66ADD3",
                     borderColor: "#66ADD3",
