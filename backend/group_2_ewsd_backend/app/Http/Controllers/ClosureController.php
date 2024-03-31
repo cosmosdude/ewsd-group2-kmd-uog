@@ -76,9 +76,9 @@ class ClosureController extends Controller
     public function getPreviousClosures()
     {
         // $previousClosures = Closure::where('final_closure_date', '<', Carbon::now());
-
+        // Carbon::parse($closure->closure_date)->addDay()->isPast()
         if (Auth::user()->hasRole('administrator')) {
-            $previousClosures = Closure::where('final_closure_date', '<', Carbon::now())
+            $previousClosures = Closure::whereRaw('DATE_ADD(final_closure_date, INTERVAL 1 DAY) < NOW()')
                 ->select(
                     'id as No',
                     'name as Title',
@@ -87,15 +87,14 @@ class ClosureController extends Controller
                 )
                 ->orderBy('final_closure_date', 'desc')
                 ->get();
-
-        }
-        else if(Auth::user()->hasRole('m_coordinator')){
+            return $this->sendResponse($previousClosures, "Previous Closures", 200);
+        } else if (Auth::user()->hasRole('m_coordinator')) {
             $coordinator_faculty_id = DB::table('users')
                 ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
                 ->where('users.id', Auth::user()->id)
                 ->value('faculty_users.faculty_id');
             if ($coordinator_faculty_id) {
-                $previousClosures = Closure::where('final_closure_date', '<', Carbon::now())
+                $previousClosures = Closure::whereRaw('DATE_ADD(final_closure_date, INTERVAL 1 DAY) < NOW()')
                     ->where('academic_id', $coordinator_faculty_id)
                     ->select(
                         'id as No',
@@ -106,12 +105,8 @@ class ClosureController extends Controller
                     ->orderBy('final_closure_date', 'desc')
                     ->get();
             }
-
-          }
-        //else {
-        //     return $this->sendError('You are not allowed to view Previous Closures List', 403);
-        // }
-        return $this->sendResponse($previousClosures, "Previous Closures List", 200);
+            return $this->sendResponse($previousClosures, "Previous Closures List", 200);
+        }
     }
 
     public function getCurrentClosures()
@@ -173,7 +168,7 @@ class ClosureController extends Controller
         $zipFilePath = public_path($zipFileName);
         $articlesFolderPath = public_path('Articles') . now()->format('YmdHis');
 
-        
+
         if (!mkdir($articlesFolderPath) && !is_dir($articlesFolderPath)) {
             return response()->json(['error' => 'Failed to create Articles folder'], 500);
         }
@@ -231,12 +226,12 @@ class ClosureController extends Controller
     public function getMostViewClosures()
     {
         $closures = DB::table('closures')
-        ->select('closures.id', 'closures.name', DB::raw('SUM(contributions.read_count) AS total_read_count'))
-        ->join('contributions', 'closures.id', '=', 'contributions.closure_id')
-        ->groupBy('closures.id', 'closures.name')
-        ->orderByDesc('total_read_count')
-        ->get()
-        ->toArray();
+            ->select('closures.id', 'closures.name', DB::raw('SUM(contributions.read_count) AS total_read_count'))
+            ->join('contributions', 'closures.id', '=', 'contributions.closure_id')
+            ->groupBy('closures.id', 'closures.name')
+            ->orderByDesc('total_read_count')
+            ->get()
+            ->toArray();
         return $this->sendResponse($closures, "Most Viewed Magazine List", 200);
     }
 }
