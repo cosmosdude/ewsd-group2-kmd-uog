@@ -118,5 +118,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware(['role:administrator,m_coordinator,m_manager'])->group(function () {
         Route::get('/statistic/most-read-contributions', [StatisticController::class, 'mostReadContributions']);
+        Route::get('/statistic/magazine-comment', [StatisticController::class, 'getMagazineCommentStatuses']);
+        
     });
 });

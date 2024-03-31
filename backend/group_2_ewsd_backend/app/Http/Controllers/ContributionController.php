@@ -795,63 +795,9 @@ class ContributionController extends Controller
     //most active user list
    public function getMostActiveUserList(){
 
-    $users = User::whereIn('role_id',[4,5])->orderBy('view_count','desc')->get();
-    return $this->sendResponse($users,"Most Active User List",200);
-        // $faculty = DB::table('users')
-        //     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-        //     ->where('users.role_id', 4)
-        //     ->orWhere('users.role_id', 5)
-        //     ->get(['faculty_users.faculty_id']);
+        $users = User::whereIn('role_id',[4,5])->orderBy('view_count','desc')->get();
+        return $this->sendResponse($users,"Most Active User List",200);
 
-        // $contributions = DB::table('contributions')
-        //     ->join('closures', 'closures.id', '=', 'contributions.closure_id')
-        //     ->join('users', 'contributions.user_id', '=', 'users.id')
-        //     ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
-        //     ->join('falculties', 'faculty_users.faculty_id', '=', 'falculties.id')
-        //     ->whereIn('users.role_id', [4, 5])
-        //     ->where('contributions.status', 'approve')
-        //     ->whereIn('faculty_users.faculty_id', $faculty->pluck('faculty_id')->toArray())
-        //     ->get([
-        //         'falculties.id as faculty_id',
-        //         'falculties.name as faculty_name',
-        //         'users.id as user_id',
-        //         'users.name as user_name',
-        //         'users.email as user_email',
-        //         'contributions.id as contribution_id',
-        //         'contributions.name as contribution_name',
-        //         'contributions.images',
-        //         'contributions.files',
-        //         'contributions.submitted_date as contribution_submitted_date',
-        //         'contributions.status as contribution_status'
-        //     ]);
-        // foreach ($contributions as $contribution) {
-        //     $contribution->files = public_path('uploads') . DIRECTORY_SEPARATOR . $contribution->files;
-        //     $images = explode(",", $contribution->images);
-        //     foreach ($images as $image) {
-        //         $images = public_path('images') . DIRECTORY_SEPARATOR . $image;
-        //     }
-        //     $contribution->images = $images;
-        // }
-        // $userReadCounts = [];
-        //     foreach ($contributions as $contribution) {
-        //         if ($contribution->read_count > 0) {
-        //             if (!isset($userReadCounts[$contribution->user_id])) {
-        //                     $userReadCounts[$contribution->user_id] = 0;
-        //             }
-        // $userReadCounts[$contribution->user_id] += $contribution->read_count;
-        //         }
-        //     }
-        // arsort($userReadCounts);
-
-        // $topThreeUsers = array_slice($userReadCounts, 0, 3, true);
-        // $mostActiveUsers = User::whereIn('id', array_keys($topThreeUsers))->get(['name']);
-        // foreach ($mostActiveUsers as $user) {
-        //     $user->total_read_count = $userReadCounts[$user->id];
-        // }
-
-        // return $this->sendResponse($mostActiveUsers, "Most Active 3 Users Who Read Selected Contributions", 200);
-
-    //return $this->sendError("Nothing will change since you are not in the student or guest role", 403);
     }
 
     public function getPieChartforAdmin(Request $request)
@@ -860,7 +806,7 @@ class ContributionController extends Controller
             'academic_id' => 'required'
         ]);
 
-        $academic_year = $request->query('academic_id');
+        $academic_year = $request['academic_id'];
 
         if ($academic_year) {
             $numberOfContributions = DB::table('falculties')
@@ -889,8 +835,11 @@ class ContributionController extends Controller
             $percentOfContributions = collect($numberOfContributionsResult)->map(function ($item, $key) use ($numberOfContributorsResult) {
                 $percentage = 0;
                 if ($numberOfContributorsResult[$key]->Number_of_Contributors > 0) {
-                    $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 100;
+                    $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 10;
                 }
+                $percentage = number_format($percentage, 0, '.', '');
+
+                $percentage = min($percentage, 100);
                 return [
                     'Faculty_Name' => $item->Faculty_name,
                     'Percentage_Of_Contributions' => $percentage . '%'
@@ -902,6 +851,54 @@ class ContributionController extends Controller
 
         return $this->sendResponse("Academic year is not provided", 403);
     }
+    // public function getPieChartforAdmin(Request $request)
+    // {
+    //     $request->validate([
+    //         'academic_id' => 'required'
+    //     ]);
+
+    //     $academic_year = $request->query('academic_id');
+
+    //     if ($academic_year) {
+    //         $numberOfContributions = DB::table('falculties')
+    //             ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
+    //             ->join('users', 'faculty_users.user_id', '=', 'users.id')
+    //             ->join('contributions', 'contributions.user_id', '=', 'users.id')
+    //             ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+    //             ->select('falculties.name as Faculty_name',
+    //                     DB::raw('COUNT(DISTINCT contributions.id) as Number_of_Contributions'))
+    //             ->where('closures.academic_id', $academic_year)
+    //             ->groupBy('falculties.name');
+
+    //         $numberOfContributors = DB::table('falculties')
+    //             ->join('faculty_users', 'faculty_users.faculty_id', '=', 'falculties.id')
+    //             ->join('users', 'faculty_users.user_id', '=', 'users.id')
+    //             ->join('contributions', 'contributions.user_id', '=', 'users.id')
+    //             ->join('closures', 'closures.id', '=', 'contributions.closure_id')
+    //             ->select('falculties.name as Faculty_name',
+    //                     DB::raw('COUNT(DISTINCT contributions.user_id) as Number_of_Contributors'))
+    //             ->where('closures.academic_id', $academic_year)
+    //             ->groupBy('falculties.name');
+
+    //         $numberOfContributionsResult = $numberOfContributions->get();
+    //         $numberOfContributorsResult = $numberOfContributors->get();
+
+    //         $percentOfContributions = collect($numberOfContributionsResult)->map(function ($item, $key) use ($numberOfContributorsResult) {
+    //             $percentage = 0;
+    //             if ($numberOfContributorsResult[$key]->Number_of_Contributors > 0) {
+    //                 $percentage = ($item->Number_of_Contributions / $numberOfContributorsResult[$key]->Number_of_Contributors) * 100;
+    //             }
+    //             return [
+    //                 'Faculty_Name' => $item->Faculty_name,
+    //                 'Percentage_Of_Contributions' => $percentage . '%'
+    //             ];
+    //         });
+
+    //         return $this->sendResponse($percentOfContributions->toArray(), "Contributions by Faculty", 200);
+    //     }
+
+    //     return $this->sendResponse("Academic year is not provided", 403);
+    // }
 
 
 
