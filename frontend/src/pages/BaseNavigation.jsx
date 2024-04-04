@@ -17,6 +17,7 @@ import useEffectUserDetail from "../hooks/useEffectUserDetail"
 import NotiSystem, { usePushNoti } from "../components/Noti/NotiSystem"
 import { useAuthState } from "../hooks/AuthToken/AuthToken"
 import { useUserContext } from "../hooks/UserData/UserData"
+import { loginTime } from "../util/last_login_time"
 
 /**
  * Base navigation handler. 
@@ -38,6 +39,8 @@ export default function BaseNavigation() {
     console.log("Role Name", cachedUser.role_name, "is guest", isGuest)
 
     let [showNav, setShowNav] = useState(false)
+
+    let [showWelcome, setShowWelcome] = useState(false)
 
     let roleId = user && user.role_id && user.role_id
     let isAdmin = roleId === 1
@@ -70,6 +73,16 @@ export default function BaseNavigation() {
         // gotoSignIn()
     }
 
+    useEffect(() => {
+        console.log("[Welcome]", "loginTime.value", loginTime.value)
+        if (!loginTime.value) {
+            console.log("[Welcome]", "Not Null")
+            // window.alert("Welcome")
+            setShowWelcome(true)
+        }
+        loginTime.value = "non-null"
+    }, [])
+
     // useEffect(redirectIfRouteIsIndex)
     useEffect(gotoSignInIfNotAuthorized)
 
@@ -95,7 +108,13 @@ export default function BaseNavigation() {
                     dismissCTA={"Cancel"}
                     onDismiss={() => { setShowLogoutDialog(false) }}
                 />}
-
+                {showWelcome && <Dialog 
+                    title="Hello" 
+                    message="Welcome to university's magazine website"
+                    style="normal"
+                    dismissCTA="Dismiss"
+                    onDismiss={() => {setShowWelcome(false)}}
+                />}
                 <div className="flex flex-col w-full h-screen ">
                     {/* <div className="w-full h-full"> */}
                     <TopNav

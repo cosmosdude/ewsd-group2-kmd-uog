@@ -17,6 +17,7 @@ import { usePushNoti } from "../components/Noti/NotiSystem"
 import { browserName, detect } from "detect-browser"
 import { capitalized } from "../util/capitalized"
 import { useAuthState } from "../hooks/AuthToken/AuthToken"
+import { loginTime } from "../util/last_login_time"
 
 const SignInPage = () => {
     let pushNoti = usePushNoti()
@@ -90,6 +91,8 @@ const SignInPage = () => {
 
             if (response.status === 200) {
                 // window.localStorage.setItem("accessToken", json.data.token)
+                // lastLoginTime = json.data.last_login_time
+                loginTime.value = json.data.last_login_time
                 setAuth(json.data.token)
                 gotoHome()
             } else if (response.status >= 500) {
