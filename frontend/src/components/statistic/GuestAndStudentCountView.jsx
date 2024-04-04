@@ -60,12 +60,13 @@ function GuestAndStudentCountView() {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: {
+                        y: {
                             ticks: {
-                                minRotation: 0,
-                                maxRotation: 0,
-                                skips: false
-                            }
+                                skips: false,
+                                stepSize: 1,
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
                         }
                     },
                     plugins: {

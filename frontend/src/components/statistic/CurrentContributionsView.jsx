@@ -51,6 +51,16 @@ function CurrentContributionsView() {
                 options={{
                     responsive: true,
                     maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                skips: false,
+                                stepSize: 1,
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                        }
+                    },
                     plugins: {
                         legend: {
                             display:false

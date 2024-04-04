@@ -51,9 +51,15 @@ function NumberOfGuestsAndStudents() {
                             ticks: {
                                 minRotation: 0,
                                 maxRotation: 0,
-                                skips: false
-                            }
-                        }
+                                skips: false,
+                                stepSize: 1,
+                                suggestedMin: 0,
+                                suggestedMax: 10,
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                        },
+                        
                     },
                     plugins: {
                         title: {
