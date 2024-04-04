@@ -39,9 +39,6 @@ class Controller extends BaseController
         $currentTime = Carbon::now();
         $studentLastAccess = Carbon::parse($studentLastAccess);
         $timeDifference = $currentTime->diff($studentLastAccess);
-        if ($studentLastAccess == 'null') {
-            return null;
-        }
         if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
             return '-';
         }

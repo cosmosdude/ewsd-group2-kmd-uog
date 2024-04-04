@@ -129,7 +129,7 @@ class AuthController extends Controller
                 ]);
                 $success['last_login_time'] = $this->timeDifference(Carbon::parse($user->last_login_time));
             } else {
-                $success['last_login_time'] = "-";
+                $success['last_login_time'] = null;
             }
 
             if ($request->browser != null || $request->browser != '') {
