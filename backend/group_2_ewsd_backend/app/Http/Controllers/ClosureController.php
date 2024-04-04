@@ -75,9 +75,7 @@ class ClosureController extends Controller
     //get previous closures list
     public function getPreviousClosures()
     {
-        // $previousClosures = Closure::where('final_closure_date', '<', Carbon::now());
-        // Carbon::parse($closure->closure_date)->addDay()->isPast()
-        if (Auth::user()->hasRole('administrator')) {
+        // if (Auth::user()->hasRole('administrator')) {
             $previousClosures = Closure::whereRaw('DATE_ADD(final_closure_date, INTERVAL 1 DAY) < NOW()')
                 ->select(
                     'id as No',
@@ -88,25 +86,25 @@ class ClosureController extends Controller
                 ->orderBy('final_closure_date', 'desc')
                 ->get();
             return $this->sendResponse($previousClosures, "Previous Closures", 200);
-        } else if (Auth::user()->hasRole('m_coordinator')) {
-            $coordinator_faculty_id = DB::table('users')
-                ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
-                ->where('users.id', Auth::user()->id)
-                ->value('faculty_users.faculty_id');
-            if ($coordinator_faculty_id) {
-                $previousClosures = Closure::whereRaw('DATE_ADD(final_closure_date, INTERVAL 1 DAY) < NOW()')
-                    ->where('academic_id', $coordinator_faculty_id)
-                    ->select(
-                        'id as No',
-                        'name as Title',
-                        'start_date as start_date',
-                        'final_closure_date as end_date'
-                    )
-                    ->orderBy('final_closure_date', 'desc')
-                    ->get();
-            }
-            return $this->sendResponse($previousClosures, "Previous Closures List", 200);
-        }
+        // } elseif (Auth::user()->hasRole('m_coordinator')) {
+        //     $coordinator_faculty_id = DB::table('users')
+        //         ->join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
+        //         ->where('users.id', Auth::user()->id)
+        //         ->value('faculty_users.faculty_id');
+        //     if ($coordinator_faculty_id) {
+        //         $previousClosures = Closure::whereRaw('DATE_ADD(final_closure_date, INTERVAL 1 DAY) < NOW()')
+        //             ->where('academic_id', $coordinator_faculty_id)
+        //             ->select(
+        //                 'id as No',
+        //                 'name as Title',
+        //                 'start_date as start_date',
+        //                 'final_closure_date as end_date'
+        //             )
+        //             ->orderBy('final_closure_date', 'desc')
+        //             ->get();
+        //     }
+        //     return $this->sendResponse($previousClosures, "Previous Closures List", 200);
+        // }
     }
 
     public function getCurrentClosures()
