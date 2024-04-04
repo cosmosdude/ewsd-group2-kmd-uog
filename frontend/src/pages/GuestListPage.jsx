@@ -110,7 +110,7 @@ const GuestListPage = () => {
                                 <td className="p-3">{index + 1}</td>
                                 <td className="p-3">{user.guest_name}</td>
                                 <td className="p-3">{user.guest_email}</td>
-                                <td className="p-3">N/A</td>
+                                <td className="p-3">{user.last_login_time}</td>
                                 <td className="p-3">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">

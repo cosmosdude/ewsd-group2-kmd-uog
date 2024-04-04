@@ -38,16 +38,29 @@ class UserController extends Controller
         foreach ($users as $user) {
             $userId = $user->user_id;
             if (!isset($formattedUsers[$userId])) {
-                $formattedUsers[$userId] = [
-                    'user_id' => $userId,
-                    'user_name' => $user->user_name,
-                    'user_email' => $user->user_email,
-                    'user_phone' => $user->user_phone,
-                    'role_id' => $user->role_id,
-                    'role_name' => $user->role_name,
-                    'last_login_time' => $this->timeDifference($user->last_login_time),
-                    'faculty_info' => []
-                ];
+                if ($user->last_login_time == null) {
+                    $formattedUsers[$userId] = [
+                        'user_id' => $userId,
+                        'user_name' => $user->user_name,
+                        'user_email' => $user->user_email,
+                        'user_phone' => $user->user_phone,
+                        'role_id' => $user->role_id,
+                        'role_name' => $user->role_name,
+                        'last_login_time' => null,
+                        'faculty_info' => []
+                    ];
+                } else {
+                    $formattedUsers[$userId] = [
+                        'user_id' => $userId,
+                        'user_name' => $user->user_name,
+                        'user_email' => $user->user_email,
+                        'user_phone' => $user->user_phone,
+                        'role_id' => $user->role_id,
+                        'role_name' => $user->role_name,
+                        'last_login_time' => $this->timeDifference($user->last_login_time),
+                        'faculty_info' => []
+                    ];
+                }
             }
             $formattedUsers[$userId]['faculty_names'][] = $user->faculty_name;
         }
@@ -85,7 +98,12 @@ class UserController extends Controller
                     ->toArray();
 
                 $user->faculty_name = $faculties;
-                $user->user_last_access_time = $this->timeDifference($user->user_last_access_time);
+                if ($user->user_last_access_time == null) {
+                    $user->user_last_access_time = null;
+                } else {
+                    $user->user_last_access_time = $this->timeDifference($user->user_last_access_time);
+                }
+                
                 return $this->sendResponse($user, "User Retrieved Successfully", 200);
             } else {
                 return $this->sendError(null, "User not found", 404);

@@ -34,13 +34,14 @@ class Controller extends BaseController
 
         return response()->json($response, $code);
     }
+
     public function timeDifference($studentLastAccess)
     {
         $currentTime = Carbon::now();
         $studentLastAccess = Carbon::parse($studentLastAccess);
         $timeDifference = $currentTime->diff($studentLastAccess);
         if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
-            return '0 minutes ago';
+            return 'Just Now';
         }
 
         if ($timeDifference->days == 0 && $timeDifference->h == 0) {
@@ -61,4 +62,35 @@ class Controller extends BaseController
 
         return $studentLastAccess->format('d M Y, g:i A');
     }
+    // public function timeDifference($studentLastAccess)
+    // {
+    //     $currentTime = Carbon::now();
+    //     $studentLastAccess = Carbon::parse($studentLastAccess);
+    //     $timeDifference = $currentTime->diff($studentLastAccess);
+
+    //     if ($studentLastAccess == 'null') {
+    //         return null;
+    //     }
+    //     if ($timeDifference->days == 0 && $timeDifference->h == 0 && $timeDifference->i == 0) {
+    //         return '-';
+    //     }
+ 
+    //     if ($timeDifference->days == 0 && $timeDifference->h == 0) {
+    //         return $timeDifference->i . ' minutes ago';
+    //     }
+ 
+    //     if ($timeDifference->days == 0) {
+    //         return $timeDifference->h . ' hours and ' . $timeDifference->i . ' minutes ago';
+    //     }
+ 
+    //     if ($timeDifference->days == 1) {
+    //         return 'Yesterday ' . $timeDifference->format('%h AM or %h PM') . ' and ' . $timeDifference->i . ' minutes ago';
+    //     }
+ 
+    //     if ($timeDifference->days <= 2) {
+    //         return 'Yesterday ' . $studentLastAccess->format('g:i A');
+    //     }
+ 
+    //     return $studentLastAccess->format('d M Y, g:i A');
+    // }
 }

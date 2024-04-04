@@ -176,8 +176,16 @@ class FalcultyController extends Controller
                 'users.id as guest_id',
                 'users.name as guest_name',
                 'users.email as guest_email',
+                'users.last_login_time as last_login_time',
                 'falculties.name as faculty_name',
             ]);
+
+            foreach ($guests as $guest) {
+                if ($guest->last_login_time) {
+                    $guest->last_login_time = $this->timeDifference($guest->last_login_time);
+                }
+            }
+
 
         return $this->sendResponse($guests, "Guests List", 200);
     }

@@ -123,15 +123,20 @@ class AuthController extends Controller
             $success['name'] =  $user->name;
 
             $success['id'] = $user->id;
+
+            // dd($user->last_login_time);
+
             if ($user->last_login_time != null) {
-                $user->update([
-                    'last_login_time' => Carbon::now()
-                ]);
                 $success['last_login_time'] = $this->timeDifference(Carbon::parse($user->last_login_time));
             } else {
-                $success['last_login_time'] = "-";
+                $success['last_login_time'] = null;
             }
 
+            $user->update([
+                'last_login_time' => Carbon::now()
+            ]);
+
+            
             if ($request->browser != null || $request->browser != '') {
                 $browser = Browser::where('name', $request->browser)->first();
                 if ($browser == null) {
