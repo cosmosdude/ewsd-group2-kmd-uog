@@ -43,17 +43,7 @@ class CommentController extends Controller
                 'is_commented' => 1
             ]);
 
-            //send email to student when m_coordinator commented
-            //Please make changes in your .env file
-            // MAIL_MAILER=smtp
-            // MAIL_HOST=smtp.yomail.com
-            // MAIL_PORT=587
-            // MAIL_USERNAME=null
-            // MAIL_PASSWORD=null
-            // MAIL_ENCRYPTION=tls
-            // MAIL_FROM_ADDRESS=null
-            // MAIL_FROM_NAME="${APP_NAME}"
-            // $student = $contribution->user;
+            $student = User::
 
             Mail::to($student->email)->send(new CommentedEmail($student->name, $request->content, $contribution));
         } else {
@@ -82,4 +72,13 @@ class CommentController extends Controller
             ->faculty_id;
         return $faculty_id;
     }
+    // private function getStudentId($user_id)
+    // {
+    //     $student_id = DB::table('contributions')
+    //         ->join('users', 'users.id', '=', 'contributions.user_id')
+    //         ->where('users.id', $user_id)
+    //         ->first(['users.email'])
+    //         ->student_id;
+    //     return $student_id;
+    // }
 }

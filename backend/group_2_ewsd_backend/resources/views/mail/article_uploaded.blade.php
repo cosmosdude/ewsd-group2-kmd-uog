@@ -8,12 +8,11 @@
 </head>
 <body>
     <h1>New Article Uploaded</h1>
-    <p>Dear Coordinator, {{ $coordinatorname }}</p>
+    <p>Dear {{ $name }}</p>
     <p>A new article has been uploaded by {{ $studentname }}:</p>
     <p><b>Title: </b>{{ $contribution->name }}</p>
     <p><b>Description: </b></strong> {{ $contribution->description }}</p>
     <p><b>Submitted_Date: </b> {{ $contribution->submitted_date }}</p>
-    <p><b>View File: </b>{{ $contribution }}</p>
     <p>Thank you</p>
 </body>
 </html>
