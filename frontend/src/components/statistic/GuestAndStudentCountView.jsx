@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useEffectAllAcademicYears from "../../hooks/useEffectAllAcademicYears";
 import useEffectFacultyGuestAndStudentCounts from "../../hooks/useEffectFacultyGuestAndStudentCounts";
 import Dropdown from "../Dropdown";
@@ -14,6 +14,10 @@ function GuestAndStudentCountView() {
     let [academicYears] = useEffectAllAcademicYears()
     let [year, setYear] = useState()
     let counts = useContributionsAndContributorsCount(year?.id ?? '')
+
+    useEffect(() => {
+        setYear(academicYears[0])
+    }, [academicYears])
 
     return ( 
         <>

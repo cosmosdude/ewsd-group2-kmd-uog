@@ -22,6 +22,7 @@ const filter = {
     get statusOptions() {
         return [
             {id: 'all', name: "All"},
+            // {id: 'upload', name: "Pending"},
             {id: 'approve', name: "Approved"},
             {id: 'reject', name: "Rejected"},
         ]
@@ -148,6 +149,7 @@ const LiveMagazinePage = () => {
                             />
                         )
                     })}
+                    <div className="h-[250px]"/>
                 </div>
             </div>
         </div>

@@ -159,7 +159,7 @@ const UsersPage = () => {
                     </tbody>
                 </table>
                 <div className="inline-block h-[50px]"></div>
-                <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
+                {/* <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &lt;
                     </button>
@@ -169,7 +169,7 @@ const UsersPage = () => {
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &gt;
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     )

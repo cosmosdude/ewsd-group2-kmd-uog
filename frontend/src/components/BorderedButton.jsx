@@ -11,6 +11,8 @@ function BorderedButton({className, title, to, onClick}) {
             border border-secondary-500
             bg-white
             rounded-full
+            hover:opacity-25
+            transition-all
             ${className ?? ''}
             `}
             onClick={(e)=>{

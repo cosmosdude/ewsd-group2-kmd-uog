@@ -1,6 +1,8 @@
 import ResponsiveCarousel from 'react-multi-carousel'
 import "react-multi-carousel/lib/styles.css";
 
+import emptyImage from '../assets/illustrations/empty-image2.png'
+
 import LeftArrowIcon from "../assets/leftarrow.png"
 import RightArrowIcon from "../assets/rightarrow.png"
 
@@ -53,7 +55,7 @@ function Carousel({images = []}) {
     // if invalid or not array
     // assume empty
     if (!images || !Array.isArray(images)) images = []
-    // console.log(images)
+    console.log("Images", images)
     let responsive = {
         desktop: {
           breakpoint: {
@@ -68,12 +70,16 @@ function Carousel({images = []}) {
     // images = [...images, ...images, ...images]
 
     return (
-        <div className="aspect-[1/0.75] rounded w-full" onClick={e => {
+        <div className="aspect-[1/0.75] rounded w-full relative" onClick={e => {
             e.preventDefault()
             e.stopPropagation()
         }}>
-            <ResponsiveCarousel 
-                className="h-full rounded border" 
+            {<img 
+                className="absolute rounded w-full h-full object-cover bg-black"
+                src={emptyImage}
+            />}
+            {images.length > 0 && <ResponsiveCarousel 
+                className="h-full rounded" 
                 responsive={responsive} 
                 infinite={images.length > 1}
                 autoPlay={images.length > 1}
@@ -99,7 +105,7 @@ function Carousel({images = []}) {
                         <img className="object-cover aspect-[1/0.75] border" key={i} src={x}/>
                     )
                 })}
-            </ResponsiveCarousel>
+            </ResponsiveCarousel>}
         </div>
     );
 }

@@ -4,7 +4,7 @@ function MostActiveGuestListView() {
     let guests = useEffectMostActiveGuestUsers()
 
     return (
-        <div className="grow basis-0 shrink-0 flex flex-col border rounded-[10px] overflow-scroll">
+        <div className="grow basis-0 shrink-0 flex flex-col border rounded-[10px] overflow-scroll scrollbar-hidden">
             <h1 className="sticky top-0 left-0 bg-white z-[2] p-[10px] border-b text-md font-bold">
                 Most Active Users
             </h1>

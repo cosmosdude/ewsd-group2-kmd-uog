@@ -3,7 +3,7 @@ import useEffectMostUsedBrowsers from "../../hooks/useEffectMostUsedBrowsers";
 function MostUsedBrowserListView() {
     let browsers = useEffectMostUsedBrowsers()
     return (
-        <div className="grow basis-0 shrink-0 flex flex-col">
+        <div className="grow basis-0 shrink-0 flex flex-col scrollbar-hidden">
             <h1 className="sticky top-0 p-[10px] bg-white border-b text-md font-bold">
                 Most Used Web Browsers
             </h1>

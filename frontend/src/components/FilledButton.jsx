@@ -18,6 +18,8 @@ export default function FilledButton({
              text-white
             ${bgStyle}
             rounded-full
+            hover:opacity-75
+            transition-all
             `}
             onClick={(e)=>{
                 // navigate('new')

@@ -14,16 +14,19 @@ const Breadcrumb = ({links = [], className = ""}) => {
         return l
     }
 
+    let shouldShow = links.length > 2
+
     return (
         <ul className={`flex gap-2 items-center ${className}`}>
             {links.map((item, index) => {
-                let isLast = index == (links.length - 1)
+                let isFirst = index === 0
+                let isLast = index === (links.length - 1)
+                let isMiddle = !isFirst && !isLast
                 return (
                     <Fragment key={`${index}`} >
-                        <li>
+                        <li className={`${isMiddle ? 'hidden' : 'list-item'} md:list-item`}>
                             <Link 
                                 className={`
-                                
                                 font-serif text-sm
                                 ${item.current && 'text-blue-400'} 
                                 hover:opacity-50 transition-all
@@ -31,7 +34,17 @@ const Breadcrumb = ({links = [], className = ""}) => {
                                 to={modifiedLink(item.link)}
                             >{item.name}</Link>
                         </li>
-                        {!isLast && (<li className="font-serif text-sm">/</li>)}
+                        {!isLast && (<li className={`${isMiddle ? 'hidden' : 'list-item'} md:list-item font-serif text-sm`}>/</li>)}
+                        {shouldShow && isFirst && <li className={`list-item md:hidden`}>
+                            <Link 
+                                className={`
+                                font-serif text-sm
+                                hover:opacity-50 transition-all
+                                `} 
+                                to={-1}
+                            >. . .</Link>
+                        </li>}
+                        {shouldShow && isFirst && <li className={`list-item md:hidden font-serif text-sm`}>/</li>}
                     </Fragment>
                 )
             })}

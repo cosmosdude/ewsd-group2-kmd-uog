@@ -4,7 +4,7 @@ function MostUploadedStudentListView() {
     let students = useEffectMostActiveStudents()
 
     return (
-        <div className="grow basis-0 shrink-0 flex flex-col border rounded-[10px]">
+        <div className="grow basis-0 shrink-0 flex flex-col border rounded-[10px] scrollbar-hidden">
             <h1 className="p-[10px] border-b text-md font-bold">
                 Most Uploaded Students
             </h1>
