@@ -16,6 +16,7 @@ import Dialog from "../components/Dialog";
 import { usePushNoti } from "../components/Noti/NotiSystem";
 import { profile } from "../assets/profile/profile";
 import { useUserContext } from "../hooks/UserData/UserData";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 function ArticleDetailPage() {
 
@@ -29,6 +30,7 @@ function ArticleDetailPage() {
     let isStudent = user.role_name === 'student'
 
     let [commentUUID, setCommentUUID] = useState(Math.random())
+    let [isCommenting, setIsCommenting] = useState(false)
 
     let detail = useEffectArticleDetail(id, [commentUUID])
     let status = detail?.contribution?.status
@@ -85,7 +87,7 @@ function ArticleDetailPage() {
 
     async function comment(text) {
         if (!text) return
-
+        setIsCommenting(() => true)
         try {
             let f = new FormData()
             f.append('contribution_id', id)
@@ -104,6 +106,8 @@ function ArticleDetailPage() {
         } catch (error) {
             console.log(error)
         }
+
+        setIsCommenting(() => false)
     }
 
     let [showDialog, setShowDialog] = useState(false)
@@ -211,7 +215,7 @@ function ArticleDetailPage() {
                     />
                 }) ?? false}
 
-                <CommentBox userId={user.user_id} onComment={comment}/>
+                <CommentBox userId={user.user_id} onComment={comment} isCommenting={isCommenting}/>
             </div>
         </div>
     );
@@ -238,7 +242,7 @@ function Comment({authorId, author, ago, comment}) {
     );
 }
 
-function CommentBox({userId, onComment}) {
+function CommentBox({userId, onComment, isCommenting}) {
     let textArea = useRef()
     return (
         <div className="sticky bottom-0 bg-primary-200 py-[25px] px-[25px] flex gap-[10px] items-start">
@@ -256,7 +260,7 @@ function CommentBox({userId, onComment}) {
                     className="outline-none p-[10px] w-full h-[75px] resize-none"
                     placeholder="Add a comment"
                 />
-                <button 
+                {!isCommenting && <button 
                     className="
                     flex w-[36px] aspect-square 
                     rounded-full
@@ -270,7 +274,18 @@ function CommentBox({userId, onComment}) {
                         onComment?.(textArea.current.value)
                         textArea.current.value = ""
                     }}
-                ><img src={UploadIcon} className="w-full h-full"/></button>
+                ><img src={UploadIcon} className="w-full h-full"/></button>}
+                {isCommenting && <div
+                className="
+                flex w-[36px] aspect-square items-center justify-center
+                rounded-full
+                 bg-white hover:opacity-25
+                transition-all
+                "
+                >
+                    <LoadingIndicator/>
+                </div>}
+                
             </div>
         </div>
     )

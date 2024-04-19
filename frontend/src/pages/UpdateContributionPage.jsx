@@ -6,6 +6,7 @@ import useEffectArticleDetail from "../hooks/useEffectArticleDetail";
 import FilledButton from "../components/FilledButton";
 import BorderedButton from "../components/BorderedButton";
 import apiConfig from "../configs/api.config";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 let InlineTextField = forwardRef(function ({required}, ref) {
     return (
@@ -84,6 +85,7 @@ function UpdateContributionPage() {
 
     async function updateArticle() {
         setError(null)
+        setLoading(() => true)
         try {
             let res = await fetch(
                 apiConfig.path.articleUpdate(id), {
@@ -109,6 +111,7 @@ function UpdateContributionPage() {
             console.log(error)
             setError(`Unable to upload submission(${error})`)
         }
+        setLoading(() => false)
     }
 
     return (
@@ -116,7 +119,7 @@ function UpdateContributionPage() {
         className="
         fixed 
         left-0 top-0 
-        z-[1000]
+        z-[21000]
         flex w-screen h-screen bg-black/90 p-[25px] md:px-[150px] md:py-[50px] overflow-hidden
         "
         onClick={e => {
@@ -253,10 +256,10 @@ function UpdateContributionPage() {
                     </div> 
                     {/* Input Row */}
                     <div className="flex flex-col items-center md:items-center gap-[5px] md:gap-[25px]">
-                        <FilledButton className="px-[75px] shadow" title="Update"/>
+                        {!loading && <FilledButton className="px-[75px] shadow" title="Update"/>}
+                        {loading && <LoadingIndicator/>}
                     </div>
                 </div>
-                
             </div>
         </form>
     </div>

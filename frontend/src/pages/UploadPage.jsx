@@ -8,6 +8,7 @@ import UploadIcon from "../assets/imageupload.png"
 import CrossIcon from "../assets/cross.png"
 import FilledButton from "../components/FilledButton";
 import apiConfig from "../configs/api.config";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 
 function ImageFile({src, onDelete}) {
@@ -104,6 +105,7 @@ function UploadPage() {
 
     async function uploadArticle() {
         setError(null)
+        setLoading(() => true)
         try {
             let res = await fetch(
                 apiConfig.path.articleUpload(), {
@@ -131,6 +133,7 @@ function UploadPage() {
             console.log(error)
             setError(`Unable to upload submission(${error})`)
         }
+        setLoading(() => false)
     }
 
     return (
@@ -319,7 +322,8 @@ function UploadPage() {
                     </div> 
                     {/* Input Row */}
                     <div className="flex w-full justify-center gap-[5px] md:gap-[25px]">
-                        <FilledButton className="px-[75px] shadow" title="Submit"/>
+                        {!loading && <FilledButton className="px-[75px] shadow" title="Submit"/>}
+                        {loading && <LoadingIndicator/>}
                     </div>
                 </div>
             </div>
