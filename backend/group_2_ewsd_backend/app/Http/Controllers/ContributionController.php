@@ -598,9 +598,6 @@ class ContributionController extends Controller
                 $message->from($cusUser['from']);
                 $message->to($coordinator_email['to']);
                 $message->subject('Article Uploaded');
-                // $message->subject($coordinator_name['name']);
-                // $message->subject($student);
-                // $message->subject($subject);
             });
  
             //Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));

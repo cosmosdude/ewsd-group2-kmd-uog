@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -182,6 +183,9 @@ class AuthController extends Controller
                     'user_id' => $user->id,
                     'faculty_id' => $faculty
                 ]);
+
+                // send email
+                $this->sendMailToCoordinator($faculty);
             }
             return $user;
         });
@@ -192,6 +196,25 @@ class AuthController extends Controller
         //welcome message for guest account creation
         //need to ask
         return $this->sendResponse($success, "Guest Registered", 200);
+    }
+
+    private function sendMailToCoordinator($facultyId) {
+
+        $coordinator = DB::table('users')
+            ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+            ->where('faculty_users.faculty_id', '=', $facultyId)
+            ->where('users.role_id', '=', 3)
+            ->select(['name', 'email'])
+            ->first();
+
+        Mail::mailer('smtp')->send(
+            'mail.guest_register', 
+            ['name' => $coordinator->name], 
+            function($message) use ($coordinator) {
+                $message->from(env('MAIL_USERNAME'));
+                $message->to($coordinator->email);
+                $message->subject('New Guest Registered');
+        });
     }
 
     public function testHash(Request $request) {
