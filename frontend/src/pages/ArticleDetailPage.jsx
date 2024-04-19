@@ -30,6 +30,7 @@ function ArticleDetailPage() {
     let isStudent = user.role_name === 'student'
 
     let [commentUUID, setCommentUUID] = useState(Math.random())
+    let [isUpdating, setIsUpdating] = useState(false);
     let [isCommenting, setIsCommenting] = useState(false)
 
     let detail = useEffectArticleDetail(id, [commentUUID])
@@ -50,6 +51,7 @@ function ArticleDetailPage() {
 
     async function updateStatus(status) {
         let data = `closure_id=${detail?.contribution?.closure_id}&status=${status}`
+        setIsUpdating(() => true)
         try {
             let response = await fetch(apiConfig.path.updateArticleStatus(id), {
                 method: 'PUT',
@@ -69,8 +71,16 @@ function ArticleDetailPage() {
 
                 if (status === 'approve') {
                     pushNoti({
-                        title: "Success",
-                        message: "Successfully added to the selected contribution.",
+                        title: "Approved",
+                        message: "Article has been approved.",
+                        style: 'success'
+                    })
+                }
+
+                if (status === 'reject') {
+                    pushNoti({
+                        title: "Rejected",
+                        message: "Article has been rejected.",
                         style: 'success'
                     })
                 }
@@ -83,6 +93,7 @@ function ArticleDetailPage() {
         } catch (e) { 
             console.log("F Error", e)
         }
+        setIsUpdating(() => false)
     }
 
     async function comment(text) {
@@ -173,7 +184,7 @@ function ArticleDetailPage() {
                             status={detail.contribution?.status}
                             commentCount={detail.comments?.length}
                         />
-                        {(isUpload && !isStudent) && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
+                        {(!isUpdating && isUpload && !isStudent) && <div className="mx-[20px] grid grid-cols-2 gap-[10px]">
                             <FilledButton title="Approve" onClick={() => updateStatus('approve')}/>
                             {/* <button 
                                 className="
@@ -193,6 +204,10 @@ function ArticleDetailPage() {
                                 onClick={() => updateStatus('reject')}
                             >Reject</button> */}
                         </div>}
+                        {isUpdating && <div className="flex items-center justify-center">
+                            <LoadingIndicator/>
+                        </div>}
+                        
                     </div>
                 </div>
             </div>

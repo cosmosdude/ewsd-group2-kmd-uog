@@ -710,6 +710,8 @@ class ContributionController extends Controller
         $student_info = DB::table('contributions')
             ->select(
                 'users.id as student_id',
+                'users.name as name',
+                'users.email as email',
                 'faculty_users.faculty_id',
             )
             ->join('users', 'contributions.user_id', '=', 'users.id')
@@ -726,10 +728,43 @@ class ContributionController extends Controller
             ->first();
         if ($student_info->faculty_id == $auth_user_info->faculty_id) {
             $contribution->update(['status' => $request->status]);
+
+            $this->sendStatusEmail(
+                $student_info->name,
+                $contribution->name,
+                $request->status,
+                $student_info->email
+            );
+
             return $this->sendResponse($contribution, "Contribution Status Updated Successfully!", 200);
         }
         return $this->sendError("You don't have permission to update this contribution", 403);
     }
+
+    private function sendStatusEmail($studentName, $article, $status, $studentMail) 
+    {
+
+        Mail::mailer('smtp')->send(
+            'mail.status', 
+            [
+                'titleStatus' => ucfirst($this->getArticleStatus($status)),
+                'status' => $this->getArticleStatus($status),
+                'student' => $studentName,
+                'article' => $article
+            ], 
+            function($message) use ($studentMail, $status) {
+                $message->from(env('MAIL_USERNAME'));
+                $message->to($studentMail);
+                $message->subject("Article " . ucfirst($this->getArticleStatus($status)));
+            }
+        );
+    }
+
+    private function getArticleStatus($status) {
+        if ($status == 'approve') { return 'approved'; }
+        return 'rejected';
+    }
+
     // get all uploaded contribution list
     public function UploadedContributionList()
     {
