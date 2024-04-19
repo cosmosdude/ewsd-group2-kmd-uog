@@ -10,6 +10,7 @@ use App\Mail\ArticleUploaded;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\FacultyUser;
 use App\Models\Falculty;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -578,22 +579,17 @@ class ContributionController extends Controller
         }
         $contribution = Contribution::create($contributionData);
 
-        //if student of faculty_id and coordinator of faculty_id are the same send email
-        $user = auth()->user();
-        if ($user->role_id === 4) {
-            $coordinator = User::join('faculty_users', 'users.id', '=', 'faculty_users.user_id')
-                ->where('faculty_users.faculty_id', $user->faculty_id)
-                ->where('users.role_id', 3)
-                ->first();
-        }
+        $user = Auth::user();
+        $faculty = FacultyUser::where('user_id',$user->id)->first()->faculty_id;
+        $coordinator = DB::table('users')->join('faculty_users','faculty_users.user_id','=','users.id')->where('faculty_users.faculty_id',$faculty)->select('name as c_name', 'email as c_email')->first();
         if ($coordinator) {
-
-            $coordinator_name['name'] = $coordinator->name;
-            $coordinator_email['to'] = $coordinator->email;
+ 
+            $coordinator_name['name'] = $coordinator->c_name;
+            $coordinator_email['to'] = $coordinator->c_email;
             $subject  = $contribution;
             $student = $user->name;
             $cusUser['from'] = env('MAIL_USERNAME');
-
+ 
             Mail::mailer('smtp')->send('mail.article_uploaded', [
                 'name' => $coordinator_name['name'],
                 'studentname' => $student,
@@ -601,11 +597,12 @@ class ContributionController extends Controller
             ], function($message) use ($coordinator_email, $cusUser, $coordinator_name, $student, $subject) {
                 $message->from($cusUser['from']);
                 $message->to($coordinator_email['to']);
-                $message->subject($coordinator_name['name']);
-                $message->subject($student);
-                $message->subject($subject);
+                $message->subject('Article Uploaded');
+                // $message->subject($coordinator_name['name']);
+                // $message->subject($student);
+                // $message->subject($subject);
             });
-
+ 
             //Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
