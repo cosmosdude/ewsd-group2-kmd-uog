@@ -25,9 +25,9 @@ class CommentController extends Controller
         $contribution =  Contribution::findOrFail($request->contribution_id);
         $student_faculty_id = $this->getFacultyId($contribution->user_id);
         $auth_user_faculty_id = FacultyUser::where('user_id',Auth::user()->id)
-        ->where('faculty_id',$student_faculty_id)
-        ->first()
-        ->faculty_id;
+            ->where('faculty_id',$student_faculty_id)
+            ->first()
+            ->faculty_id;
         // return response()->json($auth_user_faculty_id);
         if ($student_faculty_id != $auth_user_faculty_id) {
             return $this->sendError('You don\'t have permission to comment this contribution', 403);
@@ -38,29 +38,94 @@ class CommentController extends Controller
             'contribution_id' => $request->contribution_id,
             'user_id' => Auth::user()->id,
         ]);
+
+        $user = Auth::user();
+
         if (Auth::user()->hasRole('m_coordinator')) {
             $contribution->update([
                 'is_commented' => 1
             ]);
 
-            $student = User::
-
-            Mail::to($student->email)->send(new CommentedEmail($student->name, $request->content, $contribution));
-        } else {
-            //send email to coordinator when student commented
-            $student_faculty_id = $this->getFacultyId($contribution->user_id);
-            $coordinator = User::where('faculty_id', $student_faculty_id)
-                ->where('role_id', 3)
+            $student = DB::table('users')
+                ->join('contributions', 'contributions.user_id', '=', 'users.id')
+                ->where('contributions.user_id', '=', $contribution->user_id)
+                ->select(['users.email as email', 'users.name as name'])
                 ->first();
-            if ($coordinator) {
-                //dd($coordinator);
-                Mail::to($coordinator->email)->send(new CommentedEmail($coordinator->name, $request->content, $contribution));
-            }
+
+            $this->sendEmail(
+                $student->name,
+                $user->name,
+                $contribution->name,
+                $comment->content,
+                $student->email
+            );
+
+            // Mail::to($student->email)
+            //     ->send(new CommentedEmail($student->name, $request->content, $contribution));
+        } else {
+            $coordinator = DB::table('users')
+                ->join('faculty_users', 'faculty_users.user_id', '=', 'users.id')
+                ->where('faculty_users.faculty_id', $student_faculty_id)
+                ->where('users.role_id', 3)
+                ->select(['users.name as name', 'users.email as email'])
+                ->first();
+
+            $this->sendEmail(
+                $coordinator->name,
+                $user->name,
+                $contribution->name,
+                $comment->content,
+                $coordinator->email
+            );
+            //send email to coordinator when student commented
+            // $student_faculty_id = $this->getFacultyId($contribution->user_id);
+            // $coordinator = User::where('faculty_id', $student_faculty_id)
+            //     ->where('role_id', 3)
+            //     ->first();
+            // if ($coordinator) {
+            //     //dd($coordinator);
+            //     Mail::to($coordinator->email)->send(new CommentedEmail($coordinator->name, $request->content, $contribution));
+            // }
+
+            // $this->sendEmail(
+            //     $student->name,
+            //     $user->name,
+            //     $contribution->name,
+            //     $comment->content,
+            //     $student->email
+            // );
         }
 
         return $this->sendResponse($comment, "Successfully Commented to Contributions", 200);
 
     }
+
+    private function sendEmail(
+        $username, $commenter, $article, $comment,
+        $toEmail    
+    ) {
+        /*
+        <h1>New Comment</h1>
+    <p>Dear {{ $username }},</p>
+    <p>{{$commenter}} has made a comment on {{$article}}</p>
+    <p><strong>Comment - </strong> {{ $comment }}</p>
+    <p>Thank you,</p>
+        */
+        Mail::mailer('smtp')->send(
+            'mail.comment', 
+            [
+                'username' => $username,
+                'commenter' => $commenter,
+                'article' => $article,
+                'comment' => $comment
+            ], 
+            function($message) use ($toEmail) {
+                $message->from(env('MAIL_USERNAME'));
+                $message->to($toEmail);
+                $message->subject('New comment');
+        });
+    }
+
     private function getFacultyId($user_id)
     {
 
