@@ -61,7 +61,7 @@ export default function useEffectUnregisteredFaculties() {
                     if (response.status === 200) {
                         // capture the response payload
                         // setFaculties(json.data)
-                        unregisteredIds = json.data
+                        unregisteredIds = json.data.filter(x => x !== 1)
                         console.log("IDS", unregisteredIds)
                     } else {
                         pushNoti({

@@ -7,6 +7,7 @@ import FilledButton from "../components/FilledButton";
 import apiConfig from "../configs/api.config";
 import { usePushNoti } from "../components/Noti/NotiSystem";
 import { useAuthContext } from "../contexts/AuthContext";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 function GuestFacultyRegisterPage() {
 
@@ -15,6 +16,8 @@ function GuestFacultyRegisterPage() {
     let auth = useAuthContext()
 
     let faculties = useEffectUnregisteredFaculties()
+
+    let [loading, setLoading] = useState(false);
 
     let [selectedIds, setSelectedIds] = useState([])
     function toggle(id) {
@@ -29,6 +32,8 @@ function GuestFacultyRegisterPage() {
             console.log(`faculties[${i}]`, x)
             f.set(`faculties[${i}]`, x)
         })
+
+        setLoading(() => true)
         let response = await fetch(apiConfig.path.registerFacultiesForGuest(), {
             method: "POST",
             headers: {
@@ -51,7 +56,7 @@ function GuestFacultyRegisterPage() {
                 style: 'danger'
             })
         }
-
+        setLoading(() => false)
         console.log(json)
     }
 
@@ -93,10 +98,11 @@ function GuestFacultyRegisterPage() {
                     })}
                 </div>
                 <div className="flex items-center justify-center">
-                    <FilledButton 
+                    {!loading && <FilledButton 
                         className="w-[250px] shadow-xl" title={"Subscribe"} onClick={subscribe}
                         gray={selectedIds.length === 0}
-                    />
+                    />}
+                    {loading && <LoadingIndicator/>}
                 </div>
                 
             </div>
