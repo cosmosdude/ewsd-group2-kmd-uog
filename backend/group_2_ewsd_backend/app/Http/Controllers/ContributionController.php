@@ -587,9 +587,26 @@ class ContributionController extends Controller
                 ->first();
         }
         if ($coordinator) {
-            //if there has a problem display with dd first
-            //dd($coordinator);
-            Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
+
+            $coordinator_name['name'] = $coordinator->name;
+            $coordinator_email['to'] = $coordinator->email;
+            $subject  = $contribution;
+            $student = $user->name;
+            $cusUser['from'] = env('MAIL_USERNAME');
+
+            Mail::mailer('smtp')->send('mail.article_uploaded', [
+                'name' => $coordinator_name['name'],
+                'studentname' => $student,
+                'contribution' => $subject,
+            ], function($message) use ($coordinator_email, $cusUser, $coordinator_name, $student, $subject) {
+                $message->from($cusUser['from']);
+                $message->to($coordinator_email['to']);
+                $message->subject($coordinator_name['name']);
+                $message->subject($student);
+                $message->subject($subject);
+            });
+
+            //Mail::to($coordinator->email)->send(new ArticleUploaded($coordinator->name, $user->name, $contribution));
         }
         return $this->sendResponse($contribution, "Contribution Created Successfully!", 201);
     }
@@ -818,6 +835,18 @@ class ContributionController extends Controller
         ->groupBy('falculties.id','falculties.name')
         ->get();
         return $this->sendResponse($contributionsCount, "Number of contributions",200);
+    }
+
+    public function sendExampleMail(Request $request) 
+    {
+        Mail::mailer('smtp')->send('mail.fuckyou', [], function($message) {
+            $message->from("uog.kmd.ewsd.group2.2024.noreply@gmail.com");
+            $message->to("mailfaculty@yopmail.com");
+            $message->subject("Coordinator Name");
+            $message->subject("Student");
+            $message->subject("Subject");
+        });
+        return $this->sendResponse("Ok", "Ok", 200);
     }
 
 }

@@ -22,6 +22,8 @@ Route::apiResource('faculties', FalcultyController::class)->except('show', 'dest
 Route::get('/faculties', [FalcultyController::class, 'index']);
 Route::apiResource('/academic-years', AcademicYearController::class)->except('update', 'destroy', 'store');
 
+Route::get('sendExampleMail',  [ContributionController::class, 'sendExampleMail']);
+
 Route::middleware('auth:api')->group(function () {
     Route::get('/faculties-for-users', [FalcultyController::class, 'getAllFacultyForUser']);
     Route::get('/contributions/{id}/read-count', [ContributionController::class, 'addReadCount']);

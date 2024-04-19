@@ -16,7 +16,9 @@ class ArticleUploaded extends Mailable
     public $coordinatorname;
     public $contribution;
 
-    public function __construct($user, $coordinator, $contribution){
+    
+
+    public function __construct($studentname, $coordinatorname, $contribution){
         $this->studentname = $studentname;
         $this->coordinatorname = $coordinatorname;
         $this->$contribution = $contribution;
