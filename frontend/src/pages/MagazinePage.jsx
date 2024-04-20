@@ -140,7 +140,7 @@ const MagazinePage = () => {
             </div>
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
                 {/* <div className="grid grid-cols-3 gap-3 w-full flex-wrap"> */}
-                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
+                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start flex-wrap gap-[24px]">
                 {articles.map((item, index) => {
                         let status = item.contribution_status
                         return (
@@ -167,6 +167,7 @@ const MagazinePage = () => {
                             />
                         )
                     })}
+                    <div className="h-[250px]"/>
                 </div>
             </div>
         </div>

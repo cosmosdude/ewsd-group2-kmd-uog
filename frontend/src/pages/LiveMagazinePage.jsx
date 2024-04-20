@@ -111,7 +111,7 @@ const LiveMagazinePage = () => {
                 </div>
             </div>
             <div className="grow flex overflow-y-scroll justify-center  overflow-x-scroll py-[10px]">
-                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 items-start flex-wrap gap-[24px]">
+                <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-start flex-wrap gap-[24px]">
                     {articles.map((item, index) => {
                         let status = item.contribution_status
                         let isUpload = status !== 'approve' && status !== 'reject'
@@ -149,7 +149,9 @@ const LiveMagazinePage = () => {
                             />
                         )
                     })}
-                    <div className="h-[250px]"/>
+                    <div className="h-[50px]"/>
+                    <div className="h-[50px]"/>
+                    <div className="h-[50px]"/>
                 </div>
             </div>
         </div>

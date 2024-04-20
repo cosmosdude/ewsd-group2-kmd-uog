@@ -159,12 +159,12 @@ const SignInPage = () => {
                                 window.localStorage.setItem("rememberMe", newValue) 
                             }}/>
                             <span className="grow"></span>
-                            <button 
+                            {/* <button 
                                 className="text-sm font-serif text-secondary-500 hover:opacity-75 transition-all"
                                 onClick={(e) => {
                                     e.preventDefault()
                                 }}
-                            >Forget password?</button>
+                            >Forget password?</button> */}
                         </div>
                         <div className="mt-[25px] pb-[25px]">
                             <button 

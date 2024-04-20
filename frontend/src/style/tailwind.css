@@ -3310,6 +3310,12 @@ html {
   }
 }
 
+@media (min-width: 1280px) {
+  .xl\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .\[\&\>\*\:first-child\]\:rounded-l-\[6px\]>*:first-child {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
