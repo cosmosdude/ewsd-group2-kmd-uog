@@ -24,13 +24,13 @@ function MagazineListItemRow({
 
     return (
         <tr className="text-center hover:bg-slate-100 font-serif text-sm">
-            <td className="p-3">{index + 1}</td>
-            <td className="p-3 underline font-semibold decoration-3 decoration-gray-400">
+            <td className="p-3 whitespace-nowrap">{index + 1}</td>
+            <td className="p-3 underline font-semibold decoration-3 decoration-gray-400 whitespace-nowrap">
                 <Link to={to}>{magazine.name}</Link>
             </td>
-            <td className="p-3">{start}</td>
+            <td className="p-3 whitespace-nowrap">{start}</td>
             {showClosureDate && <td className="p-3">{closure}</td>}
-            <td className="p-3">{final}</td>
+            <td className="p-3 whitespace-nowrap">{final}</td>
             {showOptions && <td className="p-3">
                 <div className="group relative inline-flex bg-gray-100">
                     <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">

@@ -47,11 +47,11 @@ const MagazineCurrentPage = () => {
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
                     <TableHeaderRow>
-                        <th className="p-5">No</th>
-                        <th className="p-5">Closure Name</th>
-                        <th className="p-5">Start Date</th>
-                        <th className="p-5">Closure Date</th>
-                        <th className="p-5">Final Closure Date</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">No</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">Closure Name</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">Start Date</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">Closure Date</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">Final Closure Date</th>
                         {isAdmin && <th className="p-5">Action</th>}
                     </TableHeaderRow>
                     </thead>
@@ -105,7 +105,7 @@ const MagazineCurrentPage = () => {
                     </tbody>
                 </table>
                 <div className="inline-block h-[50px]"></div>
-                <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
+                {/* <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &lt;
                     </button>
@@ -115,7 +115,7 @@ const MagazineCurrentPage = () => {
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &gt;
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     )

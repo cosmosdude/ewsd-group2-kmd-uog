@@ -22,9 +22,10 @@ const Breadcrumb = ({links = [], className = ""}) => {
                 let isFirst = index === 0
                 let isLast = index === (links.length - 1)
                 let isMiddle = !isFirst && !isLast
+                let shouldHide = isMiddle || (isFirst && links.length > 2)
                 return (
                     <Fragment key={`${index}`} >
-                        <li className={`${isMiddle ? 'hidden' : 'list-item'} md:list-item`}>
+                        <li className={`${shouldHide ? 'hidden' : 'list-item'} md:list-item`}>
                             <Link 
                                 className={`
                                 font-serif text-sm
@@ -34,7 +35,7 @@ const Breadcrumb = ({links = [], className = ""}) => {
                                 to={modifiedLink(item.link)}
                             >{item.name}</Link>
                         </li>
-                        {!isLast && (<li className={`${isMiddle ? 'hidden' : 'list-item'} md:list-item font-serif text-sm`}>/</li>)}
+                        {!isLast && (<li className={`${shouldHide ? 'hidden' : 'list-item'} md:list-item font-serif text-sm`}>/</li>)}
                         {shouldShow && isFirst && <li className={`list-item md:hidden`}>
                             <Link 
                                 className={`

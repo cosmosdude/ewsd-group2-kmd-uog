@@ -28,7 +28,7 @@ const DashboardPage = () => {
     }
 
     return (
-        <div className=" h-full flex flex-col gap-[10px] p-[20px] overflow-scroll bg-white">
+        <div className=" h-full flex flex-col gap-[10px] p-[20px] overflow-scroll bg-white scrollbar-hidden">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-[10px]">
                 <div className="border rounded-[10px] h-[400px] flex flex-col">
                     <CurrentContributionsView/>
@@ -57,7 +57,7 @@ const DashboardPage = () => {
                     {/*  Most Active Guests */}
                     <MostActiveGuestListView/>
                 </div>
-                <div className="h-[400px] flex flex-col gap-[10px] border rounded-[10px] overflow-scroll">
+                <div className="h-[400px] flex flex-col gap-[10px] border rounded-[10px] overflow-scroll scrollbar-hidden">
                     <MostUsedBrowserListView/>
                 </div>
             </div>

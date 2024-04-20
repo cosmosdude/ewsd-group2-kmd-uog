@@ -16,6 +16,7 @@ import extractContributionImageSrcs from "../util/extractContributionImageSrcs"
 import extractContributionFileSrc from "../util/extractContributionFileSrc"
 import useEffectAllFaculties from "../hooks/useEffectAllFaculties"
 import { usePushNoti } from "../components/Noti/NotiSystem"
+import BorderedButton from "../components/BorderedButton"
 
 const MagazinePage = () => {
     let pushNoti = usePushNoti()
@@ -105,15 +106,12 @@ const MagazinePage = () => {
                     ]}
                 />
                 <span className="grow"/>
-                { isMM && <button 
-                    className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+
+                {isMM && <BorderedButton 
+                    // className="p-2 pl-8 pr-8 text-purple-500 font-bold rounded"
+                    title="Download"
                     onClick={downloadAllArticles}
-                    // to={
-                    //     // routesConfig.contribution.upload(magazineId)
-                    // }
-                >
-                    Download Magazine
-                </button>}
+                />}
             </div>
             <div className="flex flex-col items-center gap-2">
                 <h1 className="font-bold text-2xl">{magazine && magazine.name && magazine.name}</h1>

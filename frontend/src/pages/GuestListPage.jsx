@@ -96,10 +96,10 @@ const GuestListPage = () => {
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
                         <TableHeaderRow>
-                            <th className="p-5">No</th>
-                            <th className="p-5">Name</th>
-                            <th className="p-5">Email</th>
-                            <th className="p-5">Last Access</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">No</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">Name</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">Email</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">Last Access</th>
                             <th></th>
                         </TableHeaderRow>
                     </thead>
@@ -107,11 +107,11 @@ const GuestListPage = () => {
                     {filteredUsers.map((user, index) => {
                         return (
                             <tr key={index} className="text-center hover:bg-slate-100">
-                                <td className="p-3">{index + 1}</td>
-                                <td className="p-3">{user.guest_name}</td>
-                                <td className="p-3">{user.guest_email}</td>
-                                <td className="p-3">{user.last_login_time}</td>
-                                <td className="p-3">
+                                <td className="p-3 whitespace-nowrap">{index + 1}</td>
+                                <td className="p-3 whitespace-nowrap">{user.guest_name}</td>
+                                <td className="p-3 whitespace-nowrap">{user.guest_email}</td>
+                                <td className="p-3 whitespace-nowrap">{user.last_login_time}</td>
+                                <td className="p-3 whitespace-nowrap">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">
                                             <img className="m-1" src={ThreeDotIcon}/>

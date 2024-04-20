@@ -57,28 +57,30 @@ function Carousel({images = []}) {
     if (!images || !Array.isArray(images)) images = []
     console.log("Images", images)
     let responsive = {
-        desktop: {
+        any: {
           breakpoint: {
-            max: 3000,
-            min: 1024
+            max: 6000,
+            min: 0
           },
           items: 1,
           partialVisibilityGutter: 0
-        }
+        },
     }
 
     // images = [...images, ...images, ...images]
-
+    console.log("IMAGES.length", images.length)
     return (
         <div className="aspect-[1/0.75] rounded w-full relative" onClick={e => {
             e.preventDefault()
             e.stopPropagation()
         }}>
-            {<img 
+            {images.length === 0 && <img 
                 className="absolute rounded w-full h-full object-cover bg-black"
                 src={emptyImage}
             />}
-            {images.length > 0 && <ResponsiveCarousel 
+            {/* <p className="absolute rounded w-full h-full object-cover">{images}</p> */}
+
+            {(images.length > 0) && <ResponsiveCarousel 
                 className="h-full rounded" 
                 responsive={responsive} 
                 infinite={images.length > 1}

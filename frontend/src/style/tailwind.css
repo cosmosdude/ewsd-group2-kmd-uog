@@ -1680,6 +1680,10 @@ html {
   text-wrap: wrap;
 }
 
+.text-nowrap {
+  text-wrap: nowrap;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
@@ -3278,6 +3282,10 @@ html {
 
   .md\:overflow-y-scroll {
     overflow-y: scroll;
+  }
+
+  .md\:p-5 {
+    padding: 1.25rem;
   }
 
   .md\:px-\[150px\] {

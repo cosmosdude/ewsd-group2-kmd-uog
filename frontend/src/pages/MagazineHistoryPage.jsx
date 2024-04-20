@@ -32,10 +32,10 @@ const MagazineHistoryPage = () => {
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
                     <TableHeaderRow>
-                        <th className="p-5">No</th>
-                        <th className="p-5">Closure Name</th>
-                        <th className="p-5">Start Date</th>
-                        <th className="p-5">End Date</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">No</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">Closure Name</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">Start Date</th>
+                        <th className="p-2 md:p-5 whitespace-nowrap">End Date</th>
                     </TableHeaderRow>
                     </thead>
                     <tbody>

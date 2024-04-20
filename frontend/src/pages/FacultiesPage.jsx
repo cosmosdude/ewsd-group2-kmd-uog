@@ -57,20 +57,20 @@ const FacultiesPage = () => {
                 <table className="table-auto mx-0 md:w-full">
                     <thead>
                         <TableHeaderRow>
-                            <th className="p-5">No</th>
-                            <th className="p-5">Faculty</th>
-                            <th className="p-5">Marketing Coordinator</th>
-                            <th className="p-5">Actions</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">No</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">Faculty</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">Marketing Coordinator</th>
+                            <th className="p-2 md:p-5 whitespace-nowrap">Actions</th>
                         </TableHeaderRow>
                     </thead>
                     <tbody>
                     {faculties.map((faculty, index) => {
                         return (
                             <tr key={index} className="text-center font-serif text-sm hover:bg-slate-100">
-                                <td className="p-3">{index + 1}</td>
-                                <td className="p-3">{faculty.name}</td>
-                                <td className="p-3">{faculty.email}</td>
-                                <td className="p-3">
+                                <td className="p-3 whitespace-nowrap">{index + 1}</td>
+                                <td className="p-3 whitespace-nowrap">{faculty.name}</td>
+                                <td className="p-3 whitespace-nowrap">{faculty.email}</td>
+                                <td className="p-3 whitespace-nowrap">
                                     <div className="group relative inline-flex bg-gray-100">
                                         <div className="inline-flex w-[25px] h-[25px] rounded hover:bg-slate-200 cursor-pointer">
                                             <img className="m-1" src={ThreeDotIcon}/>
@@ -110,7 +110,7 @@ const FacultiesPage = () => {
                     </tbody>
                 </table>
                 <div className="inline-block h-[50px]"></div>
-                <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
+                {/* <div className="flex gap-2 absolute bottom-[25px] right-8 text-center">
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &lt;
                     </button>
@@ -120,7 +120,7 @@ const FacultiesPage = () => {
                     <button className="inline-block w-[30px] h-[30px] bg-slate-200 rounded-full">
                         &gt;
                     </button>
-                </div>
+                </div> */}
             </div>
 
             

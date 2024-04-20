@@ -137,7 +137,7 @@ export default function BaseNavigation() {
                         </div>
                         {/* left side */}
                         {!isGuest && <SideNav showForSM={showNav}>
-                            {isAdmin && <SideNavItem 
+                            {(isAdmin || isMC || isMM) && <SideNavItem 
                                 selected={path.startsWith('/home')} 
                                 src={HomeIcon}
                                 cta="Dashboard" 
